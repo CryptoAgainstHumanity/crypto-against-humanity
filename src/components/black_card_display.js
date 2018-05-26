@@ -16,8 +16,7 @@ class BlackCardDisplay extends Component {
 						<Card text={this.props.blackCard.text} color={this.props.blackCard.color} />
 					</div>
 		          	<div className="time-left center">
-	            		<p className="text"> TIME LEFT IN ROUND </p>
-	            	<div className="clock"> CLOCK OBJECT </div>
+	            		<p className="text"> Time Remaining: {this.props.blackCard.timeRemaining} </p>
           		</div>
           		<Button className="propose-black-card center">Propose Black Card</Button>
 			</div>

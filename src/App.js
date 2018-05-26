@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap'
 import logo from './logo.svg';
 import './App.css';
-import WhiteCardList from './components/white_card_list';
-import WhiteCardListItem from './components/white_card_list_item';
-import WhiteCardsInPlayView from './components/white_cards_in_play_view'
-import MenuBar from './components/menu_bar';
-import BlackCardDisplay from './components/black_card_display';
-
+import {
+  Route,
+  NavLink,
+  HashRouter
+} from "react-router-dom";
+import Home from "./Home";
+import Rules from "./Rules";
+import HallOfShame from "./HallOfShame";
 
 
 
@@ -15,35 +17,29 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      whiteCards: [
-        {text: "Vitalik", balance: 0.781, price: 44.6500, color: "white-card"},
-        {text: "Big black cock", balance: 0.000, price: 4.036, color: "white-card"},
-        {text: "Webcam girls", balance: 0.042, price: 99.044, color: "white-card"},
-      ],
-      blackCard: {text: "I was offended by ___ at ETH Buenos Aires", color: "black-card", timeRemaining: "43"}
-    };
   }
 
   render() {
     return (
-    <div>
+    <HashRouter>
+      <div>
 
-      <MenuBar />
-
-      <div className="row current-round-page">
-
-        <div className="column black-card-in-play">
-          <BlackCardDisplay blackCard={this.state.blackCard} className="center" />
+        <div className="topnav">
+          <a href="#home"><h2>Crypto Against Humanity</h2></a>
+          <a href="#home" ><NavLink to="/home">Play</NavLink></a>
+          <a href="#rules"><NavLink to="/rules">The Rules</NavLink></a>
+          <a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a>
         </div>
 
-        <div className="column white-cards-in-play">
-          <WhiteCardsInPlayView whiteCards={this.state.whiteCards} />
+        <div className="content">
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/home" component={Home}/>
+            <Route path="/rules" component={Rules}/>
+            <Route path="/hall-of-shame" component={HallOfShame}/>
         </div>
 
       </div>
-    </div>
+    </HashRouter>
     );
   }
 }

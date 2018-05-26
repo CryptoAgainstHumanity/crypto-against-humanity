@@ -80,6 +80,14 @@
   font-weight: bold
 }
 
+.black-card {
+  background-color: black;
+  border: 2px solid black;
+  color: white;
+  font-weight: bold
+}
+
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
