@@ -19,7 +19,6 @@ class WhiteCardsInPlayView extends Component {
 			<div>
         <row>
           <h1 className="buy-your-hand left"> Buy Your Hand! </h1>
-          <Button className="create-new-card">Create New Card</Button>
         </row>
         <Nav bsStyle="tabs" activeKey="1" onSelect={k => this.handleSelect(k)}>
           <NavItem eventKey="1" href="#">
