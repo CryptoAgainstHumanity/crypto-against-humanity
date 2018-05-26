@@ -27,15 +27,22 @@ class App extends Component {
 
       <MenuBar />
 
-      <div className="row">
-        <div className="column">
+      <div className="row current-round-page">
+
+        <div className="column black-card-in-play">
           <h1 className="center"> Card in Play </h1>
-          <p className="center"> Black Card </p>
+          <div className="black-card center"> Black Card </div>
+          <div className="time-left center">
+            <p className="text"> TIME LEFT IN ROUND </p>
+            <div className="clock"> CLOCK OBJECT </div>
+          </div>
         </div>
-        <div className="column">
+
+        <div className="column white-cards-in-play">
           <h1 className="center"> Buy Your Hand! </h1>
           <WhiteCardList whiteCards={this.state.whiteCards} className="center" />
         </div>
+
       </div>
     </div>
     );
