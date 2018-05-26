@@ -15,10 +15,10 @@ class BlackCardDisplay extends Component {
 					<div className="black-card">
 						<Card text={this.props.blackCard.text} color={this.props.blackCard.color} />
 					</div>
-		          	<div className="time-left center">
-	            		<p className="text"> Time Remaining: {this.props.blackCard.timeRemaining} </p>
+		          	<div className="time-left">
+	            		<p>TIME REMAINING</p>
+	            		<h1>{this.props.blackCard.timeRemaining}</h1>
           		</div>
-          		<Button className="propose-black-card center">Propose Black Card</Button>
 			</div>
 
 		)

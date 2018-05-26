@@ -9,7 +9,7 @@ class Card extends Component {
 		const cardClass = "card " + this.props.color;
 		return (
 			<div className={cardClass}>
-				<p>{this.props.text}</p>
+				<div className="card-text">{this.props.text}</div>
 			</div>
 		)
 	}
