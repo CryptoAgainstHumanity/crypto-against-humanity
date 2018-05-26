@@ -22,5 +22,4 @@ class WhiteCardList extends Component {
 		);
 	}
 }
-
 export default WhiteCardList;

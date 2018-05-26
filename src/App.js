@@ -4,6 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
+import WhiteCardsInPlayView from './components/white_cards_in_play_view'
 import MenuBar from './components/menu_bar';
 
 
@@ -42,10 +43,7 @@ class App extends Component {
           <Button className="propose-black-card center">Propose Black Card</Button>
         </div>
 
-        <div className="column white-cards-in-play">
-          <h1 className="center"> Buy Your Hand! </h1>
-          <WhiteCardList whiteCards={this.state.whiteCards} className="center" />
-        </div>
+        <WhiteCardsInPlayView whiteCards={this.state.whiteCards} />
 
       </div>
     </div>

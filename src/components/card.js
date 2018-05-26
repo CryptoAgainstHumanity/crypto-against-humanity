@@ -8,12 +8,8 @@ class Card extends Component {
 	render() {
 		return (
 			<li className="list-group-item">
-				<div className="card-list media">
-					<div className="media-left">
-						<div className="card white-card">
-							<p>{this.props.title}</p>
-						</div>
-					</div>
+				<div className="card white-card">
+					<p>{this.props.title}</p>
 				</div>
 			</li>
 		)
