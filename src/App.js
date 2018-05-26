@@ -10,12 +10,12 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
+    this.state = {
       whiteCards: [
-                    {text: "Vitalik", balance: 0.000, price: 0.000},
-                    {text: "Big black cock", balance: 0.000, price: 0.000},
-                    {text: "Webcam girls", balance: 0.000, price: 0.000},
-                  ]
+        {text: "Vitalik", balance: 0.000, price: 0.000},
+        {text: "Big black cock", balance: 0.000, price: 0.000},
+        {text: "Webcam girls", balance: 0.000, price: 0.000},
+      ],
       timeRemaining: null,
 
     };

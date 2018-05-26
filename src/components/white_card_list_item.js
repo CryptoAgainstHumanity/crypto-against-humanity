@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Card from './card';
 
-const WhiteCardListItem = ({title}) => {
-	return ( 
-		<li className="list-group-item">
-			<div className="card-list media">
-				<div className="media-left">
-					<Card title={title} />
+class WhiteCardListItem extends Component {
+
+	constructor(props) {
+		super(props)
+	}
+
+	render() {
+		return (
+			<li className="list-group-item">
+				<div className="card-list media">
+					<div className="media-left">
+						<Card title={this.props.title} />
+					</div>
 				</div>
-			</div>
-		</li>
-	)
+			</li>
+		)
+	}
 }
 
 export default WhiteCardListItem;
