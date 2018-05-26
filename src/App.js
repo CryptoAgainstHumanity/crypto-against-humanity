@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap'
 import logo from './logo.svg';
 import './App.css';
 import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
 import MenuBar from './components/menu_bar';
+
+
 
 class App extends Component {
 
@@ -36,6 +39,7 @@ class App extends Component {
             <p className="text"> TIME LEFT IN ROUND </p>
             <div className="clock"> CLOCK OBJECT </div>
           </div>
+          <Button className="propose-black-card center">Propose Black Card</Button>
         </div>
 
         <div className="column white-cards-in-play">
