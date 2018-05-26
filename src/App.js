@@ -18,9 +18,9 @@ class App extends Component {
 
     this.state = {
       whiteCards: [
-        {text: "Vitalik", balance: 0.000, price: 0.000, color: "white-card"},
-        {text: "Big black cock", balance: 0.000, price: 0.000, color: "white-card"},
-        {text: "Webcam girls", balance: 0.000, price: 0.000, color: "white-card"},
+        {text: "Vitalik", balance: 0.781, price: 44.6500, color: "white-card"},
+        {text: "Big black cock", balance: 0.000, price: 4.036, color: "white-card"},
+        {text: "Webcam girls", balance: 0.042, price: 99.044, color: "white-card"},
       ],
       blackCard: {text: "I was offended by ___ at ETH Buenos Aires", color: "black-card", timeRemaining: "43"}
     };
@@ -38,7 +38,9 @@ class App extends Component {
           <BlackCardDisplay blackCard={this.state.blackCard} className="center" />
         </div>
 
-        <WhiteCardsInPlayView whiteCards={this.state.whiteCards} />
+        <div className="column white-cards-in-play">
+          <WhiteCardsInPlayView whiteCards={this.state.whiteCards} />
+        </div>
 
       </div>
     </div>

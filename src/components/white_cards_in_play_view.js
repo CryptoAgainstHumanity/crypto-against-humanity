@@ -16,7 +16,7 @@ class WhiteCardsInPlayView extends Component {
 
 	render() {
 		return (
-      <div className="column white-cards-in-play">
+			<div>
         <row>
           <h1 className="buy-your-hand left"> Buy Your Hand! </h1>
           <Button className="create-new-card">Create New Card</Button>

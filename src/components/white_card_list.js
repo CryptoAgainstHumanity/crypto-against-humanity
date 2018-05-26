@@ -6,7 +6,11 @@ class WhiteCardList extends Component {
 		super(props)
 
 		const whiteCards = props.whiteCards.map((card) => {
-			return <WhiteCardListItem text={card.text} color={card.color} />
+			return <WhiteCardListItem
+				text={card.text}
+				color={card.color}
+				price={card.price}
+				balance={card.balance} />
 		})
 
 		this.state = {
