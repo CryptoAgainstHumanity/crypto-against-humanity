@@ -1,16 +1,17 @@
 import React from 'react';
-import Card from './card';
 
-const WhiteCardListItem = ({title}) => {
+const Card = ({title}) => {
 	return ( 
 		<li className="list-group-item">
 			<div className="card-list media">
 				<div className="media-left">
-					<Card title={title} />
+					<div className="card white-card">
+						<p>{title}</p>
+					</div>
 				</div>
 			</div>
 		</li>
 	)
 }
 
-export default WhiteCardListItem;
+export default Card;

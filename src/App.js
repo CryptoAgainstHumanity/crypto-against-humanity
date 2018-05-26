@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
+import MenuBar from './components/menu_bar';
 
 class App extends Component {
 
@@ -10,20 +11,31 @@ class App extends Component {
     super(props);
 
     this.state = { 
-      whiteCards: ["vitalik", "Big Black Cock", "Something Else"]
+      whiteCards: [
+                    {text: "Vitalik", balance: 0.000, price: 0.000},
+                    {text: "Big black cock", balance: 0.000, price: 0.000},
+                    {text: "Webcam girls", balance: 0.000, price: 0.000},
+                  ]
+      timeRemaining: null,
+
     };
   }
 
   render() {
     return (
+    <div>
 
-    <div class="row">
-      <div class="column">
-        <p class="center"> Black Card </p>
-      </div>
-      <div class="column">
-        <h1> Buy your hand! </h1>
-        <WhiteCardList whiteCards={this.state.whiteCards} class="center" />
+      <MenuBar />
+
+      <div className="row">
+        <div className="column">
+          <h1 className="center"> Card in Play </h1>
+          <p className="center"> Black Card </p>
+        </div>
+        <div className="column">
+          <h1 className="center"> Buy Your Hand! </h1>
+          <WhiteCardList whiteCards={this.state.whiteCards} className="center" />
+        </div>
       </div>
     </div>
     );
