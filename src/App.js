@@ -10,6 +10,7 @@ import {
 import Home from "./Home";
 import Rules from "./Rules";
 import HallOfShame from "./HallOfShame";
+import CreateCard from "./CreateCard";
 
 
 
@@ -29,6 +30,7 @@ class App extends Component {
           <a href="#home" ><NavLink to="/home">Play</NavLink></a>
           <a href="#rules"><NavLink to="/rules">The Rules</NavLink></a>
           <a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a>
+          <a href="#create-card"><NavLink to="/create-card">Create Card</NavLink></a>
         </div>
 
         <div className="content">
@@ -36,6 +38,7 @@ class App extends Component {
             <Route exact path="/home" component={Home}/>
             <Route path="/rules" component={Rules}/>
             <Route path="/hall-of-shame" component={HallOfShame}/>
+            <Route path="/create-card" component={CreateCard}/>
         </div>
 
       </div>
