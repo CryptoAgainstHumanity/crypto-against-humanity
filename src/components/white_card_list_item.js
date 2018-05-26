@@ -12,7 +12,7 @@ class WhiteCardListItem extends Component {
 			<li className="list-group-item">
 				<div className="card-list media">
 					<div className="media-left">
-						<Card title={this.props.title} />
+						<Card text={this.props.text} color={this.props.color}/>
 					</div>
 				</div>
 			</li>

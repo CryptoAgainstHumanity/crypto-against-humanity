@@ -6,12 +6,11 @@ class Card extends Component {
 	}
 
 	render() {
+		const cardClass = "card " + this.props.color;
 		return (
-			<li className="list-group-item">
-				<div className="card white-card">
-					<p>{this.props.title}</p>
-				</div>
-			</li>
+			<div className={cardClass}>
+				<p>{this.props.text}</p>
+			</div>
 		)
 	}
 }

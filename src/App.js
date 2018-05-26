@@ -6,6 +6,8 @@ import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
 import WhiteCardsInPlayView from './components/white_cards_in_play_view'
 import MenuBar from './components/menu_bar';
+import BlackCardDisplay from './components/black_card_display';
+
 
 
 
@@ -16,12 +18,11 @@ class App extends Component {
 
     this.state = {
       whiteCards: [
-        {text: "Vitalik", balance: 0.000, price: 0.000},
-        {text: "Big black cock", balance: 0.000, price: 0.000},
-        {text: "Webcam girls", balance: 0.000, price: 0.000},
+        {text: "Vitalik", balance: 0.000, price: 0.000, color: "white-card"},
+        {text: "Big black cock", balance: 0.000, price: 0.000, color: "white-card"},
+        {text: "Webcam girls", balance: 0.000, price: 0.000, color: "white-card"},
       ],
-      timeRemaining: null,
-
+      blackCard: {text: "I was offended by ___ at ETH Buenos Aires", color: "black-card", timeRemaining: "43"}
     };
   }
 
@@ -34,13 +35,7 @@ class App extends Component {
       <div className="row current-round-page">
 
         <div className="column black-card-in-play">
-          <h1 className="center"> Card in Play </h1>
-          <div className="black-card center"> Black Card </div>
-          <div className="time-left center">
-            <p className="text"> TIME LEFT IN ROUND </p>
-            <div className="clock"> CLOCK OBJECT </div>
-          </div>
-          <Button className="propose-black-card center">Propose Black Card</Button>
+          <BlackCardDisplay blackCard={this.state.blackCard} className="center" />
         </div>
 
         <WhiteCardsInPlayView whiteCards={this.state.whiteCards} />

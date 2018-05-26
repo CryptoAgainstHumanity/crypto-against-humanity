@@ -6,7 +6,7 @@ class WhiteCardList extends Component {
 		super(props)
 
 		const whiteCards = props.whiteCards.map((card) => {
-			return <WhiteCardListItem title={card.text} />
+			return <WhiteCardListItem text={card.text} color={card.color} />
 		})
 
 		this.state = {
@@ -22,4 +22,5 @@ class WhiteCardList extends Component {
 		);
 	}
 }
+
 export default WhiteCardList;
