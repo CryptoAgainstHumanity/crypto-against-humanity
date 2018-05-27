@@ -45,6 +45,7 @@ class Home extends Component {
 
         whiteCards.push({
           text: ipfsHash,
+          bondingCurveAddress: bondingCurveAddress,
           balance: bondingCurveBalance / whiteCardTokenUnits,
           price: bondingCurvePrice / whiteCardTokenUnits,
           color: "white-card"

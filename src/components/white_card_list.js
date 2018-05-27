@@ -7,6 +7,7 @@ export default ((props) => {
 		i++
 		return <WhiteCardListItem
 			key={`white_card_${i}`}
+			bondingCurveAddress={card.bondingCurveAddress}
 			text={card.text}
 			color={card.color}
 			price={card.price}
