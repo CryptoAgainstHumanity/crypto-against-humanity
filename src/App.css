@@ -287,6 +287,10 @@ p {
   border-bottom: 3px solid #323639;
 }
 
+.white-card-list {
+  height: calc(100vh - 128px);
+}
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

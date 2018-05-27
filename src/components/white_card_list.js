@@ -14,7 +14,7 @@ export default ((props) => {
 	})
 
 	return (
-		<ul className="col-md-4">
+		<ul className="white-card-list">
 			{whiteCards}
 		</ul>
 	);
