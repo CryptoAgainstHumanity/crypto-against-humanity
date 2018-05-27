@@ -14,22 +14,24 @@ class WhiteCardsInPlayView extends Component {
     }
 	}
 
+  // <Nav className = "white-card-filter" bsStyle="tabs" activeKey="1" onSelect={k => this.handleSelect(k)}>
+
 	render() {
 		return (
 			<div>
 
-        <Nav className = "white-card-filter" bsStyle="tabs" activeKey="1" onSelect={k => this.handleSelect(k)}>
-          <NavItem eventKey="1" href="#">
-            Good Shit
+        <Nav className = "white-card-filter" activeKey="1" onSelect={k => this.handleSelect(k)}>
+          <NavItem className = "white-card-filter-item-active" eventKey="1" href="#">
+            <div className="lbl-text">GOOD SHIT</div>
           </NavItem>
-          <NavItem disabled>
-            Trending Shit
+          <NavItem className = "white-card-filter-item" disabled>
+            <div className="lbl-text">TRENDING SHIT</div>
           </NavItem>
-          <NavItem disabled>
-            New Shit
+          <NavItem className = "white-card-filter-item" disabled>
+            <div className="lbl-text">NEW SHIT</div>
           </NavItem>
-          <NavItem disabled>
-            Your Shit
+          <NavItem className = "white-card-filter-item" disabled>
+            <div className="lbl-text">YOUR SHIT</div>
           </NavItem>
         </Nav>
         <WhiteCardList whiteCards={this.state.whiteCards} className="center" />

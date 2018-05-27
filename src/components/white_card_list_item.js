@@ -18,7 +18,7 @@ class WhiteCardListItem extends Component {
 
 	render() {
 		return (
-			<li className="list-group-item white-card-row">
+			<li className="white-card-row">
 
 				<div className="white-card">
 					<Card text={this.props.text} color={this.props.color}/>
