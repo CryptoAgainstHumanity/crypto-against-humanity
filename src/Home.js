@@ -64,9 +64,14 @@ class Home extends Component {
       fromBlock: 0,
       toBlock: 'latest'
     }, async (err, events) => {
-      let hash = events[3].returnValues.data
-      let text = (await ipfs.object.data(hash)).toString()
-
+      let ipfsHash = events[7].returnValues.data
+      console.log('hash! ', ipfsHash)
+      let buffer = await ipfs.object.data(ipfsHash)
+      let text = (await ipfs.object.data(ipfsHash)).toString()
+      if (buffer.toJSON().data.length > 27) {
+        text = text.replace(/[^\x20-\x7E]/g, '')
+        text = text.substring(1, text.length - 1)
+      }
       let blackCard = { text , color: "black-card", timeRemaining: "1 : 24 : 32" }
       this.setState({
         blackCard: blackCard,
