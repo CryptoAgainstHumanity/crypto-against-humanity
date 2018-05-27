@@ -84,11 +84,17 @@ class Home extends Component {
     const roundedTime = Math.floor(moment().unix() / 10) * 10
     const i = getRandomInt(roundedTime, 0, this.blackCards.length - 1)
     let ipfsHash = this.blackCards[i].returnValues.data
-    let buffer = await ipfs.object.data(ipfsHash)
-    let text = (await ipfs.object.data(ipfsHash)).toString()
-    if (buffer.toJSON().data.length > 27) {
-      text = text.replace(/[^\x20-\x7E]/g, '')
-      text = text.substring(1, text.length - 1)
+    let text
+    try {
+      let buffer = await ipfs.object.data(ipfsHash)
+      text = (await ipfs.object.data(ipfsHash)).toString()
+      if (buffer.toJSON().data.length > 27) {
+        text = text.replace(/[^\x20-\x7E]/g, '')
+        text = text.substring(1, text.length - 1)
+      }
+    } catch (err) {
+      console.error(err)
+      text = ipfsHash
     }
     let blackCard = { text , color: "black-card" }
 
