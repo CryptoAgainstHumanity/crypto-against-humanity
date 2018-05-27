@@ -17,6 +17,7 @@ class WhiteCardsInPlayView extends Component {
 	render() {
 		return (
 			<div>
+
         <Nav className = "white-card-filter" bsStyle="tabs" activeKey="1" onSelect={k => this.handleSelect(k)}>
           <NavItem eventKey="1" href="#">
             Good Shit

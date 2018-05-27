@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
 import WhiteCardsInPlayView from './components/white_cards_in_play_view'
@@ -17,6 +18,16 @@ class Home extends Component {
       ],
       blackCard: {text: "I was offended by ____ at ETH Buenos Aires", color: "black-card", timeRemaining: "43"}
     };
+  }
+
+  componentWillMount() {
+    WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
+      fromBlock: 0,
+      toBlock: 'latest'
+    }, (err, evt) => {
+      console.log('ERR: ', err)
+      console.log('WHITE CARD CREATED: ', evt)
+    })
   }
 
   render() {
