@@ -16,10 +16,8 @@ class WhiteCardsInPlayView extends Component {
 
 		return (
 			<div>
-        <row>
-          <h1 className="buy-your-hand left"> Buy Your Hand! </h1>
-        </row>
-        <Nav bsStyle="tabs" activeKey="1" onSelect={k => this.handleSelect(k)}>
+
+        <Nav className = "white-card-filter" bsStyle="tabs" activeKey="1" onSelect={k => this.handleSelect(k)}>
           <NavItem eventKey="1" href="#">
             Good Shit
           </NavItem>

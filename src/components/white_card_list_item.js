@@ -18,17 +18,23 @@ class WhiteCardListItem extends Component {
 
 	render() {
 		return (
-			<li className="list-group-item" style={{position: 'relative'}}>
+			<li className="list-group-item white-card-row">
 
-				<div className="rightSide" style={{position: 'absolute'}}>
+				<div className="white-card">
 					<Card text={this.props.text} color={this.props.color}/>
 				</div>
 
-				<div className="leftSide" style={{"margin-left": '100px'}}>
-					<p className='price-label'>PRICE</p>
-					<p className='price-data'>{this.props.price}</p>
-					<p className='balance-label'>BALANCE</p>
-					<p className='balance-data'>{this.props.balance}</p>
+				<div className="left-side">
+					<div className="white-card-labels">
+						<div className="price-label-div">
+							<div className='lbl-text'>PRICE</div>
+							<div className='price-data header-1'>{this.props.price}</div>
+						</div>
+						<div className="balance-label-div">
+							<div className='lbl-text'>BALANCE</div>
+							<div className='balance-data header-1'>{this.props.balance}</div>
+						</div>
+					</div>
 					<Nav className='trade-keys' bsStyle="pills" activeKey={this.state.tradeKey} onSelect={k => this.setTradeKey(k)}>
 						<NavItem className='buy'eventKey="buy" href="#">
 							Buy
