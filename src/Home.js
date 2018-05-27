@@ -13,6 +13,7 @@ import BlackCardDisplay from './components/black_card_display';
 import ipfsAPI from 'ipfs-api'
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
+const blackCardTimeInterval = 10000
 
 class Home extends Component {
 
@@ -79,7 +80,7 @@ class Home extends Component {
   }
 
   async setBlackCard () {
-    const roundedTime = Math.floor(moment().unix() / 10) * 10
+    const roundedTime = getRoundedTime()
     const i = getRandomInt(roundedTime, 0, this.blackCards.length - 1)
     let ipfsHash = this.blackCards[i].returnValues.data
     let text
@@ -103,7 +104,7 @@ class Home extends Component {
   }
 
   startTimer () {
-    var eventTime = Math.floor(moment().unix() / 10) * 10 + 10;
+    var eventTime = getRoundedTime() + blackCardTimeInterval;
     var currentTime = moment().unix()
     var diffTime = eventTime - currentTime
     var duration = moment.duration(diffTime * 1000, 'milliseconds')
@@ -118,7 +119,7 @@ class Home extends Component {
       })
       if (duration.seconds() <= 0) {
         $this.setBlackCard()
-        eventTime = Math.floor(moment().unix() / 10) * 10 + 10;
+        eventTime = getRoundedTime() + blackCardTimeInterval;
         currentTime = moment().unix()
         diffTime = eventTime - currentTime
         duration = moment.duration(diffTime * 1000, 'milliseconds')
@@ -143,6 +144,10 @@ class Home extends Component {
         </div>
     );
   }
+}
+
+function getRoundedTime() {
+  return Math.floor(moment().unix() / blackCardTimeInterval) * blackCardTimeInterval
 }
 
 function random(seed) {
