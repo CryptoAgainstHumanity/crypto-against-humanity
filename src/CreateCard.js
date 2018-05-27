@@ -8,7 +8,7 @@ import {
   FormControl, InputGroup, ControlLabel,
   ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
-import blackCardRegistry from './web3Contracts/BlackCardRegistry';    
+import blackCardRegistry from './web3Contracts/BlackCardRegistry';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 class CreateCard extends Component {
@@ -49,16 +49,79 @@ class CreateCard extends Component {
   }
 
   render() {
+
+    const styleToggleBlack = {
+      height: '40px',
+      width:'152px',
+      borderRadius: '4px',
+      fontFamily: 'Arial',
+      fontSize: '16px',
+      fontWeight: 'bold',
+
+      backgroundColor: '#323639',
+      color: 'white',
+    }
+
+    const styleToggleWhite = {
+      height: '40px',
+      width:'152px',
+      borderRadius: '4px',
+      fontFamily: 'Arial',
+      fontSize: '16px',
+      fontWeight: 'bold',
+
+      backgroundColor: 'white',
+      color: '#323639',
+      marginLeft: '16px',
+    }
+
+    const styleCard = {
+      height: '400px',
+      width: '320px',
+      resize: 'none',
+      zid: '9999',
+
+      borderRadius: '4px',
+      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
+
+      fontSize: '32px',
+      padding: '20px',
+    }
+
+    if (this.state.color === 'black') {
+      styleCard.backgroundColor = '#323639';
+      styleCard.color = 'white';
+    } else {
+      styleCard.backgroundColor = 'white';
+      styleCard.color = '#323639';
+    }
+
+    const styleSubmit = {
+      width: '320px',
+      height: '40px',
+
+      borderRadius: '4px',
+      backgroundColor: '#d94a4d',
+      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
+
+      fontFamily: 'Arial',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      color: 'white',
+    }
+
+    // <div className="create-card-background"></div>
+
     return (
       <div>
         <div>
-          <h1 className="create-card-title">Create Card</h1>
+          <div className="header-1 create-card-title">Create Card</div>
           <form onSubmit={this.handleSubmit.bind(this)}>
 
-            <ButtonToolbar>
+            <ButtonToolbar className="create-card-toggle" >
               <ToggleButtonGroup type="radio" name="options" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
-                <ToggleButton value={"black"}>Black Card</ToggleButton>
-                <ToggleButton value={"white"}>White Card</ToggleButton>
+                <ToggleButton value={"black"} style={styleToggleBlack}>Black Card</ToggleButton>
+                <ToggleButton value={"white"} style={styleToggleWhite}>White Card</ToggleButton>
               </ToggleButtonGroup>
             </ButtonToolbar>
 
@@ -67,10 +130,11 @@ class CreateCard extends Component {
                 onChange={this.handleTextChange.bind(this)}
                 componentClass="textarea"
                 placeholder="Start typing here"
+                style={styleCard}
               />
             </FormGroup>
 
-            <Button type="submit">Submit</Button>
+            <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button>
           </form>
         </div>
       </div>

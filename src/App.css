@@ -152,7 +152,7 @@ p {
 .content {
   display: flex;
   justify-content: center;
-  height: 100vh;
+  /*height: 100vh;*/
 
   /* Ensure navbar isn't overlaying*/
   margin-top: 50px;
@@ -291,7 +291,30 @@ p {
   height: calc(100vh - 128px);
 }
 
+
+/*CREATE CARD VIEW*/
+
+.create-card-title {
+  margin-top: 32px;
+}
+
+.create-card-toggle {
+ margin-top: 20px;
+ margin-bottom: 20px;
+}
+
+.create-card-background {
+  width: 200px;
+  height: 320px;
+  border: 1px solid red;
+
+  position: absolute;
+  top: 194px;
+}
+
+
+/*
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
+}*/
