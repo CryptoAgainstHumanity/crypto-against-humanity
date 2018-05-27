@@ -13,8 +13,6 @@ import Rules from "./Rules";
 import HallOfShame from "./HallOfShame";
 import CreateCard from "./CreateCard";
 
-
-
 class App extends Component {
 
   constructor(props) {
@@ -24,10 +22,10 @@ class App extends Component {
   render() {
     return (
     <HashRouter>
-      <div>
+      <div className="appContainer">
 
         <div className="topnav">
-          <a href="#home"><h2>Crypto Against Humanity</h2></a>
+          <a href="#home"><div className="header-brand">Crypto Against Humanity</div></a>
           <a href="#home" ><NavLink to="/home">Play</NavLink></a>
           <a href="#rules"><NavLink to="/rules">The Rules</NavLink></a>
           <a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a>
