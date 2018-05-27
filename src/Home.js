@@ -13,7 +13,7 @@ import BlackCardDisplay from './components/black_card_display';
 import ipfsAPI from 'ipfs-api'
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
-const blackCardTimeInterval = 10000
+const blackCardTimeInterval = 10
 
 class Home extends Component {
 
