@@ -5,7 +5,7 @@ import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
 import Card from './card';
 
 const tokenUnits = 10 ** 8
-const defaultTradeAmount = 5
+const defaultTradeAmount = 1
 
 class WhiteCardListItem extends Component {
 
@@ -74,7 +74,7 @@ class WhiteCardListItem extends Component {
 					<div className="white-card-labels">
 						<div className="price-label-div">
 							<div className='lbl-text'>PRICE</div>
-							<div className='price-data header-1'>Ξ {this.props.price}</div>
+							<div className='price-data header-1'>Ξ {this.state.price}</div>
 						</div>
 						<div className="balance-label-div">
 							<div className='lbl-text'>BALANCE</div>
