@@ -8,7 +8,8 @@ import {
   FormControl, InputGroup, ControlLabel,
   ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
-import blackCardRegistry from './web3Contracts/BlackCardRegistry';
+import blackCardRegistry from './web3Contracts/BlackCardRegistry'; 
+import nsfcCoinToken from './web3Contracts/NsfcCoinToken';    
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 class CreateCard extends Component {
@@ -33,18 +34,26 @@ class CreateCard extends Component {
     this.setState({color: e})
   }
 
-  getIpfsHash(){
+  getIpfsHash(content){
+    return content;
+  }
 
+  submitBlackCard = async (e) => {
+    e.preventDefault();
+    const accounts = await web3.eth.getAccounts();
+    const ipfsHash = this.getIpfsHash(this.state.value);
+    const ipfsSha = web3.utils.sha3(ipfsHash, { encoding: 'hex' })
+    await blackCardRegistry.methods.apply(ipfsSha, 10, ipfsHash).send({from: accounts[0]});
   }
 
   handleSubmit = async (e) => {
     e.preventDefault();
     const accounts = await web3.eth.getAccounts();
     if (this.state.color == "black") {
-      const ipfsSha = web3.utils.sha3(this.state.value, { encoding: 'hex' })
-      await blackCardRegistry.methods.apply(ipfsSha, 10, this.state.value).send({from: accounts[0]});
+      await nsfcCoinToken.methods.approve(blackCardRegistry.options.address, 10).send({from: accounts[0]});
     } else {
-      await whiteCardFactory.methods.addWhiteCard(this.state.value).send({from: accounts[0]});
+      const ipfsHash = this.getIpfsHash(this.state.value);
+      await whiteCardFactory.methods.addWhiteCard(ipfsHash).send({from: accounts[0]});
     }
   }
 
@@ -135,6 +144,7 @@ class CreateCard extends Component {
             </FormGroup>
 
             <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button>
+            <div><b>{this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit">Submit</Button> : <div></div>}</b></div>
           </form>
         </div>
       </div>
