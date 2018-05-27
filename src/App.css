@@ -19,18 +19,18 @@ h1 {
 }
 
 h2 {
-  font-family: Arial;
+/*  font-family: Arial;
   font-size: 24px;
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: normal;
-  color: #ffffff;
+  color: #ffffff;*/
 }
 
 p {
-  font-family: Arial;
+/*  font-family: Arial;
   font-size: 16px;
   font-weight: normal;
   font-style: normal;
@@ -38,6 +38,28 @@ p {
   line-height: normal;
   letter-spacing: normal;
   text-align: center;
+  color: rgba(0, 0, 0, 0.54);*/
+}
+
+.header-1 {
+  font-family: Arial;
+  font-size: 32px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #333333;
+}
+
+.lbl-text {
+  font-family: Arial;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
   color: rgba(0, 0, 0, 0.54);
 }
 
@@ -107,13 +129,6 @@ p {
   text-decoration: none;
 }
 
-/* Clear floats after the columns */
-/*.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}*/
-
 .content {
   display: flex;
   justify-content: center;
@@ -127,26 +142,12 @@ p {
   /*border-radius: 5px;*/
 }
 
-.white-card {
-  background-color: white;
-  border: 2px solid black;
-  color: black;
-  font-weight: bold
-}
-
 .black-card-in-play {
   width: 321px;
-
   display: flex;
   justify-content: center;
 
   /*background-color: red;*/
-}
-
-.white-cards-in-play {
-  width: 671px;
-  background-color: blue;
-  overflow: auto;
 }
 
 .center {
@@ -158,13 +159,16 @@ p {
   display: none;
 }
 
+.current-round-page {
+  margin-top: 32px;
+}
+
 .black-card {
   width: 318px;
   height: 398px;
   border-radius: 5px;
   background-color: #323639;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-  margin-top: 32px;
 
   color: white;
   font-family: Arial;
@@ -187,6 +191,76 @@ p {
   /*height: 52px;*/
 }
 
+.white-card-row {
+  width: 505px;
+
+  padding: 0px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+  position: relative;
+}
+
+.left-side {
+  /*background-color: purple;*/
+  width: 312px;
+  /*margin-left: 109px;*/
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+.white-card-labels {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.price-label-div {
+  text-align: left;
+}
+
+.balance-label-div {
+  text-align: left;
+}
+
+
+.white-card {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+
+  width: 149px;
+  height: 186px;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+
+  font-family: Arial;
+  font-size: 24px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #333333;
+}
+
+.white-cards-in-play {
+  width: 671px;
+  margin-left: 84px;
+  overflow: auto;
+
+  /*background-color: blue;*/
+}
+
+.white-card-filter {
+
+}
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
