@@ -1,3 +1,4 @@
+import web3 from '../web3'
 import React, { Component } from 'react';
 import { Nav, NavDropdown, MenuBar, MenuItem, Button, FormGroup, FormControl, InputGroup, ControlLabel } from 'react-bootstrap'
 import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
@@ -31,11 +32,20 @@ class WhiteCardListItem extends Component {
 	}
 
 	handleBuyClick (event) {
+		this.mintTokens()
 		event.preventDefault();
 	}
 
 	handleSellClick (event) {
 		event.preventDefault();
+	}
+
+	async mintTokens () {
+		const accounts = await web3.eth.getAccounts()
+		let tokenVal = this.state.tradeDisplayAmount * tokenUnits
+		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
+		let bondingCurvePrice = await EthPolynomialCurveToken.methods
+			.mint(tokenVal).send({ value: this.state.price * 10 ** 18, from: accounts[0] })
 	}
 
 	async getBondingCurvePrice (displayVal) {
@@ -49,6 +59,7 @@ class WhiteCardListItem extends Component {
 	}
 
 	render() {
+		const balanceDisplayVal = this.props.balance * 10 ** 4 * 10 ** 18
 		return (
 			<li className="white-card-row">
 
@@ -64,7 +75,7 @@ class WhiteCardListItem extends Component {
 						</div>
 						<div className="balance-label-div">
 							<div className='lbl-text'>BALANCE</div>
-							<div className='balance-data header-1'>{this.props.balance}</div>
+							<div className='balance-data header-1'>{balanceDisplayVal}</div>
 						</div>
 					</div>
 
