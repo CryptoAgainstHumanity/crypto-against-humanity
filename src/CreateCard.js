@@ -8,9 +8,10 @@ import {
   FormControl, InputGroup, ControlLabel,
   ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
-import blackCardRegistry from './web3Contracts/BlackCardRegistry'; 
-import nsfcCoinToken from './web3Contracts/NsfcCoinToken';    
+import blackCardRegistry from './web3Contracts/BlackCardRegistry';
+import nsfcCoinToken from './web3Contracts/NsfcCoinToken';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import ipfsAPI from 'ipfs-api'
 
 class CreateCard extends Component {
 
@@ -42,9 +43,18 @@ class CreateCard extends Component {
   submitBlackCard = async (e) => {
     e.preventDefault();
     const accounts = await web3.eth.getAccounts();
-    const ipfsHash = this.getIpfsHash(this.state.value);
+    const cardString = this.getIpfsHash(this.state.value);
+    const ipfsHash = await this.createIpfsHash(cardString)
     const ipfsSha = web3.utils.sha3(ipfsHash, { encoding: 'hex' })
     await blackCardRegistry.methods.apply(ipfsSha, 10, ipfsHash).send({from: accounts[0]});
+  }
+
+  createIpfsHash = async (cardString) => {
+    console.log('createIpfsHash!')
+    const buffer = new Buffer(cardString)
+    const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
+    const hash = await ipfs.add(buffer)
+    return hash[0].hash
   }
 
   handleSubmit = async (e) => {
@@ -54,7 +64,8 @@ class CreateCard extends Component {
       this.setState({isVerified: true});
       await nsfcCoinToken.methods.approve(blackCardRegistry.options.address, 10).send({from: accounts[0]});
     } else {
-      const ipfsHash = this.getIpfsHash(this.state.value);
+      const cardString = this.getIpfsHash(this.state.value);
+      const ipfsHash = await this.createIpfsHash(cardString)
       await whiteCardFactory.methods.addWhiteCard(ipfsHash).send({from: accounts[0]});
     }
   }
@@ -145,7 +156,7 @@ class CreateCard extends Component {
               />
             </FormGroup>
 
-            <div><b>{this.state.color == "white" ? <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button> : 
+            <div><b>{this.state.color == "white" ? <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button> :
                                                   <Button className= "primary-button" type="submit" style={styleSubmit}>Get Verified</Button>}</b></div>
 
             <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit" style={styleSubmit}>Submit</Button> : <div></div>}</b></div>
