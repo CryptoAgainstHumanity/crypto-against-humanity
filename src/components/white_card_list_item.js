@@ -37,6 +37,7 @@ class WhiteCardListItem extends Component {
 	}
 
 	handleSellClick (event) {
+		this.burnTokens()
 		event.preventDefault();
 	}
 
@@ -46,6 +47,14 @@ class WhiteCardListItem extends Component {
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
 		let bondingCurvePrice = await EthPolynomialCurveToken.methods
 			.mint(tokenVal).send({ value: this.state.price * 10 ** 18, from: accounts[0] })
+	}
+
+	async burnTokens () {
+		const accounts = await web3.eth.getAccounts()
+		let tokenVal = this.state.tradeDisplayAmount * tokenUnits
+		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
+		let bondingCurvePrice = await EthPolynomialCurveToken.methods
+			.burn(tokenVal).send({ from: accounts[0] })
 	}
 
 	async getBondingCurvePrice (displayVal) {
@@ -59,9 +68,15 @@ class WhiteCardListItem extends Component {
 	}
 
 	render() {
-		const balanceStyled = (this.props.balance == 0)?
+		let balanceStyled = (this.props.balance == 0)?
 			'-':
-			this.props.balance * 10 ** 4 * 10 ** 18;
+			precisionRound(this.props.balance * 10 ** 4 * 10 ** 18, 3)
+
+		const sellBtn = this.props.balance == 0 ? null : (
+			<Button onClick={this.handleSellClick}>
+				Sell
+			</Button>
+		)
 
 		return (
 			<li className="white-card-row">
@@ -87,9 +102,7 @@ class WhiteCardListItem extends Component {
 							<Button onClick={this.handleBuyClick} >
 								Buy
 							</Button>
-							<Button onClick={this.handleSellClick}>
-								Sell
-							</Button>
+							{sellBtn}
 						</div>
 						<FormGroup controlId="formValidationWarning3" validationState="warning">
 							<InputGroup>
@@ -102,6 +115,11 @@ class WhiteCardListItem extends Component {
 			</li>
 		)
 	}
+}
+
+function precisionRound(number, precision) {
+  var factor = Math.pow(10, precision);
+  return Math.round(number * factor) / factor;
 }
 
 export default WhiteCardListItem;
