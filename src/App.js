@@ -23,7 +23,7 @@ class App extends Component {
 
     const styleCreateCard = {
       width: '107px',
-      height: '28px',
+      height: '40px',
 
       borderRadius: '4px',
       backgroundColor: '#d94a4d',

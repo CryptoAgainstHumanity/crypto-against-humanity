@@ -68,12 +68,37 @@ class WhiteCardListItem extends Component {
 	}
 
 	render() {
+		const styleTradeBtn = {
+      width: '60px',
+      height: '40px',
+      marginLeft: '10px',
+
+      borderRadius: '4px',
+      backgroundColor: '#d94a4d',
+      border: 'none',
+      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
+
+      fontFamily: 'Arial',
+      fontSize: '16px',
+      fontWeight: 'bold',
+      color: 'white',
+    }
+
+    const styleQuantityInput = {
+    	borderRadius: '4px',
+      backgroundColor: '#F6F7F9',
+      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
+      border: 'none',
+      height: '40px',
+      // width: '60px',
+    }
+
 		let balanceStyled = (this.props.balance == 0)?
 			'-':
-			precisionRound(this.props.balance * 10 ** 4 * 10 ** 18, 3)
+			precisionRound(this.props.balance * 10 ** 4 * 10 ** 18, 3);
 
 		const sellBtn = this.props.balance == 0 ? null : (
-			<Button onClick={this.handleSellClick}>
+			<Button onClick={this.handleSellClick} style={styleTradeBtn}>
 				Sell
 			</Button>
 		)
@@ -98,17 +123,17 @@ class WhiteCardListItem extends Component {
 					</div>
 
 					<div className="trade-div">
+						<FormGroup controlId="formValidationWarning3" validationState="warning">
+							<InputGroup>
+								<FormControl type="text" onChange={this.handleTradeDisplayAmountChange} value={this.state.tradeDisplayAmount} style={styleQuantityInput}/>
+							</InputGroup>
+						</FormGroup>
 						<div className='trade-keys'>
-							<Button onClick={this.handleBuyClick} >
+							<Button onClick={this.handleBuyClick} style={styleTradeBtn}>
 								Buy
 							</Button>
 							{sellBtn}
 						</div>
-						<FormGroup controlId="formValidationWarning3" validationState="warning">
-							<InputGroup>
-								<FormControl type="text" onChange={this.handleTradeDisplayAmountChange} value={this.state.tradeDisplayAmount} />
-							</InputGroup>
-						</FormGroup>
 					</div>
 				</div>
 
