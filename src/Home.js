@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import web3 from './web3'
 import React, { Component } from "react";
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
@@ -42,15 +43,20 @@ class Home extends Component {
 
         const accounts = await web3.eth.getAccounts()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
+        let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
 
         whiteCards.push({
           text: ipfsHash,
           bondingCurveAddress: bondingCurveAddress,
+          totalBalance: parseInt(bondingCurveTotalBalance),
           balance: bondingCurveBalance / whiteCardTokenUnits,
           price: bondingCurvePrice / whiteCardTokenUnits,
           color: "white-card"
         })
       }
+
+      whiteCards = _.orderBy(whiteCards, ['totalBalance'], ['desc'])
+
       this.setState({
         whiteCards: whiteCards,
         loadingWhiteCards: false 
