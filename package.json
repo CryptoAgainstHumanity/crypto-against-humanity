@@ -5,6 +5,7 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "bytes": "^3.0.0",
+    "ipfs-api": "^22.0.0",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.0",

@@ -8,6 +8,7 @@ import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
 import WhiteCardsInPlayView from './components/white_cards_in_play_view'
 import BlackCardDisplay from './components/black_card_display';
+import ipfsAPI from 'ipfs-api'
 
 class Home extends Component {
 
@@ -25,6 +26,7 @@ class Home extends Component {
   componentWillMount() {
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
+    const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 
     WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
       fromBlock: 0,
@@ -36,6 +38,7 @@ class Home extends Component {
         WhiteCard.options.address = event.returnValues.card
         let creator = await WhiteCard.methods.creator().call()
         let ipfsHash = await WhiteCard.methods.ipfsHash().call()
+        let text = (await ipfs.object.data(ipfsHash)).toString()
         let bondingCurveAddress = await WhiteCard.methods.bondingCurve().call()
         EthPolynomialCurveToken.options.address = bondingCurveAddress
         let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
@@ -44,7 +47,7 @@ class Home extends Component {
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
 
         whiteCards.push({
-          text: ipfsHash,
+          text,
           bondingCurveAddress: bondingCurveAddress,
           balance: bondingCurveBalance / whiteCardTokenUnits,
           price: bondingCurvePrice / whiteCardTokenUnits,
@@ -53,7 +56,7 @@ class Home extends Component {
       }
       this.setState({
         whiteCards: whiteCards,
-        loadingWhiteCards: false 
+        loadingWhiteCards: false
       })
     })
 
@@ -61,7 +64,10 @@ class Home extends Component {
       fromBlock: 0,
       toBlock: 'latest'
     }, async (err, events) => {
-      let blackCard = { text: events[0].returnValues.data, color: "black-card", timeRemaining: "1 : 24 : 32" }
+      let hash = events[3].returnValues.data
+      let text = (await ipfs.object.data(hash)).toString()
+
+      let blackCard = { text , color: "black-card", timeRemaining: "1 : 24 : 32" }
       this.setState({
         blackCard: blackCard,
         loadingBlackCard: false
