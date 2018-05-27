@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.6",
+    "bytes": "^3.0.0",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
     "react-dom": "^16.4.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
+    "sha256": "^0.2.0",
     "web3": "^1.0.0-beta.26"
   },
   "scripts": {

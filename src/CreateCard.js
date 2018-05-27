@@ -1,10 +1,14 @@
 import React, { Component } from "react";
 import web3 from './web3';
+import sha256 from 'sha256';
+import bytes from 'bytes';
 import {
   Button,
   FormGroup, ButtonToolbar,
   FormControl, InputGroup, ControlLabel,
   ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
+import whiteCardFactory from './web3Contracts/WhiteCardFactory';
+import blackCardRegistry from './web3Contracts/BlackCardRegistry';    
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 class CreateCard extends Component {
@@ -29,9 +33,19 @@ class CreateCard extends Component {
     this.setState({color: e})
   }
 
-  handleSubmit(e) {
+  getIpfsHash(){
+
+  }
+
+  handleSubmit = async (e) => {
     e.preventDefault();
-    //web3Code
+    const accounts = await web3.eth.getAccounts();
+    if (this.state.color == "black") {
+      const ipfsSha = web3.utils.sha3(this.state.value, { encoding: 'hex' })
+      await blackCardRegistry.methods.apply(ipfsSha, 10, this.state.value).send({from: accounts[0]});
+    } else {
+      await whiteCardFactory.methods.addWhiteCard(this.state.value).send({from: accounts[0]});
+    }
   }
 
   render() {
