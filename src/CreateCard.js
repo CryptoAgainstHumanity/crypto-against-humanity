@@ -18,7 +18,8 @@ class CreateCard extends Component {
     super(props)
     this.state = {
       value: '',
-      color: "black"
+      color: "black",
+      isVerified: false
     };
   }
 
@@ -50,6 +51,7 @@ class CreateCard extends Component {
     e.preventDefault();
     const accounts = await web3.eth.getAccounts();
     if (this.state.color == "black") {
+      this.setState({isVerified: true});
       await nsfcCoinToken.methods.approve(blackCardRegistry.options.address, 10).send({from: accounts[0]});
     } else {
       const ipfsHash = this.getIpfsHash(this.state.value);
@@ -143,8 +145,11 @@ class CreateCard extends Component {
               />
             </FormGroup>
 
-            <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button>
-            <div><b>{this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit">Submit</Button> : <div></div>}</b></div>
+            <div><b>{this.state.color == "white" ? <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button> : 
+                                                  <Button className= "primary-button" type="submit" style={styleSubmit}>Get Verified</Button>}</b></div>
+
+            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit" style={styleSubmit}>Submit</Button> : <div></div>}</b></div>
+            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <p>*Ensure you wait until last transaction succeeded before submitting*</p> : <div></div>} </b></div>
           </form>
         </div>
       </div>
