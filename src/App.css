@@ -6,6 +6,8 @@
   height: 100vh;
   width: 100vw;
   background-color: #e9ebee;
+
+  overflow: hidden;
 }
 
 h1 {
@@ -310,7 +312,8 @@ p {
 }
 
 .white-card-list {
-  height: calc(100vh - 128px);
+  height: calc(100vh - 150px);
+  overflow: auto;
 }
 
 
@@ -325,13 +328,43 @@ p {
  margin-bottom: 20px;
 }
 
-.create-card-background {
-  width: 200px;
-  height: 320px;
-  border: 1px solid red;
+/* HALL OF SHAME */
 
-  position: absolute;
-  top: 194px;
+.hall-of-shame-div {
+  /*background-color: red;*/
+
+  /*height: calc(100vh - 150px);*/
+  margin-top:32px;
+
+  display: flex;
+  flex-direction: row;
+}
+
+.hall-of-shame-title {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.hall-of-shame-item {
+  margin-right: 10px;
+}
+
+.hall-of-shame-card {
+  padding: 20px;
+}
+
+.hall-of-shame-item-lbls {
+  width: 168px;
+  /*background-color: yellow;*/
+
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+}
+
+.hall-of-shame-price-lbl {
+  margin-bottom: 10px;
 }
 
 

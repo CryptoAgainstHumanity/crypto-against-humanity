@@ -16,7 +16,7 @@ class WhiteCardListItem extends Component {
 			price: 0,
 			tradeDisplayAmount: defaultTradeAmount
 		}
-		
+
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
 		this.handleBuyClick = this.handleBuyClick.bind(this);
 		this.handleSellClick = this.handleSellClick.bind(this);
@@ -59,7 +59,10 @@ class WhiteCardListItem extends Component {
 	}
 
 	render() {
-		const balanceDisplayVal = this.props.balance * 10 ** 4 * 10 ** 18
+		const balanceStyled = (this.props.balance == 0)?
+			'-':
+			this.props.balance * 10 ** 4 * 10 ** 18;
+
 		return (
 			<li className="white-card-row">
 
@@ -71,11 +74,15 @@ class WhiteCardListItem extends Component {
 					<div className="white-card-labels">
 						<div className="price-label-div">
 							<div className='lbl-text'>PRICE</div>
-							<div className='price-data header-1'>{this.state.price}</div>
+							<div className='price-data header-1'>Ξ {this.props.price}</div>
 						</div>
 						<div className="balance-label-div">
 							<div className='lbl-text'>BALANCE</div>
+<<<<<<< HEAD
 							<div className='balance-data header-1'>{balanceDisplayVal}</div>
+=======
+							<div className='balance-data header-1'>{balanceStyled}</div>
+>>>>>>> 6b550c8b982518711df63fa7e2d1d9f4c93e1d41
 						</div>
 					</div>
 
