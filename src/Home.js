@@ -86,7 +86,7 @@ class Home extends Component {
     try {
       let buffer = await ipfs.object.data(ipfsHash)
       text = (await ipfs.object.data(ipfsHash)).toString()
-      if (buffer.toJSON().data.length > 27) {
+      if (buffer.toJSON().data.length > 37) {
         text = text.replace(/[^\x20-\xFF]/g, '')
         text = text.substring(1, text.length - 1)
       }
