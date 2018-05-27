@@ -78,11 +78,7 @@ class WhiteCardListItem extends Component {
 						</div>
 						<div className="balance-label-div">
 							<div className='lbl-text'>BALANCE</div>
-<<<<<<< HEAD
-							<div className='balance-data header-1'>{balanceDisplayVal}</div>
-=======
 							<div className='balance-data header-1'>{balanceStyled}</div>
->>>>>>> 6b550c8b982518711df63fa7e2d1d9f4c93e1d41
 						</div>
 					</div>
 
