@@ -28,7 +28,7 @@ class HallOfShame extends Component {
 
     return (
       <div>
-        <div className="header-1 hall-of-shame-title">Hall of Shame 💩</div>
+        <div className="header-1 centered-title">Hall of Shame 💩</div>
         <ul className="white-card-list">
           {pastWinners}
         </ul>

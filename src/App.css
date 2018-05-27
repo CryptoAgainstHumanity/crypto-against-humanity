@@ -77,6 +77,10 @@ p {
   color: rgba(0, 0, 0, 0.54);
 }
 
+.margin-text {
+  margin-top: 32px;
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
     position: fixed;
@@ -256,8 +260,17 @@ p {
   justify-content:
 }
 
-.trave-div {
-  flex-grow: 1;
+.trade-div {
+  /*flex-grow: 1;*/
+  /*width: 320px;*/
+  position: absolute;
+  bottom: 0px;
+
+  display: flex;
+
+  /*background-color: green;*/
+  align-items: space-between;
+  justify-content: space-between;
 }
 
 .white-card-labels {
@@ -286,7 +299,7 @@ p {
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
 
   font-family: Arial;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   font-style: normal;
   font-stretch: normal;
@@ -340,7 +353,7 @@ p {
   flex-direction: row;
 }
 
-.hall-of-shame-title {
+.centered-title {
   margin-top: 32px;
   text-align: center;
 }
