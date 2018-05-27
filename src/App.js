@@ -44,7 +44,7 @@ class App extends Component {
 
           <div className="nav-right">
             <a href="#home" ><NavLink to="/home">Play</NavLink></a>
-            <a href="#rules"><NavLink to="/rules">The Rules</NavLink></a>
+            <a href="#rules"><NavLink to="/rules">Guide</NavLink></a>
             <a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a>
             <a href="#create-card"><NavLink to="/create-card" style={styleCreateCard}>Create Card</NavLink></a>
           </div>
