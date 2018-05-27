@@ -17,7 +17,7 @@ class BlackCardDisplay extends Component {
 					</div>
 		          	<div className="time-left">
 	            		<div className="lbl-text">TIME REMAINING</div>
-	            		<div className="header-1">{this.props.blackCard.timeRemaining}</div>
+	            		<div className="header-1">{this.props.timeRemaining}</div>
           		</div>
 			</div>
 

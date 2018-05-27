@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import moment from 'moment'
 import web3 from './web3'
 import React, { Component } from "react";
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
@@ -11,6 +12,8 @@ import WhiteCardsInPlayView from './components/white_cards_in_play_view'
 import BlackCardDisplay from './components/black_card_display';
 import ipfsAPI from 'ipfs-api'
 
+const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
+
 class Home extends Component {
 
   constructor(props) {
@@ -20,14 +23,14 @@ class Home extends Component {
       loadingWhiteCards: true,
       loadingBlackCard: true,
       whiteCards: [],
-      blackCard: {text: "I was offended by ____ at ETH Buenos Aires", color: "black-card", timeRemaining: "43"}
+      blackCard: {}
     };
   }
 
   componentWillMount() {
+
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
-    const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 
     WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
       fromBlock: 0,
@@ -70,20 +73,54 @@ class Home extends Component {
       fromBlock: 0,
       toBlock: 'latest'
     }, async (err, events) => {
-      let hash = events[3].returnValues.data
-      let text = (await ipfs.object.data(hash)).toString()
+      this.blackCards = events
 
-      let blackCard = { text , color: "black-card", timeRemaining: "1 : 24 : 32" }
-      this.setState({
-        blackCard: blackCard,
-        loadingBlackCard: false
-      })
+      this.setBlackCard()
+      this.startTimer()
     })
+
+  }
+
+  async setBlackCard () {
+    const roundedTime = Math.floor(moment().unix() / 10) * 10
+    const i = getRandomInt(roundedTime, 0, this.blackCards.length - 1)
+    let hash = this.blackCards[i].returnValues.data
+    let text = (await ipfs.object.data(hash)).toString()
+    let blackCard = { text , color: "black-card" }
+
+    this.setState({
+      blackCard: blackCard,
+      loadingBlackCard: false
+    })
+  }
+
+  startTimer () {
+    var eventTime = Math.floor(moment().unix() / 10) * 10 + 10;
+    var currentTime = moment().unix()
+    var diffTime = eventTime - currentTime
+    var duration = moment.duration(diffTime * 1000, 'milliseconds')
+    var interval = 1000;
+
+    var $this = this
+
+    setInterval(function () {
+      duration = moment.duration(duration - interval, 'milliseconds');
+      $this.setState({
+        timerDisplay: duration.hours() + " : " + duration.minutes() + " : " + duration.seconds()
+      })
+      if (duration.seconds() <= 0) {
+        $this.setBlackCard()
+        eventTime = Math.floor(moment().unix() / 10) * 10 + 10;
+        currentTime = moment().unix()
+        diffTime = eventTime - currentTime
+        duration = moment.duration(diffTime * 1000, 'milliseconds')
+      }
+    }, interval);
   }
 
   render() {
     const blackCardElem = this.state.loadingBlackCard ? <div>Loading...</div> :
-      <BlackCardDisplay blackCard={this.state.blackCard} className="center" />
+      <BlackCardDisplay blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay} className="center" />
     return (
         <div className="row current-round-page">
 
@@ -98,6 +135,15 @@ class Home extends Component {
         </div>
     );
   }
+}
+
+function random(seed) {
+  var x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function getRandomInt(seed, min, max) {
+  return Math.floor(random(seed) * (max - min + 1)) + min;
 }
 
 export default Home;
