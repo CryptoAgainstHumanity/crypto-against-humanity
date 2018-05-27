@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
+import WhiteCard from './web3Contracts/WhiteCard'
 import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
 import WhiteCardsInPlayView from './components/white_cards_in_play_view'
@@ -11,11 +12,8 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      whiteCards: [
-        {text: "Vitalik", balance: 0.746, price: 6.043, color: "white-card"},
-        {text: "Big black cock", balance: 3.837, price: 0.780, color: "white-card"},
-        {text: "Webcam girls", balance: 0.000, price: 873.004, color: "white-card"},
-      ],
+      loadingCards: true,
+      whiteCards: [],
       blackCard: {text: "I was offended by ____ at ETH Buenos Aires", color: "black-card", timeRemaining: "43"}
     };
   }
@@ -24,9 +22,24 @@ class Home extends Component {
     WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
       fromBlock: 0,
       toBlock: 'latest'
-    }, (err, evt) => {
-      console.log('ERR: ', err)
-      console.log('WHITE CARD CREATED: ', evt)
+    }, async (err, events) => {
+      let whiteCards = []
+      for(var i = 0; i < events.length; i++) {
+        let event = events[i]
+        WhiteCard.options.address = event.returnValues.card
+        let creator = await WhiteCard.methods.creator().call()
+        let ipfsHash = await WhiteCard.methods.ipfsHash().call()
+        whiteCards.push({
+          text: ipfsHash,
+          balance: 0.1234,
+          price: 7.654,
+          color: "white-card"
+        })
+      }
+      this.setState({
+        whiteCards: whiteCards,
+        loadingCards: false 
+      })
     })
   }
 
@@ -39,7 +52,7 @@ class Home extends Component {
           </div>
 
           <div className="column white-cards-in-play">
-            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} />
+            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={this.state.loadingCards} />
           </div>
 
         </div>

@@ -7,14 +7,13 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 class WhiteCardsInPlayView extends Component {
 	constructor(props) {
-		super(props)
-
-    this.state = {
-      whiteCards: this.props.whiteCards
-    }
-	}
+    super(props)
+  }
 
 	render() {
+    const whiteCardsListElem = this.props.loading ? <div>Loading...</div> :
+      <WhiteCardList whiteCards={this.props.whiteCards} className="center" />
+
 		return (
 			<div>
         <row>
@@ -34,7 +33,7 @@ class WhiteCardsInPlayView extends Component {
             Your Shit
           </NavItem>
         </Nav>
-        <WhiteCardList whiteCards={this.state.whiteCards} className="center" />
+        {whiteCardsListElem}
       </div>
 		);
 	}
