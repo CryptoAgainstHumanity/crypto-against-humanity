@@ -1,10 +1,11 @@
+import web3 from '../web3'
 import React, { Component } from 'react';
 import { Nav, NavDropdown, MenuBar, MenuItem, Button, FormGroup, FormControl, InputGroup, ControlLabel } from 'react-bootstrap'
 import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
 import Card from './card';
 
 const tokenUnits = 10 ** 8
-const defaultTradeAmount = 5
+const defaultTradeAmount = 1
 
 class WhiteCardListItem extends Component {
 
@@ -31,11 +32,29 @@ class WhiteCardListItem extends Component {
 	}
 
 	handleBuyClick (event) {
+		this.mintTokens()
 		event.preventDefault();
 	}
 
 	handleSellClick (event) {
+		this.burnTokens()
 		event.preventDefault();
+	}
+
+	async mintTokens () {
+		const accounts = await web3.eth.getAccounts()
+		let tokenVal = this.state.tradeDisplayAmount * tokenUnits
+		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
+		let bondingCurvePrice = await EthPolynomialCurveToken.methods
+			.mint(tokenVal).send({ value: this.state.price * 10 ** 18, from: accounts[0] })
+	}
+
+	async burnTokens () {
+		const accounts = await web3.eth.getAccounts()
+		let tokenVal = this.state.tradeDisplayAmount * tokenUnits
+		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
+		let bondingCurvePrice = await EthPolynomialCurveToken.methods
+			.burn(tokenVal).send({ from: accounts[0] })
 	}
 
 	async getBondingCurvePrice (displayVal) {
@@ -49,12 +68,15 @@ class WhiteCardListItem extends Component {
 	}
 
 	render() {
-
-		const balanceStyled = (this.props.balance == 0)?
+		let balanceStyled = (this.props.balance == 0)?
 			'-':
-			this.props.balance;
+			precisionRound(this.props.balance * 10 ** 4 * 10 ** 18, 3)
 
-		console.log(balanceStyled);
+		const sellBtn = this.props.balance == 0 ? null : (
+			<Button onClick={this.handleSellClick}>
+				Sell
+			</Button>
+		)
 
 		return (
 			<li className="white-card-row">
@@ -67,7 +89,7 @@ class WhiteCardListItem extends Component {
 					<div className="white-card-labels">
 						<div className="price-label-div">
 							<div className='lbl-text'>PRICE</div>
-							<div className='price-data header-1'>Ξ {this.props.price}</div>
+							<div className='price-data header-1'>Ξ {this.state.price}</div>
 						</div>
 						<div className="balance-label-div">
 							<div className='lbl-text'>BALANCE</div>
@@ -80,9 +102,7 @@ class WhiteCardListItem extends Component {
 							<Button onClick={this.handleBuyClick} >
 								Buy
 							</Button>
-							<Button onClick={this.handleSellClick}>
-								Sell
-							</Button>
+							{sellBtn}
 						</div>
 						<FormGroup controlId="formValidationWarning3" validationState="warning">
 							<InputGroup>
@@ -95,6 +115,11 @@ class WhiteCardListItem extends Component {
 			</li>
 		)
 	}
+}
+
+function precisionRound(number, precision) {
+  var factor = Math.pow(10, precision);
+  return Math.round(number * factor) / factor;
 }
 
 export default WhiteCardListItem;
