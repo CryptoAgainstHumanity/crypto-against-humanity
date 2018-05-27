@@ -382,6 +382,17 @@ p {
   margin-bottom: 10px;
 }
 
+.rules-div {
+  width: 996px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.centered-text {
+  text-align: center;
+}
 
 /*
 @keyframes App-logo-spin {
