@@ -17,6 +17,13 @@ class WhiteCardListItem extends Component {
 	}
 
 	render() {
+
+		const balanceStyled = (this.props.balance == 0)?
+			'-':
+			this.props.balance;
+
+		console.log(balanceStyled);
+
 		return (
 			<li className="white-card-row">
 
@@ -28,11 +35,11 @@ class WhiteCardListItem extends Component {
 					<div className="white-card-labels">
 						<div className="price-label-div">
 							<div className='lbl-text'>PRICE</div>
-							<div className='price-data header-1'>{this.props.price}</div>
+							<div className='price-data header-1'>Ξ {this.props.price}</div>
 						</div>
 						<div className="balance-label-div">
 							<div className='lbl-text'>BALANCE</div>
-							<div className='balance-data header-1'>{this.props.balance}</div>
+							<div className='balance-data header-1'>{balanceStyled}</div>
 						</div>
 					</div>
 					<div className="trade-div">
