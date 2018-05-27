@@ -264,7 +264,7 @@ p {
   /*flex-grow: 1;*/
   /*width: 320px;*/
   position: absolute;
-  bottom: 0px;
+  bottom: 5px;
 
   display: flex;
 
@@ -277,6 +277,8 @@ p {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
+  margin-top: 20px;
 }
 
 .price-label-div {
