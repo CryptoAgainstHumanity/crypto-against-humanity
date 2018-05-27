@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
+import BlackCardRegistry from './web3Contracts/BlackCardRegistry'
 import WhiteCardList from './components/white_card_list';
 import WhiteCardListItem from './components/white_card_list_item';
 import WhiteCardsInPlayView from './components/white_cards_in_play_view'
@@ -14,7 +15,8 @@ class Home extends Component {
     super(props);
 
     this.state = {
-      loadingCards: true,
+      loadingWhiteCards: true,
+      loadingBlackCard: true,
       whiteCards: [],
       blackCard: {text: "I was offended by ____ at ETH Buenos Aires", color: "black-card", timeRemaining: "43"}
     };
@@ -43,6 +45,7 @@ class Home extends Component {
 
         whiteCards.push({
           text: ipfsHash,
+          bondingCurveAddress: bondingCurveAddress,
           balance: bondingCurveBalance / whiteCardTokenUnits,
           price: bondingCurvePrice / whiteCardTokenUnits,
           color: "white-card"
@@ -50,21 +53,34 @@ class Home extends Component {
       }
       this.setState({
         whiteCards: whiteCards,
-        loadingCards: false 
+        loadingWhiteCards: false 
+      })
+    })
+
+    BlackCardRegistry.getPastEvents('_Application', {
+      fromBlock: 0,
+      toBlock: 'latest'
+    }, async (err, events) => {
+      let blackCard = { text: events[0].returnValues.data, color: "black-card", timeRemaining: "1 : 24 : 32" }
+      this.setState({
+        blackCard: blackCard,
+        loadingBlackCard: false
       })
     })
   }
 
   render() {
+    const blackCardElem = this.state.loadingBlackCard ? <div>Loading...</div> :
+      <BlackCardDisplay blackCard={this.state.blackCard} className="center" />
     return (
         <div className="row current-round-page">
 
           <div className="column black-card-in-play">
-            <BlackCardDisplay blackCard={this.state.blackCard} className="center" />
+            {blackCardElem}
           </div>
 
           <div className="column white-cards-in-play">
-            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={this.state.loadingCards} />
+            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={this.state.loadingWhiteCards} />
           </div>
 
         </div>
