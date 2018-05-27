@@ -33,21 +33,19 @@ class Home extends Component {
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
 
     WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
-      fromBlock: 0,
+      fromBlock: 3317454,
       toBlock: 'latest'
     }, async (err, events) => {
       let whiteCards = []
+      const accounts = await web3.eth.getAccounts()
       for(var i = 0; i < events.length; i++) {
         let event = events[i]
         WhiteCard.options.address = event.returnValues.card
-        let creator = await WhiteCard.methods.creator().call()
         let ipfsHash = await WhiteCard.methods.ipfsHash().call()
         let text = (await ipfs.object.data(ipfsHash)).toString()
         let bondingCurveAddress = await WhiteCard.methods.bondingCurve().call()
         EthPolynomialCurveToken.options.address = bondingCurveAddress
         let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
-
-        const accounts = await web3.eth.getAccounts()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
         let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
 
