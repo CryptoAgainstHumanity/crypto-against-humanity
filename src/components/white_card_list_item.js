@@ -35,20 +35,22 @@ class WhiteCardListItem extends Component {
 							<div className='balance-data header-1'>{this.props.balance}</div>
 						</div>
 					</div>
-					<Nav className='trade-keys' bsStyle="pills" activeKey={this.state.tradeKey} onSelect={k => this.setTradeKey(k)}>
-						<NavItem className='buy'eventKey="buy" href="#">
-							Buy
-						</NavItem>
-						<NavItem className='sell' eventKey="sell" href="#">
-							Sell
-						</NavItem>
-					</Nav>
-					<FormGroup controlId="formValidationWarning3" validationState="warning">
-						<InputGroup>
-							<FormControl className={this.state.tradeKey} type="text" />
-							<InputGroup.Addon>Trade</InputGroup.Addon>
-						</InputGroup>
-					</FormGroup>
+					<div className="trade-div">
+						<Nav className='trade-keys' bsStyle="pills" activeKey={this.state.tradeKey} onSelect={k => this.setTradeKey(k)}>
+							<NavItem className='buy'eventKey="buy" href="#">
+								Buy
+							</NavItem>
+							<NavItem className='sell' eventKey="sell" href="#">
+								Sell
+							</NavItem>
+						</Nav>
+						<FormGroup controlId="formValidationWarning3" validationState="warning">
+							<InputGroup>
+								<FormControl className={this.state.tradeKey} type="text" />
+								<InputGroup.Addon>Trade</InputGroup.Addon>
+							</InputGroup>
+						</FormGroup>
+					</div>
 				</div>
 
 			</li>
