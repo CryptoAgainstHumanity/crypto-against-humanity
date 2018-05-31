@@ -242,4 +242,8 @@ const abi = [
   }
 ]
 
-export default new web3.eth.Contract(abi, address);
+var contract = "undefined";
+if (web3 != "undefined") {
+  contract = new web3.eth.Contract(abi, address);
+}
+export default contract;
