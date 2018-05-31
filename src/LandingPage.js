@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import web3 from './web3';
 
 class LandingPage extends Component {
   constructor(props) {
@@ -7,10 +8,12 @@ class LandingPage extends Component {
 
   render() {
     const hasMetamask = this.props.hasMetamask;
-    console.log(hasMetamask);
+    const network = this.props.network;
     var message = "Please Install Metamask.";
-    if (hasMetamask) {
-      message = "Please Log Into Metamask, and Use the Ropsten Testnet."
+    if (hasMetamask && network == "Unknown") {
+      message = "Please Log Into Metamask to play Crypto Against Humanity.";
+    } else {
+      message = "Please Switch to the Ropsten Test Network, Your Current Network: " + network;
     }
     return (
       <div>

@@ -20,7 +20,8 @@ class App extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      hasMetamask: false
+      hasMetamask: false,
+      network: 'Unknown'
     }
     this.checkWeb3();
   }
@@ -28,10 +29,34 @@ class App extends Component {
   checkWeb3 = async () => {
     if(web3 != "undefined") {
       const address = await web3.eth.getAccounts();
-      this.setState({isLoggedIn: false, hasMetamask: true})
+      this.setState({isLoggedIn: false, hasMetamask: true, network: 'Unknown'})
       if (address.length > 0) {
-        this.setState({isLoggedIn: true, hasMetamask: true})
+        var networkId = await web3.eth.net.getId();
+        var networkName;
+        switch (networkId) {
+          case 1:
+            networkName = "Main";
+            break;
+          case 2:
+            networkName = "Morden";
+            break;
+          case 3:
+            networkName = "Ropsten";
+            break;
+          case 4:
+            networkName = "Rinkeby";
+            break;
+          case 42:
+            networkName = "Kovan";
+            break;
+          default:
+            networkName = "Unknown";
+        }
+        console.log("You are on the " + networkName + " network.");
+        this.setState({isLoggedIn: true, hasMetamask: true, network: networkName})
+        console.log(this.state.network);
       }
+      console.log("You are not logged into Metamask.");
     }
   }
 
@@ -51,7 +76,7 @@ class App extends Component {
     }
     return (
     <HashRouter>
-    <div><b>{this.state.isLoggedIn == true ?
+    <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
       <div className="appContainer">
         <div className="topnav">
           <a href="#home"><div className="header-brand nav-left">Crypto Against Humanity</div></a>
@@ -73,7 +98,7 @@ class App extends Component {
       </div>  
       : 
       <div>
-          <LandingPage hasMetamask={this.state.hasMetamask}/>
+          <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
       </div>} 
     </b></div>
     </HashRouter>
