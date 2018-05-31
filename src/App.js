@@ -95,11 +95,11 @@ class App extends Component {
             <Route path="/hall-of-shame" component={HallOfShame}/>
             <Route path="/create-card" component={CreateCard}/>
         </div>
-      </div>  
-      : 
+      </div>
+      :
       <div>
           <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
-      </div>} 
+      </div>}
     </b></div>
     </HashRouter>
     );
