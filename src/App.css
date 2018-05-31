@@ -66,6 +66,18 @@ p {
   color: #333333;
 }
 
+.header-2 {
+  font-family: Arial;
+  font-size: 24px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #333333;
+  opacity: 0.84;
+}
+
 .lbl-text {
   font-family: Arial;
   font-size: 16px;
@@ -164,8 +176,15 @@ p {
 }
 
 .primary-button {
-  background-color: red;
-  border: 1px solid red;
+  border-radius: 5px;
+  padding: 0.25em 1em;
+  margin: 16px 1em 0px 16px;
+  background: transparent;
+
+  background-color: #d94a4d;
+  color: white;
+
+  font-size:16px;
 }
 
 .content {
@@ -392,6 +411,19 @@ p {
 
 .centered-text {
   text-align: center;
+}
+
+.limited-width {
+  width: 768px;
+}
+
+.flex-box-container {
+  display: flex;
+  justify-content: center;
+
+  /*height: 100vh;*/
+  /*width: 100vw;*/
+  background-color: #e9ebee;
 }
 
 /*

@@ -20,7 +20,7 @@ class App extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      hasMetamask: false,
+      hasMetaMask: false,
       network: 'Unknown'
     }
     this.checkWeb3();
@@ -29,7 +29,7 @@ class App extends Component {
   checkWeb3 = async () => {
     if(web3 != "undefined") {
       const address = await web3.eth.getAccounts();
-      this.setState({isLoggedIn: false, hasMetamask: true, network: 'Unknown'})
+      this.setState({isLoggedIn: false, hasMetaMask: true, network: 'Unknown'})
       if (address.length > 0) {
         var networkId = await web3.eth.net.getId();
         var networkName;
@@ -53,10 +53,10 @@ class App extends Component {
             networkName = "Unknown";
         }
         console.log("You are on the " + networkName + " network.");
-        this.setState({isLoggedIn: true, hasMetamask: true, network: networkName})
+        this.setState({isLoggedIn: true, hasMetaMask: true, network: networkName})
         console.log(this.state.network);
       }
-      console.log("You are not logged into Metamask.");
+      console.log("You are not logged into MetaMask.");
     }
   }
 
@@ -98,7 +98,7 @@ class App extends Component {
       </div>
       :
       <div>
-          <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
+          <LandingPage hasMetaMask={this.state.hasMetaMask} network={this.state.network} />
       </div>}
     </b></div>
     </HashRouter>
