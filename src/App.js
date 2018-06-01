@@ -27,16 +27,20 @@ class App extends Component {
     this.checkWeb3(this.callback);
   }
 
-  callback() {
-    this.setState({loading: false})
+  callback(metamask, isLoggedIn, network) {
+    this.setState({isLoggedIn: isLoggedIn, hasMetamask: metamask, network: network, loading: false})
   } 
 
   checkWeb3 = async (callback) => {
+    var hasMetamask = false;
+    var isLoggedIn = false;
+    var network = "Unknown";
     if(web3 != "undefined") {
       const address = await web3.eth.getAccounts();
-      this.setState({isLoggedIn: false, hasMetamask: true, network: 'Unknown'})
+      //this.setState({isLoggedIn: false, hasMetamask: true, network: 'Unknown'})
+      hasMetamask = true;
       if (address.length > 0) {
-        var networkId = web3.eth.net.getId();
+        var networkId = await web3.eth.net.getId();
         var networkName;
         switch (networkId) {
           case 1:
@@ -57,10 +61,12 @@ class App extends Component {
           default:
             networkName = "Unknown";
         }
-        this.setState({isLoggedIn: true, hasMetamask: true, network: networkName})
+        network = networkName;
+        isLoggedIn = true;
+        //this.setState({isLoggedIn: true, hasMetamask: true, network: networkName})
       }
     }
-    this.callback();
+    this.callback(hasMetamask, isLoggedIn, network);
   }
 
 
