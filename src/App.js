@@ -23,15 +23,14 @@ class App extends Component {
       hasMetaMask: false,
       network: 'Unknown'
     }
-    this.checkWeb3();
   }
 
-  checkWeb3 = async () => {
+  componentWillMount() {
     if(web3 != "undefined") {
-      const address = await web3.eth.getAccounts();
+      const address = web3.eth.getAccounts();
       this.setState({isLoggedIn: false, hasMetaMask: true, network: 'Unknown'})
       if (address.length > 0) {
-        var networkId = await web3.eth.net.getId();
+        var networkId = web3.eth.net.getId();
         var networkName;
         switch (networkId) {
           case 1:
