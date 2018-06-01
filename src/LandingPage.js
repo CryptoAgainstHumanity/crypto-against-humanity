@@ -12,7 +12,7 @@ class LandingPage extends Component {
     var message = "Please Install MetaMask.";
     if (hasMetaMask && network == "Unknown") {
       message = "Please Log Into MetaMask to play Crypto Against Humanity.";
-    } else {
+    } else if (hasMetaMask) {
       message = "Please Switch to the Ropsten Test Network, Your Current Network: " + network;
     }
     return (
@@ -32,7 +32,7 @@ class LandingPage extends Component {
               <b>A lack of conscience</b>
               <br/><br/>
             <br/>
-            Not component to set this up yourself? We didn't have faith in you either so see below.
+            Not competent to set this up yourself? We didn't have faith in you either so see below.
 
 
           <div>
