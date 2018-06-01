@@ -20,15 +20,19 @@ class LandingPage extends Component {
         <div className="flex-box-container">
         <div className="limited-width">
 
-          <div className="header-1 centered-title">Want to play?</div>
+          <div className="header-1 centered-title">{message}</div>
+          <div className="header-2 centered-title">Want to play?</div>
           <div className="lbl-text margin-text centered-text">
             All you need is:
             <br/><br/>
-              MetaMask Browser Extension Installed<br/>
-              MetaMask connected to the Ropsten Test network<br/>
-              A lack of conscience<br/>
+             <b>MetaMask Browser Extension Installed</b>
+             <br/><br/>
+              <b>MetaMask connected to the Ropsten Test network</b>
+              <br/><br/>
+              <b>A lack of conscience</b>
+              <br/><br/>
             <br/>
-            In case you aren't comptent enough to do it yourself see below.
+            Not component to set this up yourself? We didn't have faith in you either so see below.
 
 
           <div>
@@ -37,7 +41,7 @@ class LandingPage extends Component {
             MetaMask is a digital wallet where you will store your money and which keeps tracks of your cards.
             <br/>
             <a href="https://MetaMask.io/">
-              <button className="primary-button">Click here to install MetaMask</button>
+              <button className="primary-button">Install MetaMask</button>
             </a>
             <br/>
             <br/>
@@ -48,14 +52,15 @@ class LandingPage extends Component {
             <div className="header-2 centered-title">Step 2: Connect to Ropsten network</div>
             <br/>
             Currently Crypto Against Humanity is still in development and only available on a the Ropsten test network.
+            <br/>
+            <a href="https://cdn-images-1.medium.com/max/1600/1*k5aYGAd7CvRHO-o230nCPw.gif">
+              <button className="primary-button">How to connect to Ropsten</button>
+            </a>
+            <br/><br/>
             The good news for a cheapskate like you is that this means you can get the Ether you need to play for free!
             <br/>
-            <a href="https://blog.springrole.com/how-to-connect-MetaMask-to-the-ropsten-test-network-aef2810f1408">
-              <button className="primary-button">Click here for instructions</button>
-            </a>
-            <br/>
             <a href="https://faucet.MetaMask.io/">
-              <button className="primary-button">Click here for free Ropsten Ether</button>
+              <button className="primary-button">Free Ropsten Ether</button>
             </a>
           </div>
 
@@ -64,8 +69,8 @@ class LandingPage extends Component {
             <br/>
             Wow you really thought this was a serious step? Ok I guess, go ahead.
             <br/>
-            <a href="https://www.quora.com/How-do-I-get-rid-of-my-conscience">
-              <button className="primary-button">Click here to remove your conscience</button>
+            <a href="https://www.youtube.com/watch?v=1aPjGl-E-uY">
+              <button className="primary-button">Remove your conscience</button>
             </a>
             <br/>
             <br/>

@@ -177,14 +177,26 @@ p {
 
 .primary-button {
   border-radius: 5px;
-  padding: 0.25em 1em;
+  padding: 0.5em 1em;
   margin: 16px 1em 0px 16px;
   background: transparent;
 
-  background-color: #d94a4d;
-  color: white;
+  background-color: none;
+  color: #d94a4d;
+  border: 2px solid #d94a4d;
 
   font-size:16px;
+  font-weight: bold;
+}
+
+.primary-button:hover {
+  border-color: none;
+  background-color: #d94a4d;
+  color: white;
+}
+
+.primary-button:focus {
+  outline: none;
 }
 
 .content {
@@ -420,11 +432,13 @@ p {
 .flex-box-container {
   display: flex;
   justify-content: center;
+  align-items: center;
 
   /*height: 100vh;*/
   /*width: 100vw;*/
   background-color: #e9ebee;
 }
+
 
 /*
 @keyframes App-logo-spin {
