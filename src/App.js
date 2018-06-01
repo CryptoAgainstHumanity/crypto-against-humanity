@@ -20,17 +20,27 @@ class App extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      hasMetaMask: false,
-      network: 'Unknown'
+      hasMetamask: false,
+      network: 'Unknown',
+      loading: true
     }
+    this.checkWeb3(this.callback);
   }
 
-  componentWillMount() {
+  callback(metamask, isLoggedIn, network) {
+    this.setState({isLoggedIn: isLoggedIn, hasMetamask: metamask, network: network, loading: false})
+  } 
+
+  checkWeb3 = async (callback) => {
+    var hasMetamask = false;
+    var isLoggedIn = false;
+    var network = "Unknown";
     if(web3 != "undefined") {
-      const address = web3.eth.getAccounts();
-      this.setState({isLoggedIn: false, hasMetaMask: true, network: 'Unknown'})
+      const address = await web3.eth.getAccounts();
+      //this.setState({isLoggedIn: false, hasMetamask: true, network: 'Unknown'})
+      hasMetamask = true;
       if (address.length > 0) {
-        var networkId = web3.eth.net.getId();
+        var networkId = await web3.eth.net.getId();
         var networkName;
         switch (networkId) {
           case 1:
@@ -51,13 +61,14 @@ class App extends Component {
           default:
             networkName = "Unknown";
         }
-        console.log("You are on the " + networkName + " network.");
-        this.setState({isLoggedIn: true, hasMetaMask: true, network: networkName})
-        console.log(this.state.network);
+        network = networkName;
+        isLoggedIn = true;
+        //this.setState({isLoggedIn: true, hasMetamask: true, network: networkName})
       }
-      console.log("You are not logged into MetaMask.");
     }
+    this.callback(hasMetamask, isLoggedIn, network);
   }
+
 
   render() {
     const styleCreateCard = {
@@ -73,6 +84,11 @@ class App extends Component {
       fontWeight: 'bold',
       color: 'white',
     }
+
+    if (this.state.loading) {
+      return <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />;
+    }
+
     return (
     <HashRouter>
     <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
@@ -94,11 +110,11 @@ class App extends Component {
             <Route path="/hall-of-shame" component={HallOfShame}/>
             <Route path="/create-card" component={CreateCard}/>
         </div>
-      </div>
-      :
+      </div>  
+      : 
       <div>
-          <LandingPage hasMetaMask={this.state.hasMetaMask} network={this.state.network} />
-      </div>}
+          <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
+      </div>} 
     </b></div>
     </HashRouter>
     );
