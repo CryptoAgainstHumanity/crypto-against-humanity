@@ -7,12 +7,12 @@ class LandingPage extends Component {
   }
 
   render() {
-    const hasMetaMask = this.props.hasMetaMask;
+    const hasMetamask = this.props.hasMetamask;
     const network = this.props.network;
     var message = "Please Install MetaMask.";
-    if (hasMetaMask && network == "Unknown") {
+    if (hasMetamask && network == "Unknown") {
       message = "Please Log Into MetaMask to play Crypto Against Humanity.";
-    } else if (hasMetaMask) {
+    } else if (hasMetamask) {
       message = "Please Switch to the Ropsten Test Network, Your Current Network: " + network;
     }
     return (
