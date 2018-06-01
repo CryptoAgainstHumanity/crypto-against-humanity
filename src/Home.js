@@ -19,7 +19,6 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
-
     this.state = {
       loadingWhiteCards: true,
       loadingBlackCard: true,
@@ -69,7 +68,7 @@ class Home extends Component {
     })
 
     BlackCardRegistry.getPastEvents('_Application', {
-      fromBlock: 0,
+      fromBlock: 3317454,
       toBlock: 'latest'
     }, async (err, events) => {
       this.blackCards = events

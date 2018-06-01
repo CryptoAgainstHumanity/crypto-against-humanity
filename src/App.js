@@ -1,4 +1,4 @@
-
+import web3 from './web3'
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap'
 import logo from './logo.svg';
@@ -12,15 +12,55 @@ import Home from "./Home";
 import Rules from "./Rules";
 import HallOfShame from "./HallOfShame";
 import CreateCard from "./CreateCard";
+import LandingPage from "./LandingPage";
 
 class App extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      isLoggedIn: false,
+      hasMetaMask: false,
+      network: 'Unknown'
+    }
+    this.checkWeb3();
+  }
+
+  checkWeb3 = async () => {
+    if(web3 != "undefined") {
+      const address = await web3.eth.getAccounts();
+      this.setState({isLoggedIn: false, hasMetaMask: true, network: 'Unknown'})
+      if (address.length > 0) {
+        var networkId = await web3.eth.net.getId();
+        var networkName;
+        switch (networkId) {
+          case 1:
+            networkName = "Main";
+            break;
+          case 2:
+            networkName = "Morden";
+            break;
+          case 3:
+            networkName = "Ropsten";
+            break;
+          case 4:
+            networkName = "Rinkeby";
+            break;
+          case 42:
+            networkName = "Kovan";
+            break;
+          default:
+            networkName = "Unknown";
+        }
+        console.log("You are on the " + networkName + " network.");
+        this.setState({isLoggedIn: true, hasMetaMask: true, network: networkName})
+        console.log(this.state.network);
+      }
+      console.log("You are not logged into MetaMask.");
+    }
   }
 
   render() {
-
     const styleCreateCard = {
       width: '107px',
       height: '40px',
@@ -34,11 +74,10 @@ class App extends Component {
       fontWeight: 'bold',
       color: 'white',
     }
-
     return (
     <HashRouter>
+    <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
       <div className="appContainer">
-
         <div className="topnav">
           <a href="#home"><div className="header-brand nav-left">Crypto Against Humanity</div></a>
 
@@ -49,7 +88,6 @@ class App extends Component {
             <a href="#create-card"><NavLink to="/create-card" style={styleCreateCard}>Create Card</NavLink></a>
           </div>
         </div>
-
         <div className="content">
             <Route exact path="/" component={Home}/>
             <Route exact path="/home" component={Home}/>
@@ -57,8 +95,12 @@ class App extends Component {
             <Route path="/hall-of-shame" component={HallOfShame}/>
             <Route path="/create-card" component={CreateCard}/>
         </div>
-
       </div>
+      :
+      <div>
+          <LandingPage hasMetaMask={this.state.hasMetaMask} network={this.state.network} />
+      </div>}
+    </b></div>
     </HashRouter>
     );
   }
