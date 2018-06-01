@@ -36,7 +36,7 @@ class App extends Component {
       const address = await web3.eth.getAccounts();
       this.setState({isLoggedIn: false, hasMetamask: true, network: 'Unknown'})
       if (address.length > 0) {
-        var networkId = await web3.eth.net.getId();
+        var networkId = web3.eth.net.getId();
         var networkName;
         switch (networkId) {
           case 1:
