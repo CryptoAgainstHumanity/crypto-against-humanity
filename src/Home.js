@@ -81,20 +81,23 @@ class Home extends Component {
   async setBlackCard () {
     const roundedTime = getRoundedTime()
     const i = getRandomInt(roundedTime, 0, this.blackCards.length - 1)
-    let ipfsHash = this.blackCards[i].returnValues.data
+    let blackCard = { text: 'My centralized point of failure connection to ______ is down!', color: "black-card" }
     let text
-    try {
-      let buffer = await ipfs.object.data(ipfsHash)
-      text = (await ipfs.object.data(ipfsHash)).toString()
-      if (buffer.toJSON().data.length > 37) {
-        text = text.replace(/[^\x20-\xFF]/g, '')
-        text = text.substring(1, text.length - 1)
+    if (this.blackCards.length > 0) {
+      let ipfsHash = this.blackCards[i].returnValues.data
+      try {
+        let buffer = await ipfs.object.data(ipfsHash)
+        text = (await ipfs.object.data(ipfsHash)).toString()
+        if (buffer.toJSON().data.length > 37) {
+          text = text.replace(/[^\x20-\xFF]/g, '')
+          text = text.substring(1, text.length - 1)
+        }
+      } catch (err) {
+        console.error(err)
+        text = ipfsHash
       }
-    } catch (err) {
-      console.error(err)
-      text = ipfsHash
+      blackCard = { text , color: "black-card" }
     }
-    let blackCard = { text , color: "black-card" }
 
     this.setState({
       blackCard: blackCard,
