@@ -271,10 +271,13 @@ contract EthPolynomialCurvedToken is EthBondingCurvedToken {
 
 contract WhiteCardFactory {
     event _WhiteCardCreated(WhiteCard card);
+    mapping (bytes32 => bool) public createdCards;
     
     function addWhiteCard(string _ipfsHash) public {
+        bytes32 card = keccak256(_ipfsHash);
+        require(!createdCards[card]);
         WhiteCard _whiteCard = new WhiteCard(_ipfsHash, msg.sender);
-        
+        createdCards[card] = true;
         emit _WhiteCardCreated(_whiteCard);
     }
 }
