@@ -35,18 +35,20 @@ class WhiteCardListItem extends Component {
 	handleBuyClick (event) {
 		this.mintTokens()
 		event.preventDefault();
+		const cardText = this.props.text;
         ReactGA.event({
-            category: 'White Card Market',
-            action: 'Clicked Buy',
+            category: 'Bought White Card',
+            action: cardText,
         });
 	}
 
 	handleSellClick (event) {
 		this.burnTokens()
 		event.preventDefault();
+		const cardText = this.props.text;
         ReactGA.event({
-            category: 'White Card Market',
-            action: 'Clicked Sell',
+            category: 'Sold White Card',
+            action: cardText,
         });
 	}
 
