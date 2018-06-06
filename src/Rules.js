@@ -1,6 +1,14 @@
 import React, { Component } from "react";
+import ReactGA from 'react-ga';
+
 
 class Rules extends Component {
+    constructor(props) {
+        super(props);
+        ReactGA.initialize('UA-120470128-1');
+        ReactGA.pageview(window.location.hash);
+    }
+
   render() {
     return (
       <div className="rules-div">

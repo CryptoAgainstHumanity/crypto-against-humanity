@@ -1,5 +1,6 @@
 import web3 from '../web3'
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { Nav, NavDropdown, MenuBar, MenuItem, Button, FormGroup, FormControl, InputGroup, ControlLabel } from 'react-bootstrap'
 import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
 import Card from './card';
@@ -34,11 +35,19 @@ class WhiteCardListItem extends Component {
 	handleBuyClick (event) {
 		this.mintTokens()
 		event.preventDefault();
+        ReactGA.event({
+            category: 'White Card Market',
+            action: 'Clicked Buy',
+        });
 	}
 
 	handleSellClick (event) {
 		this.burnTokens()
 		event.preventDefault();
+        ReactGA.event({
+            category: 'White Card Market',
+            action: 'Clicked Sell',
+        });
 	}
 
 	async mintTokens () {

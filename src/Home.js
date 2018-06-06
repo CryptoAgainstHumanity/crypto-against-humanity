@@ -2,6 +2,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import web3 from './web3'
 import React, { Component } from "react";
+import ReactGA from 'react-ga';
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
@@ -25,6 +26,8 @@ class Home extends Component {
       whiteCards: [],
       blackCard: {}
     };
+    ReactGA.initialize('UA-120470128-1');
+    ReactGA.pageview(window.location.hash);
   }
 
   componentWillMount() {

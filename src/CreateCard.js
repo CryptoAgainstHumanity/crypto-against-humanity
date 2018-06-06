@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import web3 from './web3';
 import sha256 from 'sha256';
+import ReactGA from 'react-ga';
 import bytes from 'bytes';
 import {
   Button,
@@ -22,6 +23,8 @@ class CreateCard extends Component {
       color: "black",
       isVerified: false
     };
+    ReactGA.initialize('UA-120470128-1');
+    ReactGA.pageview(window.location.hash);
   }
 
   onSubmit = async (event) => {
@@ -59,6 +62,12 @@ class CreateCard extends Component {
 
   handleSubmit = async (e) => {
     e.preventDefault();
+
+    ReactGA.event({
+        category: 'Create Card',
+        action: 'Clicked Create Card',
+    });
+
     const accounts = await web3.eth.getAccounts();
     if (this.state.color == "black") {
       this.setState({isVerified: true});
