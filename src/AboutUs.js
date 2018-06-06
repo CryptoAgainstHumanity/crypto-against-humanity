@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
-import kyle from'./imgs/kyle.jpeg';
-import emily from'./imgs/emily.jpeg';
-import felix from'./imgs/felix.jpeg';
-import mike from'./imgs/mike.jpeg';
-import Card from './components/contact_card';
+import styled from 'styled-components'
+import imgKyle from'./imgs/kyle.jpeg';
+import imgEmily from'./imgs/emily.jpeg';
+import imgFelix from'./imgs/felix.jpeg';
+import imgMike from'./imgs/mike.jpeg';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 
@@ -20,56 +20,122 @@ class AboutUs extends Component {
 
     return (
       <div className="rules-div">
-        <ul className="white-card-list">
         <div className="header-1 centered-title">About Us</div>
-        <p> Crypto Against Humanity was birthed out of 36 hours without sleep, 4 dedicated teammates, and the legendary ETH Buenos Aires Hackathon. 
-        Crypto Against Humanity was honored as a winner, and the humanity deteriorated from there. Our team is working hard to bring bad behavior to the 
-        Ethereum blockchain. We hope you enjoy Crypto Against Humanity as much as we enjoyed creating it.</p>
-        <div className="header-2 centered-title">Founders</div>
-            <li className="white-card-row">
-                <div className="white-card">
-                    <Card text="Kyle Bryant" color="white-card" image={kyle}/>
-                </div>
-                <div className="left-side"> 
-                    <p> Kyle is a Solidity/Web3 Developer based out of Boston. His passion for game development and software has finally found a focal point. 
-                    Kyle studied Interactive Media and Game Development at Worcester Polytechnic Institute and worked as a Java developer for Amazon Robotics 
-                    and Hitachi Vantara after university.</p>
-                    <ul>
+        <div className="lbl-text margin-text centered-text">
+        Crypto Against Humanity was birthed out of 36 hours without sleep, 4 dedicated teammates, and the legendary ETH Buenos Aires Hackathon.
+        Our team is working hard to bring bad behavior to the Ethereum blockchain. <br/><br/>
+
+        We hope you enjoy Crypto Against Humanity as much as we enjoyed creating it.
+        </div>
+            <TeamContainer>
+                <WhiteCard>
+                    <ImageContainer><img src={imgEmily} alt="Emily Williams"/></ImageContainer>
+                    <H3>Emily Williams</H3>
+                    <SocialLinks>
+                        <li><a href="https://twitter.com/crypt0glitter" class="fa fa-twitter" /></li>
+                        <li><a href="https://www.linkedin.com/in/ecwilliams66/ " class="fa fa-linkedin"/></li>
+                        <li><a href="https://github.com/emaG3m" class="fa fa-github"/></li>
+                    </SocialLinks>
+                </WhiteCard>
+                <WhiteCard>
+                    <ImageContainer><img src={imgFelix} alt="Felix Kramer"/></ImageContainer>
+                    <H3>Felix Kramer</H3>
+                    <SocialLinks>
+                        <li><a href="https://twitter.com/FelixLFK" class="fa fa-twitter" /></li>
+                        <li><a href="https://www.linkedin.com/in/flfkramer/" class="fa fa-linkedin"/></li>
+                        <li><a href="https://github.com/flfk" class="fa fa-github"/></li>
+                        <li><a href="https://medium.com/@CryptoEspresso" class="fa fa-medium"/></li>
+                    </SocialLinks>
+                </WhiteCard>
+                <WhiteCard>
+                    <ImageContainer><img src={imgKyle} alt="Kyle Bryant"/></ImageContainer>
+                    <H3>Kyle Bryant</H3>
+                    <SocialLinks>
                         <li><a href="https://twitter.com/komodoman" class="fa fa-twitter" /></li>
                         <li><a href="https://www.linkedin.com/in/kyle-c-bryant/" class="fa fa-linkedin"/></li>
                         <li><a href="https://github.com/Kyrrui" class="fa fa-github"/></li>
                         <li><a href="https://medium.com/@kylebryant_28277" class="fa fa-medium"/></li>
-                    </ul>
-                </div>
-            </li>
-            <li className="white-card-row">
-                <div className="white-card">
-                    <Card text="Emily Williams" color="white-card" image={emily}/>
-                </div>
-                <div className="left-side"> 
-                    <p> A little bit about me </p>
-                </div>
-            </li>
-            <li className="white-card-row">
-                <div className="white-card">
-                    <Card text="Felix Kramer" color="white-card" image={felix}/>
-                </div>
-                <div className="left-side"> 
-                    <p> A little bit about me </p>
-                </div>
-            </li>
-            <li className="white-card-row">
-                <div className="white-card">
-                    <Card text="Mike Calvanese" color="white-card" image={mike}/>
-                </div>
-                <div className="left-side"> 
-                    <p> A little bit about me </p>
-                </div>
-            </li>
-        </ul>   
+                    </SocialLinks>
+                </WhiteCard>
+                <WhiteCard>
+                    <ImageContainer><img src={imgMike} alt="Mike Calvanese"/></ImageContainer>
+                    <H3>Mike Calvanese</H3>
+                    <SocialLinks>
+                        <li><a href="https://twitter.com/MikeCalvanese" class="fa fa-twitter" /></li>
+                        <li><a href="https://www.linkedin.com/in/michael-calvanese-940b356/" class="fa fa-linkedin"/></li>
+                        <li><a href="https://github.com/mikec" class="fa fa-github"/></li>
+                    </SocialLinks>
+                </WhiteCard>
+            </TeamContainer>
+            <div className="header-1 centered-title">Contact Us</div>
+            <div className="lbl-text margin-text centered-text">
+            To suggest ideas on how to accelerate our plan for world destruction please contact us at <a href="mailto:Inquiries@CryptoAgainstHumanity.io">Inquiries@CryptoAgainstHumanity.io</a>.
+            </div>
       </div>
     );
   }
 }
+
+const TeamContainer = styled.div`
+    width: 992px;
+    display: flex;
+    justify-content: space-around;
+    padding: 40px;
+`;
+
+const WhiteCard = styled.div`
+    background-color: white;
+    font-weight: bold;
+    width: 160px;
+    height: ${160*1.25}px;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+    color: #333333;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+`;
+
+const H3 = styled.h3`
+    margin: 0;
+    font-family: Arial;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333333;
+`;
+
+const ImageContainer = styled.div`
+    height: 88px;
+    width: 88px;
+
+    img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+    }
+`;
+
+const SocialLinks = styled.ul`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0 16px;
+
+    li {
+        a {
+            text-decoration: none;
+            color: rgba(0, 0, 0, 0.80);
+            font-size: 16px;
+        }
+    }
+
+    li:not(:first-child) {
+            padding-left: 8px;
+        }
+`;
 
 export default AboutUs;

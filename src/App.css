@@ -44,6 +44,11 @@ p {
   color: rgba(0, 0, 0, 0.54);*/
 }
 
+a {
+  font-weight: bold;
+  color: black;
+}
+
 .header-brand {
   font-family: Arial;
   font-size: 24px;
@@ -322,7 +327,6 @@ p {
 
 .white-card {
   background-color: white;
-  color: black;
   font-weight: bold;
 
   width: 149px;
