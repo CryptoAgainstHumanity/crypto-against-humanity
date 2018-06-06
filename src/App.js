@@ -9,6 +9,7 @@ import {
   NavLink,
   HashRouter
 } from "react-router-dom";
+import AboutUs from "./AboutUs";
 import Home from "./Home";
 import Rules from "./Rules";
 import HallOfShame from "./HallOfShame";
@@ -40,7 +41,6 @@ class App extends Component {
     var network = "Unknown";
     if(web3 != "undefined") {
       const address = await web3.eth.getAccounts();
-      //this.setState({isLoggedIn: false, hasMetamask: true, network: 'Unknown'})
       hasMetamask = true;
       if (address.length > 0) {
         var networkId = await web3.eth.net.getId();
@@ -66,7 +66,6 @@ class App extends Component {
         }
         network = networkName;
         isLoggedIn = true;
-        //this.setState({isLoggedIn: true, hasMetamask: true, network: networkName})
       }
     }
     this.callback(hasMetamask, isLoggedIn, network);
@@ -100,6 +99,7 @@ class App extends Component {
 
           <div className="nav-right">
             <a href="#home" ><NavLink to="/home">Play</NavLink></a>
+            <a href="#about-us"><NavLink to="/about-us">About Us</NavLink></a>
             <a href="#rules"><NavLink to="/rules">Guide</NavLink></a>
             <a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a>
             <a href="#create-card"><NavLink to="/create-card" style={styleCreateCard}>Create Card</NavLink></a>
@@ -108,6 +108,7 @@ class App extends Component {
         <div className="content">
             <Route exact path="/" component={Home}/>
             <Route exact path="/home" component={Home}/>
+            <Route path="/about-us" component={AboutUs}/>
             <Route path="/rules" component={Rules}/>
             <Route path="/hall-of-shame" component={HallOfShame}/>
             <Route path="/create-card" component={CreateCard}/>
