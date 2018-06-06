@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import ReactGA from 'react-ga';
 import web3 from './web3';
 
 class LandingPage extends Component {
   constructor(props) {
     super(props)
+    ReactGA.initialize('UA-120470128-1');
+    ReactGA.pageview(window.location.hash);
   }
 
   render() {

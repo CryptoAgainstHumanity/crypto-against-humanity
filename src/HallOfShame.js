@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactGA from 'react-ga';
 import HallOfShameItem from "./components/hall_of_shame_item"
 
 class HallOfShame extends Component {
@@ -12,6 +13,8 @@ class HallOfShame extends Component {
       {blackCardTxt:'Oh boy Johnny! ______!', whiteCardTxt:'Its over 9000!!!!', price:'1.7832', date:'26 May 18'},
     ]
     }
+    ReactGA.initialize('UA-120470128-1');
+    ReactGA.pageview(window.location.hash);
   }
 
   render() {

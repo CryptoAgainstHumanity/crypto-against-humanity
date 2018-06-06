@@ -1,5 +1,6 @@
 import web3 from './web3'
 import React, { Component } from 'react';
+import ReactGA from 'react-ga';
 import { Button } from 'react-bootstrap'
 import logo from './logo.svg';
 import './App.css';
@@ -24,6 +25,8 @@ class App extends Component {
       network: 'Unknown',
       loading: true
     }
+    ReactGA.initialize('UA-120470128-1');
+    ReactGA.pageview(window.location.hash);
     this.checkWeb3(this.callback);
   }
 
@@ -68,7 +71,6 @@ class App extends Component {
     }
     this.callback(hasMetamask, isLoggedIn, network);
   }
-
 
   render() {
     const styleCreateCard = {
