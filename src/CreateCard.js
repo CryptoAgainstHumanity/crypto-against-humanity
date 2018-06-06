@@ -63,9 +63,11 @@ class CreateCard extends Component {
   handleSubmit = async (e) => {
     e.preventDefault();
 
+    const cardValue = this.state.value;
+    const colorValue = this.state.color;
     ReactGA.event({
-        category: 'Create Card',
-        action: 'Clicked Create Card',
+        category: 'Creating Card',
+        action: colorValue +" card, text: " + cardValue,
     });
 
     const accounts = await web3.eth.getAccounts();
