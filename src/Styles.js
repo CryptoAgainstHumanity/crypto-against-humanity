@@ -78,19 +78,27 @@ export const H4 = styled.h4`
 
 // Media Templates
 
-const sizes = {
+const SIZES = {
   desktop: 992,
   tablet: 768,
   phone: 376
 }
 
-// Iterate through the sizes and create a media template
-export const MEDIA = Object.keys(sizes).reduce((acc, label) => {
-  acc[label] = (...args) => css`
-    @media (max-width: ${sizes[label] / 16}em) {
-      ${css(...args)}
-    }
-  `
+const mediaQuery = '@media only screen and (max-width: 768px)';
 
-  return acc
-}, {})
+export const MEDIA = {
+  desktop: `@media only screen and (max-width: ${SIZES.desktop}px)`,
+  tablet: `@media only screen and (max-width: ${SIZES.tablet}px)`,
+  phone: `@media only screen and (max-width: ${SIZES.phone}px)`,
+}
+
+// Iterate through the sizes and create a media template
+// export const MEDIA = Object.keys(sizes).reduce((acc, label) => {
+//   acc[label] = (...args) => css`
+//     @media (max-width: ${sizes[label] / 16}em) {
+//       ${css(...args)}
+//     }
+//   `
+
+//   return acc
+// }, {})

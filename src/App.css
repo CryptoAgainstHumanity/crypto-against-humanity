@@ -7,7 +7,7 @@
   width: 100vw;
   background-color: #e9ebee;
 
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 h1 {
@@ -210,7 +210,7 @@ a {
   /*height: 100vh;*/
 
   /* Ensure navbar isn't overlaying*/
-  margin-top: 60px;
+  /*margin-top: 60px;*/
 }
 
 .card {
