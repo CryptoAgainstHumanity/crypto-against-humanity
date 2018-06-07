@@ -1,7 +1,6 @@
 import web3 from './web3'
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { Button } from 'react-bootstrap'
 import logo from './logo.svg';
 import './App.css';
 import {
@@ -10,6 +9,7 @@ import {
   HashRouter
 } from "react-router-dom";
 import AboutUs from "./AboutUs";
+import Btn from './components/Button';
 import CreateCard from "./CreateCard";
 import HallOfShame from "./HallOfShame";
 import Home from "./Home";
@@ -17,13 +17,6 @@ import LandingPage from "./LandingPage";
 import NavBar from "./components/NavBar";
 import NavContainer from "./components/NavContainer";
 import Rules from "./Rules";
-
-// import NavBar from "./components/navbar"
-import styled from 'styled-components';
-import {
-  COLORS_OBJ, COLORS_TEXT, OPACITY, MEDIA,
-} from './Styles';
-import Btn from './components/Button'
 
 class App extends Component {
 

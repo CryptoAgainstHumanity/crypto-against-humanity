@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, COLORS_TEXT, OPACITY, MEDIA,
+  COLORS_OBJ, COLORS_TEXT, MEDIA,
 } from '../Styles';
 import Btn from './Button'
 
@@ -61,6 +61,7 @@ const NavBar = styled.ul`
     }
   }
 
+  // all except logo and create-card btn
   li:not(:first-child):not(:last-child) {
     margin-right: 16px;
     font-size: 16px;

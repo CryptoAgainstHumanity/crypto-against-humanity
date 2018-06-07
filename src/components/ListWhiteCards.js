@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import WhiteCardListItem from './white_card_list_item';
+import styled from 'styled-components';
 
 export default ((props) => {
 	let i = 0;
@@ -15,8 +16,13 @@ export default ((props) => {
 	})
 
 	return (
-		<ul className="white-card-list">
+		<ListWhiteCards>
 			{whiteCards}
-		</ul>
+		</ListWhiteCards>
 	);
 })
+
+const ListWhiteCards = styled.ul`
+	background-color: pink;
+	padding: 0;
+`;

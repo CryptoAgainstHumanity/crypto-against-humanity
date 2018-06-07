@@ -16,9 +16,9 @@ export const COLORS_OBJ = {
 
 export const COLORS_TEXT = {
   bgLight : {
-    high: '#D94A4D',
-    medium: '#323639',
-    low: '#323639',
+    high: '#323639',
+    medium: '#6A6B6D',
+    low: '#939496',
   },
   bgDark : {
     high: 'white',
@@ -50,31 +50,38 @@ export const OPACITY = {
 export const H1 = styled.h1`
   font-size: 32px;
   font-family: Arial;
-  color: ${props => props.bgDark ? 'white' : 'black'};
-  opacity: ${props => props.bgDark ? OPACITY.bgDark.high : OPACITY.bgLight.high};
+  font-weight: bold;
+  color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
+  margin: 16px 0 8px;
   `;
 
 export const H2 = styled.h2`
   font-size: 24px;
   font-family: Arial;
-  color: ${props => props.bgDark ? 'white' : 'black'};
-  opacity: ${props => props.bgDark ? OPACITY.bgDark.high : OPACITY.bgLight.high};
+  color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
   `;
 
 export const H3 = styled.h3`
   font-size: 16px;
   font-family: Arial;
   font-weight: normal;
-  color: ${props => props.bgDark ? 'white' : 'black'};
-  opacity: ${props => props.bgDark ? OPACITY.bgDark.high : OPACITY.bgLight.high};
+  color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
   `;
 
 export const H4 = styled.h4`
   font-size: 16px;
   font-family: Arial;
-  color: #000000;
+  color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
   text-align: left;
   `;
+
+export const LABEL = styled.p`
+  font-size: 16px;
+  font-family: Arial;
+  font-weight: normal;
+  color: ${props => props.bgDark ? COLORS_TEXT.bgDark.low : COLORS_TEXT.bgLight.low};
+  margin-bottom: 8px;
+`;
 
 // Media Templates
 
