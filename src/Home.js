@@ -40,10 +40,10 @@ class Home extends Component {
     const currentBlock = this.getCurrentBlock
 
     if (cachedFromBlock) {
-      console.log("Updating Cache"); //Cache out of date, update
-      this.updateFromBlock(cachedFromBlock);
+      //Cache exists, update from cached block
+      this.loadWhiteCards(cachedFromBlock);
     } else {
-      console.log("No cache, obtaining all cards"); //Cache out of date, update
+      // No Cahce, get all cards
       this.loadWhiteCards(originBlock);
     } 
 
@@ -59,7 +59,6 @@ class Home extends Component {
   }
 
   async updateFromBlock(blockNum) {
-    console.log("Updating from block #" + blockNum )
     this.loadWhiteCards(blockNum);
   }
 
@@ -70,29 +69,6 @@ class Home extends Component {
 
   async updateWhiteCards () {
     this.loadWhiteCards(this.state.originBlock)
-  //   this.setState({
-  //     loadingWhiteCards: true
-  //   })  
-  //   const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
-  //   const defaultTokenBuyAmount = 0.001 * 10 ** 18
-  //   var cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
-  //   const accounts = await web3.eth.getAccounts()
-  //   for(var i = 0; i < cachedCards.length; i++) {
-  //     var address = cachedCards[i].bondingCurveAddress;
-  //     EthPolynomialCurveToken.options.address = address;
-  //     let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
-  //     let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
-  //     let bondingCurveTotalBalance = await web3.eth.getBalance(address)
-  //     cachedCards[i].totalBalance = parseInt(bondingCurveTotalBalance);
-  //     cachedCards[i].balance = bondingCurveBalance / whiteCardTokenUnits;
-  //     cachedCards[i].price = bondingCurvePrice / whiteCardTokenUnits;
-  //   }
-  //   cachedCards = _.orderBy(cachedCards, ['totalBalance'], ['desc'])
-  //   localStorage.setItem("cached-cards", JSON.stringify(cards)); 
-  //   this.setState({
-  //     whiteCards: cards,
-  //     loadingWhiteCards: false
-  //   })
   }
 
   async loadWhiteCards(blockNum) {
@@ -101,9 +77,45 @@ class Home extends Component {
     })
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
-    const cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
+    var cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
+    const accounts = await web3.eth.getAccounts()
 
+    let updatedCards = []
+    if (cachedCards){
+      let whiteCards = cachedCards;
+      for (var i = 0; i < cachedCards.length; i++) {
+        EthPolynomialCurveToken.options.address = cachedCards[i].bondingCurveAddress;
+        const card = cachedCards[i]
+        const cardName = cachedCards[i].text;
+        var needsPriceUpdate = false;
+        var bondingCurvePrice = cachedCards[i].price;
 
+        // If there's a burn or mint event on this card, update the price.
+        EthPolynomialCurveToken.getPastEvents('Minted', {fromBlock: blockNum, toBlock: 'latest'}, async (err, events) => {
+          for(var j = 0; j < events.length; j++) {
+            needsPriceUpdate = true;
+          }
+        })
+        EthPolynomialCurveToken.getPastEvents('Burned', {fromBlock: blockNum, toBlock: 'latest'}, async (err, events) => {
+          for(var j = 0; j < events.length; j++) {
+            needsPriceUpdate = true;
+          }
+        })
+        // Update card balance.. TODO: This is ineffecient and the slowest part of loading the interface once cached
+        // If we add addresses to the emit events Burned and Minted, we can keep track of this without calling the contract
+        let balance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
+        card.balance = balance / whiteCardTokenUnits
+
+        if (needsPriceUpdate) {
+          // For now I'm just calling the contract, I attempted to do the math locally, but it was off. I'll come back to it TODO
+          let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call();
+          card.price = (bondingCurvePrice / whiteCardTokenUnits).toFixed(7);
+        }
+        whiteCards[i].price = card.price;
+        whiteCards[i].balance = card.balance;
+      }
+      updatedCards = _.orderBy(whiteCards, ['price'], ['desc']);
+    }
 
     WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
       fromBlock: blockNum,
@@ -112,10 +124,11 @@ class Home extends Component {
       let newBlockNum = await web3.eth.getBlock('latest');
       let whiteCards = []
       if (cachedCards && blockNum != this.state.originBlock) {
-        console.log("There are cached cards");
         whiteCards = cachedCards;
+        if (updatedCards.length > 0) {
+          whiteCards = updatedCards;
+        }
       }
-      const accounts = await web3.eth.getAccounts()
       for(var i = 0; i < events.length; i++) {
         let event = events[i]
         WhiteCard.options.address = event.returnValues.card
@@ -125,20 +138,20 @@ class Home extends Component {
         EthPolynomialCurveToken.options.address = bondingCurveAddress
         let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
-        let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
-
+        let bondingCurveTotalSupply = await EthPolynomialCurveToken.methods.totalSupply().call();
+        let bondingCurvePoolBalance = await EthPolynomialCurveToken.methods.poolBalance().call();
 
         whiteCards.push({
           text,
           bondingCurveAddress: bondingCurveAddress,
-          totalBalance: parseInt(bondingCurveTotalBalance),
           balance: bondingCurveBalance / whiteCardTokenUnits,
           price: bondingCurvePrice / whiteCardTokenUnits,
+          totalSupply: bondingCurveTotalSupply,
+          poolBalance: bondingCurvePoolBalance,
           color: "white-card"
         })
       }
-      whiteCards = _.orderBy(whiteCards, ['totalBalance'], ['desc'])
-      console.log("Setting cached block and cards")
+      whiteCards = _.orderBy(whiteCards, ['price'], ['desc'])
       localStorage.setItem("cached-block", JSON.stringify(newBlockNum.number));
       localStorage.setItem("cached-cards", JSON.stringify(whiteCards)); 
 
@@ -200,13 +213,8 @@ class Home extends Component {
     }, interval);
   }
 
-  
-
   render() {
-    var buttonMsg = "Refresh Balances/Prices"
-    if (this.state.loadingWhiteCards) {
-      buttonMsg = "Loading..."
-    }
+    const orderedCards = _.orderBy(this.state.whiteCards, ['price'], ['desc']);
     const blackCardElem = this.state.loadingBlackCard ? <div>Loading...</div> :
       <BlackCardDisplay blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay} className="center" />
     return (
@@ -217,8 +225,7 @@ class Home extends Component {
           </div>
 
           <div className="column white-cards-in-play">
-          <button disabled={this.state.loadingWhiteCards} onClick={this.updateWhiteCards.bind(this)}> {buttonMsg} </button>
-            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={false} />
+            <WhiteCardsInPlayView whiteCards={orderedCards} loading={this.state.loadingWhiteCards} />
           </div>
 
         </div>
