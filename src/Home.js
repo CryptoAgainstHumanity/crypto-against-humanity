@@ -25,7 +25,7 @@ class Home extends Component {
       loadingBlackCard: true,
       whiteCards: [],
       blackCard: {},
-      fromBlock: 3317454
+      originBlock: 3317454
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
@@ -34,22 +34,21 @@ class Home extends Component {
   componentWillMount() {
 
     // Check if we have cached previous white cards.
-    var fromBlock = this.state.fromBlock;
+    var originBlock = this.state.originBlock;
     const cachedFromBlock = localStorage.getItem("cached-block");
     const cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
-    console.log("Cached block # " + cachedFromBlock);
-    console.log("Cards: " + cachedCards);
-    if (cachedFromBlock) { 
-      this.setState({
-        whiteCards: cachedCards,
-        loadingWhiteCards: false
-      })
+    const currentBlock = this.getCurrentBlock
+
+    if (cachedFromBlock) {
+      console.log("Updating Cache"); //Cache out of date, update
+      this.updateFromBlock(cachedFromBlock);
     } else {
-      this.updateWhiteCards(fromBlock);
-    }
+      console.log("No cache, obtaining all cards"); //Cache out of date, update
+      this.loadWhiteCards(originBlock);
+    } 
 
     BlackCardRegistry.getPastEvents('_Application', {
-      fromBlock: 3317454,
+      fromBlock: originBlock,
       toBlock: 'latest'
     }, async (err, events) => {
       this.blackCards = events
@@ -59,18 +58,63 @@ class Home extends Component {
 
   }
 
-  async updateWhiteCards() {
+  async updateFromBlock(blockNum) {
+    console.log("Updating from block #" + blockNum )
+    this.loadWhiteCards(blockNum);
+  }
+
+  async getCurrentBlock() {
+    const block = await web3.eth.getBlock('latest');
+    return block.number;
+  }
+
+  async updateWhiteCards () {
+    this.loadWhiteCards(this.state.originBlock)
+  //   this.setState({
+  //     loadingWhiteCards: true
+  //   })  
+  //   const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
+  //   const defaultTokenBuyAmount = 0.001 * 10 ** 18
+  //   var cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
+  //   const accounts = await web3.eth.getAccounts()
+  //   for(var i = 0; i < cachedCards.length; i++) {
+  //     var address = cachedCards[i].bondingCurveAddress;
+  //     EthPolynomialCurveToken.options.address = address;
+  //     let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
+  //     let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
+  //     let bondingCurveTotalBalance = await web3.eth.getBalance(address)
+  //     cachedCards[i].totalBalance = parseInt(bondingCurveTotalBalance);
+  //     cachedCards[i].balance = bondingCurveBalance / whiteCardTokenUnits;
+  //     cachedCards[i].price = bondingCurvePrice / whiteCardTokenUnits;
+  //   }
+  //   cachedCards = _.orderBy(cachedCards, ['totalBalance'], ['desc'])
+  //   localStorage.setItem("cached-cards", JSON.stringify(cards)); 
+  //   this.setState({
+  //     whiteCards: cards,
+  //     loadingWhiteCards: false
+  //   })
+  }
+
+  async loadWhiteCards(blockNum) {
     this.setState({
         loadingWhiteCards: true
     })
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
+    const cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
+
+
+
     WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
-      fromBlock: 3317454,
+      fromBlock: blockNum,
       toBlock: 'latest'
     }, async (err, events) => {
-      let blockNum = await web3.eth.getBlock('latest');
+      let newBlockNum = await web3.eth.getBlock('latest');
       let whiteCards = []
+      if (cachedCards && blockNum != this.state.originBlock) {
+        console.log("There are cached cards");
+        whiteCards = cachedCards;
+      }
       const accounts = await web3.eth.getAccounts()
       for(var i = 0; i < events.length; i++) {
         let event = events[i]
@@ -95,7 +139,7 @@ class Home extends Component {
       }
       whiteCards = _.orderBy(whiteCards, ['totalBalance'], ['desc'])
       console.log("Setting cached block and cards")
-      localStorage.setItem("cached-block", JSON.stringify(blockNum.number));
+      localStorage.setItem("cached-block", JSON.stringify(newBlockNum.number));
       localStorage.setItem("cached-cards", JSON.stringify(whiteCards)); 
 
       this.setState({
@@ -159,7 +203,7 @@ class Home extends Component {
   
 
   render() {
-    var buttonMsg = "Refresh Cards"
+    var buttonMsg = "Refresh Balances/Prices"
     if (this.state.loadingWhiteCards) {
       buttonMsg = "Loading..."
     }
@@ -173,7 +217,7 @@ class Home extends Component {
           </div>
 
           <div className="column white-cards-in-play">
-            <button disabled={this.state.loadingWhiteCards} onClick={this.updateWhiteCards.bind(this)}> {buttonMsg} </button>
+          <button disabled={this.state.loadingWhiteCards} onClick={this.updateWhiteCards.bind(this)}> {buttonMsg} </button>
             <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={false} />
           </div>
 
