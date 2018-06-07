@@ -25,7 +25,18 @@ class AboutUs extends Component {
         Crypto Against Humanity was birthed out of 36 hours without sleep, 4 dedicated teammates, and the legendary ETH Buenos Aires Hackathon.
         Our team is working hard to bring bad behavior to the Ethereum blockchain. <br/><br/>
 
-        We hope you enjoy Crypto Against Humanity as much as we enjoyed creating it.
+        We hope you enjoy Crypto Against Humanity as much as we enjoyed creating it. <br/><br/>
+
+        If you're feeling lonely follow us on Twitter, Github or Medium! <br/><br/>
+
+        <SocialLinks large>
+            <li><a href="https://twitter.com/CryptoVHumanity" class="fa fa-twitter" /></li>
+            <li><a href="https://github.com/CryptoAgainstHumanity" class="fa fa-github"/></li>
+            <li><a href="https://medium.com/crypto-against-humanity" class="fa fa-medium"/></li>
+        </SocialLinks>
+        <br/>
+        To suggest ideas on how to accelerate our plan for world destruction please contact us at <a href="mailto:Inquiries@CryptoAgainstHumanity.io">Inquiries@CryptoAgainstHumanity.io or</a>.
+
         </div>
             <TeamContainer>
                 <WhiteCard>
@@ -67,9 +78,8 @@ class AboutUs extends Component {
                     </SocialLinks>
                 </WhiteCard>
             </TeamContainer>
-            <div className="header-1 centered-title">Contact Us</div>
             <div className="lbl-text margin-text centered-text">
-            To suggest ideas on how to accelerate our plan for world destruction please contact us at <a href="mailto:Inquiries@CryptoAgainstHumanity.io">Inquiries@CryptoAgainstHumanity.io</a>.
+
             </div>
       </div>
     );
@@ -121,7 +131,7 @@ const ImageContainer = styled.div`
 const SocialLinks = styled.ul`
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: ${props => props.large ? 'center': 'space-around'};
     list-style: none;
     padding: 0 16px;
 
@@ -129,13 +139,15 @@ const SocialLinks = styled.ul`
         a {
             text-decoration: none;
             color: rgba(0, 0, 0, 0.80);
-            font-size: 16px;
+            font-size: ${props => props.large ? '24px': '16px'};
         }
     }
 
     li:not(:first-child) {
-            padding-left: 8px;
+            padding-left: ${props => props.large ? '16px': '8px'};
         }
+
+
 `;
 
 export default AboutUs;
