@@ -16,6 +16,13 @@ import HallOfShame from "./HallOfShame";
 import CreateCard from "./CreateCard";
 import LandingPage from "./LandingPage";
 
+// import NavBar from "./components/navbar"
+import styled from 'styled-components';
+import {
+  COLORS_OBJ, COLORS_TEXT, OPACITY,
+} from './Styles';
+import Btn from './components/Button'
+
 class App extends Component {
 
   constructor(props) {
@@ -33,7 +40,7 @@ class App extends Component {
 
   callback(metamask, isLoggedIn, network) {
     this.setState({isLoggedIn: isLoggedIn, hasMetamask: metamask, network: network, loading: false})
-  } 
+  }
 
   checkWeb3 = async (callback) => {
     var hasMetamask = false;
@@ -105,6 +112,18 @@ class App extends Component {
             <a href="#create-card"><NavLink to="/create-card" style={styleCreateCard}>Create Card</NavLink></a>
           </div>
         </div>
+
+        <NavContainer>
+        <NavList className="NavList">
+              <div><a href="#home">Crypto Against Humanity</a></div>
+              <li><a href="#home" ><NavLink to="/home">Play</NavLink></a></li>
+              <li><a href="#about-us"><NavLink to="/about-us">About Us</NavLink></a></li>
+              <li><a href="#rules"><NavLink to="/rules">Guide</NavLink></a></li>
+              <li><a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a></li>
+              <li><a href="#create-card"><NavLink to="/create-card"><Btn primary>Create Card</Btn></NavLink></a></li>
+        </NavList>
+        </NavContainer>
+
         <div className="content">
             <Route exact path="/" component={Home}/>
             <Route exact path="/home" component={Home}/>
@@ -113,15 +132,71 @@ class App extends Component {
             <Route path="/hall-of-shame" component={HallOfShame}/>
             <Route path="/create-card" component={CreateCard}/>
         </div>
-      </div>  
-      : 
+      </div>
+      :
       <div>
           <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
-      </div>} 
+      </div>}
     </b></div>
     </HashRouter>
     );
   }
 }
+
+const NavContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 100px 0;
+  width: 100%;
+  height: 64px;
+  background-color: ${COLORS_OBJ.secondary.high};
+`;
+
+const NavList = styled.ul`
+  max-width: 992px;
+  marign: auto;
+  height: 100%;
+  flex: 0 1 1000px;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+
+  // logo
+  div {
+    margin-right: auto;
+
+    a {
+    font-size: 28px;
+    color: ${COLORS_TEXT.bgDark.high};
+    letter-spacing: 0.8px;
+    text-decoration: none;
+    }
+  }
+
+  // navLinks
+  li {
+    padding: 0;
+    list-style: none;
+
+    a{
+      color: ${COLORS_TEXT.bgDark.medium};
+      opacity: 1;
+      text-decoration: none;
+
+      :hover, .active {
+        color: ${COLORS_TEXT.bgDark.high};
+        opacity: 1.00;
+      }
+    }
+  }
+
+  li:not(:first-child):not(:last-child) {
+    margin-right: 16px;
+    font-size: 16px;
+  }
+`;
 
 export default App;
