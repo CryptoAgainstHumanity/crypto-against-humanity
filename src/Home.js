@@ -24,7 +24,8 @@ class Home extends Component {
       loadingWhiteCards: true,
       loadingBlackCard: true,
       whiteCards: [],
-      blackCard: {}
+      blackCard: {},
+      fromBlock: 3317454
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
@@ -32,13 +33,43 @@ class Home extends Component {
 
   componentWillMount() {
 
+    // Check if we have cached previous white cards.
+    var fromBlock = this.state.fromBlock;
+    const cachedFromBlock = localStorage.getItem("cached-block");
+    const cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
+    console.log("Cached block # " + cachedFromBlock);
+    console.log("Cards: " + cachedCards);
+    if (cachedFromBlock) { 
+      this.setState({
+        whiteCards: cachedCards,
+        loadingWhiteCards: false
+      })
+    } else {
+      this.updateWhiteCards(fromBlock);
+    }
+
+    BlackCardRegistry.getPastEvents('_Application', {
+      fromBlock: 3317454,
+      toBlock: 'latest'
+    }, async (err, events) => {
+      this.blackCards = events
+      this.setBlackCard()
+      this.startTimer()
+    })
+
+  }
+
+  async updateWhiteCards() {
+    this.setState({
+        loadingWhiteCards: true
+    })
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
-
     WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
       fromBlock: 3317454,
       toBlock: 'latest'
     }, async (err, events) => {
+      let blockNum = await web3.eth.getBlock('latest');
       let whiteCards = []
       const accounts = await web3.eth.getAccounts()
       for(var i = 0; i < events.length; i++) {
@@ -52,6 +83,7 @@ class Home extends Component {
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
         let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
 
+
         whiteCards.push({
           text,
           bondingCurveAddress: bondingCurveAddress,
@@ -61,24 +93,16 @@ class Home extends Component {
           color: "white-card"
         })
       }
-
       whiteCards = _.orderBy(whiteCards, ['totalBalance'], ['desc'])
+      console.log("Setting cached block and cards")
+      localStorage.setItem("cached-block", JSON.stringify(blockNum.number));
+      localStorage.setItem("cached-cards", JSON.stringify(whiteCards)); 
 
       this.setState({
         whiteCards: whiteCards,
         loadingWhiteCards: false
       })
     })
-
-    BlackCardRegistry.getPastEvents('_Application', {
-      fromBlock: 3317454,
-      toBlock: 'latest'
-    }, async (err, events) => {
-      this.blackCards = events
-      this.setBlackCard()
-      this.startTimer()
-    })
-
   }
 
   async setBlackCard () {
@@ -132,7 +156,13 @@ class Home extends Component {
     }, interval);
   }
 
+  
+
   render() {
+    var buttonMsg = "Refresh Cards"
+    if (this.state.loadingWhiteCards) {
+      buttonMsg = "Loading..."
+    }
     const blackCardElem = this.state.loadingBlackCard ? <div>Loading...</div> :
       <BlackCardDisplay blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay} className="center" />
     return (
@@ -143,7 +173,8 @@ class Home extends Component {
           </div>
 
           <div className="column white-cards-in-play">
-            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={this.state.loadingWhiteCards} />
+            <button disabled={this.state.loadingWhiteCards} onClick={this.updateWhiteCards.bind(this)}> {buttonMsg} </button>
+            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={false} />
           </div>
 
         </div>
