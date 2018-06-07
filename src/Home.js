@@ -3,6 +3,8 @@ import moment from 'moment'
 import web3 from './web3'
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
+import CachedCards from './data/cachedCards'
+import CachedBlock from './data/cachedBlock'
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
@@ -29,6 +31,11 @@ class Home extends Component {
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
+
+    if (!localStorage.getItem("cached-block")) {
+      localStorage.setItem("cached-block", CachedBlock);
+      localStorage.setItem("cached-cards", JSON.stringify(CachedCards));
+    }
   }
 
   componentWillMount() {
