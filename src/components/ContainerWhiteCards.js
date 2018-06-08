@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Nav, NavItem, NavDropdown, MenuBar, MenuItem, Button } from 'react-bootstrap'
 import WhiteCardList from './ListWhiteCards';
-import WhiteCardListItem from './white_card_list_item';
 import Card from './card';
 import styled from 'styled-components';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -30,8 +29,9 @@ class ContainerWhiteCards extends Component {
         // </Nav>
 
 	render() {
-    const whiteCardsListElem = this.props.loading ? <div>Loading...</div> :
-      <WhiteCardList whiteCards={this.props.whiteCards} className="center" />
+    const whiteCardsListElem = this.props.loading ?
+    <div>Loading...</div> :
+    <WhiteCardList whiteCards={this.props.whiteCards} className="center" />;
 
 		return (
 			<Container>
@@ -42,7 +42,8 @@ class ContainerWhiteCards extends Component {
 }
 
 const Container = styled.div`
-  background-color: green;
+  display: flex;
+  flex-direction: columns;
 `;
 
 export default ContainerWhiteCards;

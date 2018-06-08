@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WhiteCardListItem from './white_card_list_item';
+import WhiteCardListItem from './ListItemWhiteCards';
 import styled from 'styled-components';
 
 export default ((props) => {

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import {
   MEDIA
-} from '../Styles';
+} from '../StyleGuide';
 
-const MainContainer = styled.div`
+const ContainerMain = styled.div`
   margin: auto;
   width: 880px;
   padding: 40px 0;
@@ -28,4 +28,4 @@ const MainContainer = styled.div`
   }
 `;
 
-export default MainContainer;
+export default ContainerMain;

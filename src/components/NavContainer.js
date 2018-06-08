@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {
   COLORS_OBJ, COLORS_TEXT, OPACITY, MEDIA,
-} from '../Styles';
+} from '../StyleGuide';
 
 const NavContainer = styled.div`
   display: flex;

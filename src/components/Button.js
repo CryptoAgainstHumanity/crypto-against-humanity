@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {
   COLORS_OBJ
-} from '../Styles';
+} from '../StyleGuide';
 
 const Btn = styled.button`
   border-radius: 5px;

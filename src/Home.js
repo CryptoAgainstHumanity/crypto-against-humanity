@@ -9,13 +9,12 @@ import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
 import BlackCardRegistry from './web3Contracts/BlackCardRegistry'
-import WhiteCardListItem from './components/white_card_list_item';
 import ContainerWhiteCards from './components/ContainerWhiteCards'
 import ContainerBlackCard from './components/ContainerBlackCard';
 import Btn from './components/Button';
 import ipfsAPI from 'ipfs-api';
 
-import MainContainer from './components/MainContainer';
+import ContainerMain from './components/ContainerMain';
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const blackCardTimeInterval = 10000

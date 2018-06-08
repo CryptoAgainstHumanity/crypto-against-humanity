@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {
   COLORS_OBJ, COLORS_TEXT, MEDIA,
-} from '../Styles';
+} from '../StyleGuide';
 import Btn from './Button'
 
 const NavBar = styled.ul`

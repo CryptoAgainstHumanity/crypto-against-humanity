@@ -129,7 +129,7 @@ class CreateCard extends Component {
       styleCard.color = '#323639';
     }
 
-    const styleSubmit = {
+    const StyleGuideubmit = {
       width: '320px',
       height: '40px',
 
@@ -167,10 +167,10 @@ class CreateCard extends Component {
               />
             </FormGroup>
 
-            <div><b>{this.state.color == "white" ? <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button> :
-                                                  <Button className= "primary-button" type="submit" style={styleSubmit}>Get Verified</Button>}</b></div>
+            <div><b>{this.state.color == "white" ? <Button className= "primary-button" type="submit" style={StyleGuideubmit}>Submit</Button> :
+                                                  <Button className= "primary-button" type="submit" style={StyleGuideubmit}>Get Verified</Button>}</b></div>
 
-            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit" style={styleSubmit}>Submit</Button> : <div></div>}</b></div>
+            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit" style={StyleGuideubmit}>Submit</Button> : <div></div>}</b></div>
             <div><b>{this.state.isVerified == true && this.state.color == "black" ? <p>*Ensure you wait until last transaction succeeded before submitting*</p> : <div></div>} </b></div>
           </form>
         </div>
