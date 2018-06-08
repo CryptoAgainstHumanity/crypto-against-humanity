@@ -92,6 +92,14 @@ export const LABEL = styled.p`
   margin-bottom: 8px;
 `;
 
+export const LOADING = styled.p`
+  font-size: 16px;
+  font-family: ${FONT.body};
+  font-weight: normal;
+  color: ${props => props.bgDark ? COLORS_TEXT.bgDark.low : COLORS_TEXT.bgLight.low};
+  margin-bottom: 8px;
+`;
+
 // Media Templates
 
 const SIZES = {

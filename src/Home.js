@@ -13,6 +13,8 @@ import ContainerWhiteCards from './components/ContainerWhiteCards'
 import ContainerBlackCard from './components/ContainerBlackCard';
 import Btn from './components/Button';
 import ipfsAPI from 'ipfs-api';
+import { LOADING } from './StyleGuide';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
 
 import ContainerMain from './components/ContainerMain';
 
@@ -227,9 +229,9 @@ class Home extends Component {
   }
 
   render() {
-    const blackCardElem = this.state.loadingBlackCard ? <div>Loading...</div> :
-      <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay} className="center" />
-
+    const blackCardElem = this.state.loadingBlackCard ?
+      <LOADING> <i className="fa fa-circle-o-notch fa-spin"></i> Loading a crappy black card...</LOADING>:
+      <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay}/>
     return (
       <div>
         <MainContainer>

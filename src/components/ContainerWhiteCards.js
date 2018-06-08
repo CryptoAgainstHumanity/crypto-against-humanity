@@ -3,6 +3,8 @@ import { Nav, NavItem, NavDropdown, MenuBar, MenuItem, Button } from 'react-boot
 import WhiteCardList from './ListWhiteCards';
 import styled from 'styled-components';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../../node_modules/font-awesome/css/font-awesome.min.css';
+import { LOADING } from '../StyleGuide';
 
 class ContainerWhiteCards extends Component {
 	constructor(props) {
@@ -29,7 +31,7 @@ class ContainerWhiteCards extends Component {
 
 	render() {
     const whiteCardsListElem = this.props.loading ?
-    <div>Loading...</div> :
+    <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading everyone's bad ideas... </LOADING>:
     <WhiteCardList whiteCards={this.props.whiteCards} className="center" />;
 
 		return (
