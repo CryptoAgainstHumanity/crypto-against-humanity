@@ -1,27 +1,9 @@
-import React, { Component } from 'react';
 import styled from 'styled-components';
 import {
   FONT, H1, COLORS_OBJ, COLORS_TEXT, HAS_SHADOW,
 } from '../StyleGuide';
 
-class Card extends Component {
-	constructor(props) {
-		super(props)
-	}
-
-	render() {
-		// const cardClass = "card " + this.props.color;
-		// below was in container
-		// <div className="card-text">{this.props.text}</div>
-		return (
-			<ContainerCard>
-				{this.props.text}
-			</ContainerCard>
-		)
-	}
-}
-
-const ContainerCard = styled.div`
+const Card = styled.div`
 	width: ${props => props.bigCard ? 320 : 152}px;
 	height: ${props => props.bigCard ? (320*1.25) : (152*1.25)}px;
 	padding: ${props => props.bigCard ? 16 : 16}px;

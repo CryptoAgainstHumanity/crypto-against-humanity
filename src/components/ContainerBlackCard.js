@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Card from './card';
+import Card from './Card';
 import styled from 'styled-components';
 import {
   H1, LABEL,
@@ -11,12 +11,14 @@ class ContainerBlackCard extends Component {
 		super(props)
 	}
 
+					// 	<div className="black-card">
+					// 	<Card text={this.props.blackCard.text} color={this.props.blackCard.color} />
+					// </div>
+
 	render() {
 		return (
 			<BlackCardContainer>
-					<div className="black-card">
-						<Card text={this.props.blackCard.text} color={this.props.blackCard.color} />
-					</div>
+
 				<Card bigCard black>{this.props.blackCard.text}</Card>
       	<TimeContainer>
       		<LABEL>TIME REMAINING</LABEL>

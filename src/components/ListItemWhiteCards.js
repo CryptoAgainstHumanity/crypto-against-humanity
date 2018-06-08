@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { Nav, NavDropdown, MenuBar, MenuItem, Button, FormGroup, FormControl, InputGroup, ControlLabel } from 'react-bootstrap'
 import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
-import Card from './card';
+import Card from './Card';
 
 const tokenUnits = 10 ** 8
 const defaultTradeAmount = 1
@@ -117,9 +117,7 @@ class WhiteCardListItem extends Component {
 		return (
 			<li className="white-card-row">
 
-				<div className="white-card">
-					<Card text={this.props.text} color={this.props.color}/>
-				</div>
+        <Card smallCard white>{this.props.text}</Card>
 
 				<div className="left-side">
 					<div className="white-card-labels">
