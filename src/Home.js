@@ -32,7 +32,7 @@ class Home extends Component {
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
 
-    if (!localStorage.getItem("cached-block")) {
+    if (localStorage.getItem("cached-block") < CachedBlock) {
       localStorage.setItem("cached-block", CachedBlock);
       localStorage.setItem("cached-cards", JSON.stringify(CachedCards));
     }
@@ -94,32 +94,25 @@ class Home extends Component {
         EthPolynomialCurveToken.options.address = cachedCards[i].bondingCurveAddress;
         const card = cachedCards[i]
         const cardName = cachedCards[i].text;
-        var needsPriceUpdate = false;
+        let needsUpdate = false;
         var bondingCurvePrice = cachedCards[i].price;
 
-        // If there's a burn or mint event on this card, update the price.
-        EthPolynomialCurveToken.getPastEvents('Minted', {fromBlock: blockNum, toBlock: 'latest'}, async (err, events) => {
-          for(var j = 0; j < events.length; j++) {
-            needsPriceUpdate = true;
-          }
+        await EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {fromBlock: blockNum, toBlock: 'latest'}, async (err, events) => {
+          if (events.length > 0){
+            needsUpdate = true;
+          } 
         })
-        EthPolynomialCurveToken.getPastEvents('Burned', {fromBlock: blockNum, toBlock: 'latest'}, async (err, events) => {
-          for(var j = 0; j < events.length; j++) {
-            needsPriceUpdate = true;
-          }
-        })
-        // Update card balance.. TODO: This is ineffecient and the slowest part of loading the interface once cached
-        // If we add addresses to the emit events Burned and Minted, we can keep track of this without calling the contract
-        let balance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
-        card.balance = balance / whiteCardTokenUnits
 
-        if (needsPriceUpdate) {
+        if (needsUpdate) {
+          // If we add addresses to the emit events Burned and Minted, we can keep track of this without calling the contract
+          let balance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
+          card.balance = balance / whiteCardTokenUnits
           // For now I'm just calling the contract, I attempted to do the math locally, but it was off. I'll come back to it TODO
           let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call();
           card.price = (bondingCurvePrice / whiteCardTokenUnits).toFixed(7);
+          whiteCards[i].price = await card.price;
+          whiteCards[i].balance = await card.balance;
         }
-        whiteCards[i].price = card.price;
-        whiteCards[i].balance = card.balance;
       }
       updatedCards = _.orderBy(whiteCards, ['price'], ['desc']);
     }
@@ -145,16 +138,17 @@ class Home extends Component {
         EthPolynomialCurveToken.options.address = bondingCurveAddress
         let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
-        let bondingCurveTotalSupply = await EthPolynomialCurveToken.methods.totalSupply().call();
-        let bondingCurvePoolBalance = await EthPolynomialCurveToken.methods.poolBalance().call();
+        // Used for math if we want to calculate price locally
+        // let bondingCurveTotalSupply = await EthPolynomialCurveToken.methods.totalSupply().call(); 
+        // let bondingCurvePoolBalance = await EthPolynomialCurveToken.methods.poolBalance().call();
 
         whiteCards.push({
           text,
           bondingCurveAddress: bondingCurveAddress,
           balance: bondingCurveBalance / whiteCardTokenUnits,
           price: bondingCurvePrice / whiteCardTokenUnits,
-          totalSupply: bondingCurveTotalSupply,
-          poolBalance: bondingCurvePoolBalance,
+          // totalSupply: bondingCurveTotalSupply,
+          // poolBalance: bondingCurvePoolBalance,
           color: "white-card"
         })
       }
@@ -221,7 +215,6 @@ class Home extends Component {
   }
 
   render() {
-    const orderedCards = _.orderBy(this.state.whiteCards, ['price'], ['desc']);
     const blackCardElem = this.state.loadingBlackCard ? <div>Loading...</div> :
       <BlackCardDisplay blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay} className="center" />
     return (
@@ -232,7 +225,7 @@ class Home extends Component {
           </div>
 
           <div className="column white-cards-in-play">
-            <WhiteCardsInPlayView whiteCards={orderedCards} loading={this.state.loadingWhiteCards} />
+            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={this.state.loadingWhiteCards} />
           </div>
 
         </div>
