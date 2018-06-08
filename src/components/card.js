@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import {
-  FONT, H1, COLORS_OBJ, COLORS_TEXT, HAS_SHADOW,
+  FONT, H1, COLORS_OBJ, COLORS_TEXT, HAS_SHADOW, HAS_BORDER_RADIUS,
 } from '../StyleGuide';
 
 const Card = styled.div`
 	width: ${props => props.bigCard ? 320 : 152}px;
 	height: ${props => props.bigCard ? (320*1.25) : (152*1.25)}px;
 	padding: ${props => props.bigCard ? 16 : 16}px;
-	border-radius: 5px;
+	${HAS_BORDER_RADIUS}
 	${HAS_SHADOW};
 
 	color: ${props => props.black ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};

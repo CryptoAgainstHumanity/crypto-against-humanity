@@ -62,7 +62,7 @@ const NavBar = styled.ul`
   }
 
   // all except logo and create-card btn
-  li:not(:first-child):not(:last-child) {
+  >li:not(:first-child):not(:last-child) {
     margin-right: 16px;
     font-size: 16px;
 

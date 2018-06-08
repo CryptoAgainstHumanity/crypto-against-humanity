@@ -2,8 +2,14 @@ import web3 from '../web3'
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { Nav, NavDropdown, MenuBar, MenuItem, Button, FormGroup, FormControl, InputGroup, ControlLabel } from 'react-bootstrap'
+import styled from 'styled-components';
 import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
+import Btn from './Button';
 import Card from './Card';
+import InputText from './InputText';
+import {
+  H1, LABEL,
+} from '../StyleGuide';
 
 const tokenUnits = 10 ** 8
 const defaultTradeAmount = 1
@@ -79,77 +85,113 @@ class WhiteCardListItem extends Component {
 	}
 
 	render() {
-		const styleTradeBtn = {
-      width: '60px',
-      height: '40px',
-      marginLeft: '10px',
 
-      borderRadius: '4px',
-      backgroundColor: '#d94a4d',
-      border: 'none',
-      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
+    const priceRounded = (this.state.price > 1000000)?
+      `${precisionRound(this.state.price / 1000000, 3)} Mns`:
+      precisionRound(this.state.price, 3);
 
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      color: 'white',
-    }
-
-    const styleQuantityInput = {
-    	borderRadius: '4px',
-      backgroundColor: '#F6F7F9',
-      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
-      border: 'none',
-      height: '40px',
-      // width: '60px',
-    }
-
-		let balanceStyled = (this.props.balance == 0)?
+		const balanceRounded = (this.props.balance == 0)?
 			'-':
 			precisionRound(this.props.balance * 10 ** 4 * 10 ** 18, 3);
 
-		const sellBtn = this.props.balance == 0 ? null : (
-			<Button onClick={this.handleSellClick} style={styleTradeBtn}>
+		const btnSell = this.props.balance == 0 ? null : (
+			<Btn primary onClick={this.handleSellClick}>
 				Sell
-			</Button>
+			</Btn>
 		)
 
 		return (
-			<li className="white-card-row">
+			<ListItemWhiteCard>
 
         <Card smallCard white>{this.props.text}</Card>
 
-				<div className="left-side">
-					<div className="white-card-labels">
-						<div className="price-label-div">
-							<div className='lbl-text'>PRICE</div>
-							<div className='price-data header-1'>Ξ {this.state.price}</div>
-						</div>
-						<div className="balance-label-div">
-							<div className='lbl-text'>BALANCE</div>
-							<div className='balance-data header-1'>{balanceStyled}</div>
-						</div>
-					</div>
+        <WhiteCardDash>
+          <WhiteCardStats>
+            <div>
+              <LABEL>PRICE</LABEL>
+              <H1>Ξ {priceRounded}</H1>
+            </div>
+            <div>
+              <LABEL>BALANCE</LABEL>
+              <H1>{balanceRounded}</H1>
+            </div>
+          </WhiteCardStats>
 
-					<div className="trade-div">
-						<FormGroup controlId="formValidationWarning3" validationState="warning">
-							<InputGroup>
-								<FormControl type="text" onChange={this.handleTradeDisplayAmountChange} value={this.state.tradeDisplayAmount} style={styleQuantityInput}/>
-							</InputGroup>
-						</FormGroup>
-						<div className='trade-keys'>
-							<Button onClick={this.handleBuyClick} style={styleTradeBtn}>
-								Buy
-							</Button>
-							{sellBtn}
-						</div>
-					</div>
-				</div>
 
-			</li>
+          <TradeForm controlId="formValidationWarning3" validationState="warning">
+            <InputText type="text" onChange={this.handleTradeDisplayAmountChange} value={this.state.tradeDisplayAmount} placeholder="Quantity"/>
+            <Btn primary onClick={this.handleBuyClick}>Buy</Btn>
+            {btnSell}
+          </TradeForm>
+        </WhiteCardDash>
+
+			</ListItemWhiteCard>
 		)
 	}
 }
+
+const ListItemWhiteCard = styled.li`
+  width: 505px;
+  padding: 0px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+
+  >div:first-child {
+    flex: 0 0 auto;
+  }
+
+  :not(:first-child) {
+    margin-top: 24px;
+  }
+`;
+
+const WhiteCardDash = styled.div`
+  flex: 1 1 auto;
+  padding: 24px 0 16px 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const WhiteCardStats = styled.div`
+  flex: 0 0 auto;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  H1 {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+`;
+
+const TradeForm = styled.div`
+  flex: 0 0 auto;
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+
+  input {
+    flex: 1 1 auto;
+    max-width: 182px;
+  }
+
+  button {
+    flex: 0 0 auto;
+  }
+
+  >:not(:first-child) {
+    margin-left: 8px;
+  }
+`;
 
 function precisionRound(number, precision) {
   var factor = Math.pow(10, precision);

@@ -23,6 +23,5 @@ export default ((props) => {
 })
 
 const ListWhiteCards = styled.ul`
-	background-color: pink;
 	padding: 0;
 `;

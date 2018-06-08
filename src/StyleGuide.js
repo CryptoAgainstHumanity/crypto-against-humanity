@@ -10,7 +10,7 @@ export const COLORS_OBJ = {
   secondary : {
     high: '#323639',
     medium: '#323639',
-    low: '#323639',
+    low: '#CED4DA',
   },
 };
 
@@ -34,9 +34,10 @@ export const FONT = {
   body: 'Arial',
 }
 
-// Shadows
+// Borders-raduis, Shadows,
 
-export const HAS_SHADOW = "box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2)";
+export const HAS_BORDER_RADIUS = 'border-radius: 5px';
+export const HAS_SHADOW = 'box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2)';
 
 // Opacity for different background and emphasis types
 
@@ -65,6 +66,7 @@ export const H1 = styled.h1`
 export const H2 = styled.h2`
   font-size: 24px;
   font-family: ${FONT.heading};
+  font-weight: bold;
   color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
   `;
 

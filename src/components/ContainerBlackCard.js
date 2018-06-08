@@ -11,10 +11,6 @@ class ContainerBlackCard extends Component {
 		super(props)
 	}
 
-					// 	<div className="black-card">
-					// 	<Card text={this.props.blackCard.text} color={this.props.blackCard.color} />
-					// </div>
-
 	render() {
 		return (
 			<BlackCardContainer>
