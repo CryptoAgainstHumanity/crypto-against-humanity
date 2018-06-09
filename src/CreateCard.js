@@ -7,12 +7,17 @@ import {
   Button,
   FormGroup, ButtonToolbar,
   FormControl, InputGroup, ControlLabel,
-  ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
+  ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
 import blackCardRegistry from './web3Contracts/BlackCardRegistry';
 import nsfcCoinToken from './web3Contracts/NsfcCoinToken';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import ipfsAPI from 'ipfs-api'
+import ipfsAPI from 'ipfs-api';
+import Btn from './components/Button';
+import styled from 'styled-components';
+import {
+  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS,
+} from './StyleGuide';
 
 class CreateCard extends Component {
 
@@ -36,7 +41,7 @@ class CreateCard extends Component {
   }
 
   handleColorChange(e) {
-    this.setState({color: e})
+    this.setState({color: e.target.value});
   }
 
   getIpfsHash(content){
@@ -83,31 +88,6 @@ class CreateCard extends Component {
 
   render() {
 
-    const styleToggleBlack = {
-      height: '40px',
-      width:'152px',
-      borderRadius: '4px',
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
-
-      backgroundColor: '#323639',
-      color: 'white',
-    }
-
-    const styleToggleWhite = {
-      height: '40px',
-      width:'152px',
-      borderRadius: '4px',
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
-
-      backgroundColor: 'white',
-      color: '#323639',
-      marginLeft: '16px',
-    }
-
     const styleCard = {
       height: '400px',
       width: '320px',
@@ -129,34 +109,20 @@ class CreateCard extends Component {
       styleCard.color = '#323639';
     }
 
-    const StyleGuideubmit = {
-      width: '320px',
-      height: '40px',
-
-      borderRadius: '4px',
-      backgroundColor: '#d94a4d',
-      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
-
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      color: 'white',
-    }
-
     // <div className="create-card-background"></div>
 
+    // <ToggleButton value={"black"}>Black Card</ToggleButton>
+    // <ToggleButton value={"white"}>White Card</ToggleButton>
+
     return (
-      <div>
+      <ContainerContent>
         <div>
-          <div className="header-1 create-card-title">Create Card</div>
           <form onSubmit={this.handleSubmit.bind(this)}>
 
-            <ButtonToolbar className="create-card-toggle" >
-              <ToggleButtonGroup type="radio" name="options" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
-                <ToggleButton value={"black"} style={styleToggleBlack}>Black Card</ToggleButton>
-                <ToggleButton value={"white"} style={styleToggleWhite}>White Card</ToggleButton>
-              </ToggleButtonGroup>
-            </ButtonToolbar>
+            <ContainerToggle type="radio" name="options" data-toggle="buttons" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
+              <LblSelect black type="button"><input type="radio" name="options" autocomplete="off" value={"black"}/>Black Card</LblSelect>
+              <LblSelect white type="button"><input type="radio" name="options" autocomplete="off" value={"white"}/>White Card</LblSelect>
+            </ContainerToggle>
 
             <FormGroup controlId="formControlsTextarea">
               <FormControl
@@ -167,16 +133,64 @@ class CreateCard extends Component {
               />
             </FormGroup>
 
-            <div><b>{this.state.color == "white" ? <Button className= "primary-button" type="submit" style={StyleGuideubmit}>Submit</Button> :
-                                                  <Button className= "primary-button" type="submit" style={StyleGuideubmit}>Get Verified</Button>}</b></div>
+            <div><b>{this.state.color == "white" ? <Btn primary type="submit">Submit bad idea</Btn> :
+                                                  <Btn primary type="submit">Get Verified</Btn>}</b></div>
 
-            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit" style={StyleGuideubmit}>Submit</Button> : <div></div>}</b></div>
+            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Btn primary onClick={this.submitBlackCard.bind(this)} type="submit">Submit bad idea</Btn> : <div></div>}</b></div>
             <div><b>{this.state.isVerified == true && this.state.color == "black" ? <p>*Ensure you wait until last transaction succeeded before submitting*</p> : <div></div>} </b></div>
           </form>
         </div>
-      </div>
+      </ContainerContent>
     );
   }
 }
+
+const ContainerContent = styled.div`
+  width: 880px;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: red;
+`;
+
+const ContainerToggle = styled.div`
+  display: flex;
+
+  label {
+    flex: 1 0 auto;
+    text-align: center;
+  }
+
+  >label:nth-child(1) {
+    margin-right: 16px;
+  }
+
+  input {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+  }
+`;
+
+const LblSelect = styled.label`
+  padding: 0.5em 1em;
+  ${HAS_BORDER_RADIUS};
+  font-size:16px;
+  font-weight: bold;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
+
+  background-color: ${props => props.white? 'white' : COLORS_OBJ.secondary.high};
+  border: 2px solid ${props => props.white? 'white' : COLORS_OBJ.secondary.high};
+  color: ${props => props.white? COLORS_TEXT.bgLight.high : COLORS_TEXT.bgDark.high};
+
+  :hover {
+    border-color: ${props => props.white? DARKEN('#ffffff') : DARKEN(COLORS_OBJ.secondary.high)};
+    background-color: ${props => props.white? DARKEN('#ffffff') : DARKEN(COLORS_OBJ.secondary.high)};
+    color: ${props => props.white? DARKEN(COLORS_OBJ.secondary.high) : DARKEN('#ffffff')};;
+  }
+`;
 
 export default CreateCard;

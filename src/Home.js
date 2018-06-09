@@ -234,10 +234,10 @@ class Home extends Component {
       <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay}/>
     return (
       <div>
-        <MainContainer>
+        <ContainerMain>
           {blackCardElem}
-          <ContainerWhiteCards whiteCards={this.state.whiteCards} loading={false} />
-        </MainContainer>
+          <ContainerWhiteCards whiteCards={this.state.whiteCards} loading={this.state.loadingWhiteCards} />
+        </ContainerMain>
       </div>
     );
   }

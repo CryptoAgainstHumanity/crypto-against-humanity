@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import WhiteCardListItem from './ListItemWhiteCards';
 import styled from 'styled-components';
 

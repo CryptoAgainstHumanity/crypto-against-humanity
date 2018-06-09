@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, HAS_BORDER_RADIUS,
+  COLORS_OBJ, HAS_BORDER_RADIUS, DARKEN,
 } from '../StyleGuide';
 
 // Default is secondary, for primary button use <Btn primary></Btn>
@@ -14,12 +14,12 @@ const Btn = styled.button`
   font-size:16px;
   font-weight: bold;
 
-  background-color: ${props => props.primary ? COLORS_OBJ.primary.high : 'none'};
-  color: ${props => props.primary ? 'white' : COLORS_OBJ.primary.high}
+  background-color: ${props => props.primary? COLORS_OBJ.primary.high : 'none'};
+  color: ${props => props.primary? 'white' : COLORS_OBJ.primary.high}
 
   :hover {
-    border-color: ${props => props.primary ? '#C24245' : COLORS_OBJ.primary.high};
-    background-color: ${props => props.primary ? '#C24245' : COLORS_OBJ.primary.high};
+    border-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.high) : COLORS_OBJ.primary.high};
+    background-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.high) : COLORS_OBJ.primary.high};
     color: white;
   }
 
