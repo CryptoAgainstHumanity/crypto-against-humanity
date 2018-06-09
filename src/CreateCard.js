@@ -3,11 +3,7 @@ import web3 from './web3';
 import sha256 from 'sha256';
 import ReactGA from 'react-ga';
 import bytes from 'bytes';
-import {
-  Button,
-  FormGroup, ButtonToolbar,
-  FormControl, InputGroup, ControlLabel,
-  ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
+
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
 import blackCardRegistry from './web3Contracts/BlackCardRegistry';
 import nsfcCoinToken from './web3Contracts/NsfcCoinToken';
