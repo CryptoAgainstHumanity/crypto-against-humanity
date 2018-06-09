@@ -31,7 +31,7 @@ class ContainerWhiteCards extends Component {
 
 	render() {
     const whiteCardsListElem = this.props.loading ?
-    <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading everyone's bad ideas... </LOADING>:
+    <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading people's lousy submissions... </LOADING>:
     <WhiteCardList whiteCards={this.props.whiteCards} className="center" />;
 
 		return (

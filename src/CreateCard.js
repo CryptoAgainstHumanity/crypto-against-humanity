@@ -14,9 +14,10 @@ import nsfcCoinToken from './web3Contracts/NsfcCoinToken';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ipfsAPI from 'ipfs-api';
 import Btn from './components/Button';
+import Card from './components/Card';
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS,
+  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS, HAS_SHADOW,
 } from './StyleGuide';
 
 class CreateCard extends Component {
@@ -109,14 +110,28 @@ class CreateCard extends Component {
       styleCard.color = '#323639';
     }
 
-    // <div className="create-card-background"></div>
+    const cardFormControl = (this.state.color === 'black') ?
+      <Card bigCard black><CardText onChange={this.handleTextChange.bind(this)} placeholder="Start typing here"/></Card>:
+      <Card bigCard white><CardText onChange={this.handleTextChange.bind(this)} placeholder="Start typing here"/></Card>;
 
-    // <ToggleButton value={"black"}>Black Card</ToggleButton>
-    // <ToggleButton value={"white"}>White Card</ToggleButton>
+    const whiteCardSubmit = (
+      <ContainerSubmit><Btn primary type="submit">Submit bad idea</Btn></ContainerSubmit>
+      );
+
+    const blackCardSubmit = (this.state.isVerified === true)?
+      (<ContainerSubmit>
+        <Btn type="submit">Prove you're worthy</Btn>
+        <Btn primary onClick={this.submitBlackCard.bind(this)} type="submit">Submit bad idea</Btn>
+      </ContainerSubmit>)
+      :
+      (<ContainerSubmit><Btn primary type="submit">Verify you're worthy</Btn></ContainerSubmit>);
+
+    const cardSubmit = (this.state.color === "black")?
+      blackCardSubmit:
+      whiteCardSubmit
 
     return (
       <ContainerContent>
-        <div>
           <form onSubmit={this.handleSubmit.bind(this)}>
 
             <ContainerToggle type="radio" name="options" data-toggle="buttons" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
@@ -124,22 +139,9 @@ class CreateCard extends Component {
               <LblSelect white type="button"><input type="radio" name="options" autocomplete="off" value={"white"}/>White Card</LblSelect>
             </ContainerToggle>
 
-            <FormGroup controlId="formControlsTextarea">
-              <FormControl
-                onChange={this.handleTextChange.bind(this)}
-                componentClass="textarea"
-                placeholder="Start typing here"
-                style={styleCard}
-              />
-            </FormGroup>
-
-            <div><b>{this.state.color == "white" ? <Btn primary type="submit">Submit bad idea</Btn> :
-                                                  <Btn primary type="submit">Get Verified</Btn>}</b></div>
-
-            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Btn primary onClick={this.submitBlackCard.bind(this)} type="submit">Submit bad idea</Btn> : <div></div>}</b></div>
-            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <p>*Ensure you wait until last transaction succeeded before submitting*</p> : <div></div>} </b></div>
+            {cardFormControl}
+            {cardSubmit}
           </form>
-        </div>
       </ContainerContent>
     );
   }
@@ -152,7 +154,9 @@ const ContainerContent = styled.div`
   flex-direction: column;
   align-items: center;
 
-  background-color: red;
+  form>:not(:first-child) {
+    margin-top: 16px;
+  }
 `;
 
 const ContainerToggle = styled.div`
@@ -176,11 +180,12 @@ const ContainerToggle = styled.div`
 
 const LblSelect = styled.label`
   padding: 0.5em 1em;
-  ${HAS_BORDER_RADIUS};
   font-size:16px;
   font-weight: bold;
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
   cursor: pointer;
+  ${HAS_BORDER_RADIUS};
+  ${HAS_SHADOW};
 
   background-color: ${props => props.white? 'white' : COLORS_OBJ.secondary.high};
   border: 2px solid ${props => props.white? 'white' : COLORS_OBJ.secondary.high};
@@ -190,6 +195,25 @@ const LblSelect = styled.label`
     border-color: ${props => props.white? DARKEN('#ffffff') : DARKEN(COLORS_OBJ.secondary.high)};
     background-color: ${props => props.white? DARKEN('#ffffff') : DARKEN(COLORS_OBJ.secondary.high)};
     color: ${props => props.white? DARKEN(COLORS_OBJ.secondary.high) : DARKEN('#ffffff')};;
+  }
+`;
+
+const CardText = styled.textarea`
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  font-size: 32px;
+  resize: none;
+  border: none;
+  outline: none;
+`;
+
+const ContainerSubmit = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  >:not(:first-child) {
+    margin-top: 8px;
   }
 `;
 
