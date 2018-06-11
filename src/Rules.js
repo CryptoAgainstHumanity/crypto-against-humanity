@@ -27,7 +27,7 @@ class Rules extends Component {
         <PARAGRAPH>Users can also submit Black cards to the Token Curated Registry (TCR) from which a new black card is chosen at random
         every 2 hours.</PARAGRAPH>
 
-        <div className="header-1 centered-title"> How Alice makes money off her sinister sense of humor </div>
+        <H3> How Alice makes money off her sinister sense of humor </H3>
         <PARAGRAPH>Alice opens Crypto Against Humanity and notices the black card with the text "_____, Satoshi's true vision".
         She scrolls through the list of available white cards and notices one labeled "Bitconnect". Obviously that is hilarious.
         She also notices it is very cheap in comparison to the rest of the cards. Alice, ever the savy investor, buys some.</PARAGRAPH>

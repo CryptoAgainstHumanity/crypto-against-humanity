@@ -1,7 +1,6 @@
 import web3 from '../web3'
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { Nav, NavDropdown, MenuBar, MenuItem, Button, FormGroup, FormControl, InputGroup, ControlLabel } from 'react-bootstrap'
 import styled from 'styled-components';
 import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
 import Btn from './Button';

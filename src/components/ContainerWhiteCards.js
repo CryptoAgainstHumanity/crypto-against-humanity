@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Nav, NavItem, NavDropdown, MenuBar, MenuItem, Button } from 'react-bootstrap'
 import WhiteCardList from './ListWhiteCards';
 import styled from 'styled-components';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';

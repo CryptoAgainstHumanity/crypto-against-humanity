@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, COLORS_TEXT, MEDIA, HAS_BORDER_RADIUS
+  COLORS_OBJ, COLORS_TEXT, HAS_BORDER_RADIUS,
 } from '../StyleGuide';
 
 const InputText = styled.input`

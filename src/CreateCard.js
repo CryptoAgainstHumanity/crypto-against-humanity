@@ -127,7 +127,7 @@ class CreateCard extends Component {
       whiteCardSubmit
 
     return (
-      <ContainerColumn>
+      <ContainerMargins>
           <form onSubmit={this.handleSubmit.bind(this)}>
 
             <ContainerToggle type="radio" name="options" data-toggle="buttons" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
@@ -138,18 +138,12 @@ class CreateCard extends Component {
             {cardFormControl}
             {cardSubmit}
           </form>
-      </ContainerColumn>
+      </ContainerMargins>
     );
   }
 }
 
-const ContainerContent = styled.div`
-  width: 880px;
-  padding: 40px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+const ContainerMargins = ContainerColumn.extend`
   form>:not(:first-child) {
     margin-top: 16px;
   }

@@ -31,9 +31,9 @@ class AboutUs extends Component {
         <PARAGRAPH>To suggest ideas on how to accelerate our plan for world destruction contact us at <a href="mailto:Inquiries@CryptoAgainstHumanity.io">Inquiries@CryptoAgainstHumanity.io</a>.</PARAGRAPH>
         <PARAGRAPH>If you're feeling lonely follow us on Twitter, Github or Medium!</PARAGRAPH>
         <SocialLinks big>
-            <li><a href="https://twitter.com/CryptoVHumanity" class="fa fa-twitter" /></li>
-            <li><a href="https://github.com/CryptoAgainstHumanity" class="fa fa-github"/></li>
-            <li><a href="https://medium.com/crypto-against-humanity" class="fa fa-medium"/></li>
+            <li><a href="https://twitter.com/CryptoVHumanity"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="https://github.com/CryptoAgainstHumanity"><i class="fa fa-github"></i></a></li>
+            <li><a href="https://medium.com/crypto-against-humanity"><i class="fa fa-medium"></i></a></li>
         </SocialLinks>
 
         <TeamContainer>
@@ -41,38 +41,37 @@ class AboutUs extends Component {
                 <ImageContainer><img src={imgEmily} alt="Emily Williams"/></ImageContainer>
                 <H4>Emily Williams</H4>
                 <SocialLinks>
-                    <li><a href="https://twitter.com/crypt0glitter" class="fa fa-twitter" /></li>
-                    <li><a href="https://www.linkedin.com/in/ecwilliams66/ " class="fa fa-linkedin"/></li>
-                    <li><a href="https://github.com/emaG3m" class="fa fa-github"/></li>
+                    <li><a href="https://twitter.com/crypt0glitter"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/ecwilliams66/"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="https://github.com/emaG3m"><i class="fa fa-github"></i></a></li>
                 </SocialLinks>
             </SocialCard>
             <SocialCard>
                 <ImageContainer><img src={imgFelix} alt="Felix Kramer"/></ImageContainer>
                 <H4>Felix Kramer</H4>
                 <SocialLinks>
-                    <li><a href="https://twitter.com/FelixLFK" class="fa fa-twitter" /></li>
-                    <li><a href="https://www.linkedin.com/in/flfkramer/" class="fa fa-linkedin"/></li>
-                    <li><a href="https://github.com/flfk" class="fa fa-github"/></li>
-                    <li><a href="https://medium.com/@CryptoEspresso" class="fa fa-medium"/></li>
+                    <li><a href="https://twitter.com/FelixLFK"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/flfkramer/"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="https://github.com/flfk"><i class="fa fa-github"></i></a></li>
                 </SocialLinks>
             </SocialCard>
             <SocialCard>
                 <ImageContainer><img src={imgKyle} alt="Kyle Bryant"/></ImageContainer>
                 <H4>Kyle Bryant</H4>
                 <SocialLinks>
-                    <li><a href="https://twitter.com/komodoman" class="fa fa-twitter" /></li>
-                    <li><a href="https://www.linkedin.com/in/kyle-c-bryant/" class="fa fa-linkedin"/></li>
-                    <li><a href="https://github.com/Kyrrui" class="fa fa-github"/></li>
-                    <li><a href="https://medium.com/@kylebryant_28277" class="fa fa-medium"/></li>
+                    <li><a href="https://twitter.com/komodoman"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/kyle-c-bryant/"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="https://github.com/Kyrrui"><i class="fa fa-github"></i></a></li>
+                    <li><a href="https://medium.com/@kylebryant_28277"><i class="fa fa-medium"></i></a></li>
                 </SocialLinks>
             </SocialCard>
             <SocialCard>
                 <ImageContainer><img src={imgMike} alt="Mike Calvanese"/></ImageContainer>
                 <H4>Mike Calvanese</H4>
                 <SocialLinks>
-                    <li><a href="https://twitter.com/MikeCalvanese" class="fa fa-twitter" /></li>
-                    <li><a href="https://www.linkedin.com/in/michael-calvanese-940b356/" class="fa fa-linkedin"/></li>
-                    <li><a href="https://github.com/mikec" class="fa fa-github"/></li>
+                    <li><a href="https://twitter.com/MikeCalvanese"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="https://www.linkedin.com/in/michael-calvanese-940b356/"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="https://github.com/mikec"><i class="fa fa-github"></i></a></li>
                 </SocialLinks>
             </SocialCard>
         </TeamContainer>
@@ -123,12 +122,10 @@ const SocialLinks = styled.ul`
     list-style: none;
     padding: 0 16px;
 
-    li {
-        a {
-            text-decoration: none;
-            color: rgba(0, 0, 0, 0.80);
-            font-size: ${props => props.big ? '24px': '16px'};
-        }
+    li > a {
+        text-decoration: none;
+        color: rgba(0, 0, 0, 0.80);
+        font-size: ${props => props.big ? '24px': '16px'};
     }
 
     li:not(:first-child) {

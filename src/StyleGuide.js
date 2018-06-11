@@ -1,6 +1,6 @@
 // Constants to be used for styling components across application
 
-import styled, {css} from 'styled-components';
+import styled from 'styled-components';
 
 // Dimensions
 
@@ -16,6 +16,7 @@ export const COLORS_OBJ = {
     medium: '#323639',
     low: '#CED4DA',
   },
+  background : '#e9ebee',
 };
 
 export const COLORS_TEXT = {
@@ -35,7 +36,7 @@ export const COLORS_TEXT = {
 export const DARKEN = (color) => {
 
   // Test input is hex value
-  if ((color[0] !== '#') || (color.length != 7)) {
+  if ((color[0] !== '#') || (color.length !== 7)) {
     console.error('DARKEN requires a 7 char hex value as input');
   }
 
@@ -143,8 +144,6 @@ const SIZES = {
   tablet: 768,
   phone: 376
 }
-
-const mediaQuery = '@media only screen and (max-width: 768px)';
 
 export const MEDIA = {
   desktop: `@media only screen and (max-width: ${SIZES.desktop}px)`,

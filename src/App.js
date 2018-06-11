@@ -2,7 +2,6 @@ import web3 from './web3'
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import logo from './logo.svg';
-import './App.css';
 import {
   Route,
   NavLink,
@@ -10,12 +9,13 @@ import {
 } from "react-router-dom";
 import AboutUs from "./AboutUs";
 import Btn from './components/Button';
+import ContainerApp from "./components/ContainerApp";
 import CreateCard from "./CreateCard";
 import HallOfShame from "./HallOfShame";
 import Home from "./Home";
 import LandingPage from "./LandingPage";
 import NavBar from "./components/NavBar";
-import NavContainer from "./components/NavContainer";
+import ContainerNav from "./components/ContainerNav";
 import Rules from "./Rules";
 
 class App extends Component {
@@ -79,35 +79,37 @@ class App extends Component {
     }
 
     return (
-    <HashRouter>
-    <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
-      <div className="appContainer">
-        <NavContainer>
-        <NavBar>
-              <div><a href="#home">Crypto Against Humanity</a></div>
-              <li><a href="#home" ><NavLink to="/home">Play</NavLink></a></li>
-              <li><a href="#about-us"><NavLink to="/about-us">About Us</NavLink></a></li>
-              <li><a href="#rules"><NavLink to="/rules">Guide</NavLink></a></li>
-              <li><a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a></li>
-              <li><a href="#create-card"><NavLink to="/create-card"><Btn primary>Create Card</Btn></NavLink></a></li>
-        </NavBar>
-        </NavContainer>
+    <ContainerApp>
+      <HashRouter>
+      <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
+        <div className="appContainer">
+          <ContainerNav>
+          <NavBar>
+                <div><a href="#home">Crypto Against Humanity</a></div>
+                <li><a href="#home" ><NavLink to="/home">Play</NavLink></a></li>
+                <li><a href="#about-us"><NavLink to="/about-us">About Us</NavLink></a></li>
+                <li><a href="#rules"><NavLink to="/rules">Guide</NavLink></a></li>
+                <li><a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a></li>
+                <li><a href="#create-card"><NavLink to="/create-card"><Btn primary>Create Card</Btn></NavLink></a></li>
+          </NavBar>
+          </ContainerNav>
 
-        <div className="content">
-            <Route exact path="/" component={Home}/>
-            <Route exact path="/home" component={Home}/>
-            <Route path="/about-us" component={AboutUs}/>
-            <Route path="/rules" component={Rules}/>
-            <Route path="/hall-of-shame" component={HallOfShame}/>
-            <Route path="/create-card" component={CreateCard}/>
+          <div className="content">
+              <Route exact path="/" component={Home}/>
+              <Route exact path="/home" component={Home}/>
+              <Route path="/about-us" component={AboutUs}/>
+              <Route path="/rules" component={Rules}/>
+              <Route path="/hall-of-shame" component={HallOfShame}/>
+              <Route path="/create-card" component={CreateCard}/>
+          </div>
         </div>
-      </div>
-      :
-      <div>
-          <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
-      </div>}
-    </b></div>
-    </HashRouter>
+        :
+        <div>
+            <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
+        </div>}
+      </b></div>
+      </HashRouter>
+    </ContainerApp>
     );
   }
 }

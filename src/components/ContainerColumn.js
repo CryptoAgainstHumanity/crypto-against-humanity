@@ -1,7 +1,5 @@
 import styled from 'styled-components';
-import {
-  H1, LABEL, CONTENT_WIDTH,
-} from '../StyleGuide';
+import { CONTENT_WIDTH } from '../StyleGuide';
 
 
 const ContainerColumn = styled.div`

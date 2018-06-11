@@ -3,10 +3,7 @@ import ReactGA from 'react-ga';
 import styled from 'styled-components';
 import ContainerColumn from './components/ContainerColumn';
 import HallOfShameListItem from "./components/ListItemHallOfShame";
-import ListWhiteCards from './components/ListWhiteCards';
-import {
-  H1,
-} from './StyleGuide';
+import { H1 } from './StyleGuide';
 
 class HallOfShame extends Component {
   constructor(props) {

@@ -11,7 +11,6 @@ import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
 import BlackCardRegistry from './web3Contracts/BlackCardRegistry'
 import ContainerWhiteCards from './components/ContainerWhiteCards'
 import ContainerBlackCard from './components/ContainerBlackCard';
-import Btn from './components/Button';
 import ipfsAPI from 'ipfs-api';
 import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
