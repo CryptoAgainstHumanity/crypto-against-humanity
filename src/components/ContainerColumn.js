@@ -13,11 +13,7 @@ const ContainerColumn = styled.div`
   flex-direction: column;
   align-items: center;
 
-  >* {
-    text-align: center;
-  }
-
-  form>:not(:first-child) {
+  >:not(:first-child) {
     margin-top: 16px;
   }
 `;

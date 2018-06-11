@@ -23,17 +23,13 @@ class AboutUs extends Component {
   render() {
 
     return (
-      <ContainerColumn>
+      <ContainerCentered>
         <H1>About Us</H1>
-        <br/>
         <PARAGRAPH>Crypto Against Humanity was birthed out of 36 caffeine-fueled hours without sleep, 4 dedicated teammates, and the legendary ETH Buenos Aires Hackathon.
         Our team is working hard to bring bad behavior to the Ethereum blockchain.</PARAGRAPH>
         <PARAGRAPH>We hope you enjoy Crypto Against Humanity as much as we enjoyed creating it.</PARAGRAPH>
-        <br/>
         <PARAGRAPH>To suggest ideas on how to accelerate our plan for world destruction contact us at <a href="mailto:Inquiries@CryptoAgainstHumanity.io">Inquiries@CryptoAgainstHumanity.io</a>.</PARAGRAPH>
-        <br/>
         <PARAGRAPH>If you're feeling lonely follow us on Twitter, Github or Medium!</PARAGRAPH>
-        <br/>
         <SocialLinks big>
             <li><a href="https://twitter.com/CryptoVHumanity" class="fa fa-twitter" /></li>
             <li><a href="https://github.com/CryptoAgainstHumanity" class="fa fa-github"/></li>
@@ -81,11 +77,16 @@ class AboutUs extends Component {
             </SocialCard>
         </TeamContainer>
 
-
-      </ContainerColumn>
+      </ContainerCentered>
     );
   }
 }
+
+const ContainerCentered = ContainerColumn.extend`
+  >* {
+    text-align: center;
+  }
+`;
 
 const TeamContainer = styled.div`
     width: 100%;

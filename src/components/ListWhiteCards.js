@@ -2,7 +2,7 @@ import React from 'react';
 import WhiteCardListItem from './ListItemWhiteCards';
 import styled from 'styled-components';
 
-export default ((props) => {
+const ListWhiteCards = ((props) => {
 	let i = 0;
 	const whiteCards = props.whiteCards.map((card) => {
 		i++
@@ -16,12 +16,14 @@ export default ((props) => {
 	})
 
 	return (
-		<ListWhiteCards>
+		<WhiteCardList>
 			{whiteCards}
-		</ListWhiteCards>
+		</WhiteCardList>
 	);
 })
 
-const ListWhiteCards = styled.ul`
+const WhiteCardList = styled.ul`
 	padding: 0;
 `;
+
+export default ListWhiteCards;
