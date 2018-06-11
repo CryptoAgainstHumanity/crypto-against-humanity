@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import {
-  MEDIA
+  MEDIA, CONTENT_WIDTH
 } from '../StyleGuide';
 
-const ContainerMain = styled.div`
+const ContainerRow = styled.div`
   margin: auto;
-  width: 880px;
+  width: ${CONTENT_WIDTH};
   padding: 40px 0;
 
   display: flex;
@@ -28,4 +28,4 @@ const ContainerMain = styled.div`
   }
 `;
 
-export default ContainerMain;
+export default ContainerRow;

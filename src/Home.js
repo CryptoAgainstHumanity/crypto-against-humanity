@@ -16,7 +16,7 @@ import ipfsAPI from 'ipfs-api';
 import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 
-import ContainerMain from './components/ContainerMain';
+import ContainerRow from './components/ContainerRow';
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const blackCardTimeInterval = 10000
@@ -234,10 +234,10 @@ class Home extends Component {
       <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay}/>
     return (
       <div>
-        <ContainerMain>
+        <ContainerRow>
           {blackCardElem}
           <ContainerWhiteCards whiteCards={this.state.whiteCards} loading={this.state.loadingWhiteCards} />
-        </ContainerMain>
+        </ContainerRow>
       </div>
     );
   }

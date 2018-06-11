@@ -3,7 +3,6 @@ import web3 from './web3';
 import sha256 from 'sha256';
 import ReactGA from 'react-ga';
 import bytes from 'bytes';
-
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
 import blackCardRegistry from './web3Contracts/BlackCardRegistry';
 import nsfcCoinToken from './web3Contracts/NsfcCoinToken';
@@ -11,6 +10,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import ipfsAPI from 'ipfs-api';
 import Btn from './components/Button';
 import Card from './components/Card';
+import ContainerColumn from './components/ContainerColumn';
 import styled from 'styled-components';
 import {
   COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS, HAS_SHADOW,
@@ -116,7 +116,7 @@ class CreateCard extends Component {
 
     const blackCardSubmit = (this.state.isVerified === true)?
       (<ContainerSubmit>
-        <Btn type="submit">Prove you're worthy</Btn>
+        <Btn type="submit">Verify you're worthy</Btn>
         <Btn primary onClick={this.submitBlackCard.bind(this)} type="submit">Submit bad idea</Btn>
       </ContainerSubmit>)
       :
@@ -127,7 +127,7 @@ class CreateCard extends Component {
       whiteCardSubmit
 
     return (
-      <ContainerContent>
+      <ContainerColumn>
           <form onSubmit={this.handleSubmit.bind(this)}>
 
             <ContainerToggle type="radio" name="options" data-toggle="buttons" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
@@ -138,7 +138,7 @@ class CreateCard extends Component {
             {cardFormControl}
             {cardSubmit}
           </form>
-      </ContainerContent>
+      </ContainerColumn>
     );
   }
 }

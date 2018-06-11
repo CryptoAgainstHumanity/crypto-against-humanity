@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
-import HallOfShameItem from "./components/hall_of_shame_item"
+import ContainerColumn from './components/ContainerColumn';
+import HallOfShameItem from "./components/hall_of_shame_item";
+import {
+  H1,
+} from './StyleGuide';
 
 class HallOfShame extends Component {
   constructor(props) {
@@ -30,12 +34,12 @@ class HallOfShame extends Component {
       />);
 
     return (
-      <div>
-        <div className="header-1 centered-title">Hall of Shame 💩</div>
+      <ContainerColumn>
+        <H1>Hall of Shame 💩</H1>
         <ul className="white-card-list">
           {pastWinners}
         </ul>
-      </div>
+      </ContainerColumn>
     );
   }
 }

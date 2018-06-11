@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  FONT, H1, COLORS_OBJ, COLORS_TEXT, HAS_SHADOW, HAS_BORDER_RADIUS,
+  FONT, COLORS_OBJ, COLORS_TEXT, HAS_SHADOW, HAS_BORDER_RADIUS,
 } from '../StyleGuide';
 
 const Card = styled.div`

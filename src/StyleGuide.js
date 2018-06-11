@@ -2,6 +2,10 @@
 
 import styled, {css} from 'styled-components';
 
+// Dimensions
+
+export const CONTENT_WIDTH = '880px';
+
 // Colors
 export const COLORS_OBJ = {
   primary : {
@@ -84,7 +88,7 @@ export const H1 = styled.h1`
   font-family: ${FONT.heading};
   font-weight: bold;
   color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
-  margin: 16px 0 8px;
+  margin: 0;
   `;
 
 export const H2 = styled.h2`
@@ -95,17 +99,18 @@ export const H2 = styled.h2`
   `;
 
 export const H3 = styled.h3`
-  font-size: 16px;
+  font-size: 20px;
   font-family: ${FONT.heading};
-  font-weight: normal;
+  font-weight: bold;
   color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
+  margin: 0;
   `;
 
 export const H4 = styled.h4`
   font-size: 16px;
   font-family: ${FONT.heading};
+  font-weight: bold;
   color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
-  text-align: left;
   `;
 
 export const LABEL = styled.p`
@@ -122,6 +127,13 @@ export const LOADING = styled.p`
   font-weight: normal;
   color: ${props => props.bgDark ? COLORS_TEXT.bgDark.low : COLORS_TEXT.bgLight.low};
   margin-bottom: 8px;
+`;
+
+export const PARAGRAPH = styled.p`
+  font-size: 16px;
+  font-family: ${FONT.body};
+  font-weight: normal;
+  color: ${props => props.bgDark ? COLORS_TEXT.bgDark.medium : COLORS_TEXT.bgLight.medium};
 `;
 
 // Media Templates
