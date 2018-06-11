@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import WhiteCardList from './ListWhiteCards';
+import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
-import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
-import { LOADING } from '../StyleGuide';
 
 class ContainerWhiteCards extends Component {
 	constructor(props) {
@@ -29,13 +27,9 @@ class ContainerWhiteCards extends Component {
         // </Nav>
 
 	render() {
-    const whiteCardsListElem = this.props.loading ?
-    <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading people's lousy submissions... </LOADING>:
-    <WhiteCardList whiteCards={this.props.whiteCards} className="center" />;
-
 		return (
 			<Container>
-        {whiteCardsListElem}
+        <ListWhiteCards whiteCards={this.props.whiteCards}/>
       </Container>
 		);
 	}
@@ -43,7 +37,11 @@ class ContainerWhiteCards extends Component {
 
 const Container = styled.div`
   display: flex;
-  flex-direction: columns;
+  flex-direction: column;
+
+  height: calc(100vh - 64px - 64px);
+  width: 528px;
+  overflow: auto;
 `;
 
 export default ContainerWhiteCards;

@@ -79,10 +79,10 @@ class App extends Component {
     }
 
     return (
-    <ContainerApp>
+
       <HashRouter>
       <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
-        <div className="appContainer">
+        <ContainerApp>
           <ContainerNav>
           <NavBar>
                 <div><a href="#home">Crypto Against Humanity</a></div>
@@ -102,14 +102,12 @@ class App extends Component {
               <Route path="/hall-of-shame" component={HallOfShame}/>
               <Route path="/create-card" component={CreateCard}/>
           </div>
-        </div>
+        </ContainerApp>
         :
-        <div>
             <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
-        </div>}
+        }
       </b></div>
       </HashRouter>
-    </ContainerApp>
     );
   }
 }

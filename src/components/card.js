@@ -17,6 +17,7 @@ const Card = styled.div`
 	font-family: ${FONT.heading};
 	font-size: ${props => props.bigCard ? 32 : 20}px;
 	font-weight: bold;
+	text-align: left;
 
 	// Handles long words / overflow
 	overflow-wrap: break-word;

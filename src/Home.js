@@ -228,14 +228,20 @@ class Home extends Component {
   }
 
   render() {
-    const blackCardElem = this.state.loadingBlackCard ?
+
+    const blackCardContainer = this.state.loadingBlackCard ?
       <LOADING> <i className="fa fa-circle-o-notch fa-spin"></i> Loading a crappy black card...</LOADING>:
-      <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay}/>
+      <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay}/>;
+
+    const whiteCardContainer = this.state.loadingWhiteCards ?
+      <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading people's lousy submissions... </LOADING>:
+      <ContainerWhiteCards whiteCards={this.state.whiteCards}/>;
+
     return (
       <div>
         <ContainerRow>
-          {blackCardElem}
-          <ContainerWhiteCards whiteCards={this.state.whiteCards} loading={this.state.loadingWhiteCards} />
+          {blackCardContainer}
+          {whiteCardContainer}
         </ContainerRow>
       </div>
     );

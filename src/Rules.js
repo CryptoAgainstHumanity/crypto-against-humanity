@@ -25,7 +25,7 @@ class Rules extends Component {
         As more people buy into a white card they think goes best with the current black card the price goes up.
         And if the white card falls out of favor and people start to sell it the price falls</PARAGRAPH>
         <PARAGRAPH>Users can also submit Black cards to the Token Curated Registry (TCR) from which a new black card is chosen at random
-        every 2 hours.</PARAGRAPH>
+        every 3 hours.</PARAGRAPH>
 
         <H3> How Alice makes money off her sinister sense of humor </H3>
         <PARAGRAPH>Alice opens Crypto Against Humanity and notices the black card with the text "_____, Satoshi's true vision".

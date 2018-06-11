@@ -23,7 +23,7 @@ class AboutUs extends Component {
   render() {
 
     return (
-      <ContainerCentered>
+      <ContainerColumn>
         <H1>About Us</H1>
         <PARAGRAPH>Crypto Against Humanity was birthed out of 36 caffeine-fueled hours without sleep, 4 dedicated teammates, and the legendary ETH Buenos Aires Hackathon.
         Our team is working hard to bring bad behavior to the Ethereum blockchain.</PARAGRAPH>
@@ -76,16 +76,10 @@ class AboutUs extends Component {
             </SocialCard>
         </TeamContainer>
 
-      </ContainerCentered>
+      </ContainerColumn>
     );
   }
 }
-
-const ContainerCentered = ContainerColumn.extend`
-  >* {
-    text-align: center;
-  }
-`;
 
 const TeamContainer = styled.div`
     width: 100%;

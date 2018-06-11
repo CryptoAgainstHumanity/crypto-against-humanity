@@ -14,6 +14,10 @@ const ContainerColumn = styled.div`
   >:not(:first-child) {
     margin-top: 16px;
   }
+
+  >* {
+    text-align: center;
+  }
 `;
 
 export default ContainerColumn;

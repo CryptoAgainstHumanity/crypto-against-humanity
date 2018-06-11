@@ -13,7 +13,7 @@ import Card from './components/Card';
 import ContainerColumn from './components/ContainerColumn';
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS, HAS_SHADOW,
+  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS, HAS_SHADOW, FONT,
 } from './StyleGuide';
 
 class CreateCard extends Component {
@@ -85,27 +85,6 @@ class CreateCard extends Component {
 
   render() {
 
-    const styleCard = {
-      height: '400px',
-      width: '320px',
-      resize: 'none',
-      zid: '9999',
-
-      borderRadius: '4px',
-      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
-
-      fontSize: '32px',
-      padding: '20px',
-    }
-
-    if (this.state.color === 'black') {
-      styleCard.backgroundColor = '#323639';
-      styleCard.color = 'white';
-    } else {
-      styleCard.backgroundColor = 'white';
-      styleCard.color = '#323639';
-    }
-
     const cardFormControl = (this.state.color === 'black') ?
       <Card bigCard black><CardText onChange={this.handleTextChange.bind(this)} placeholder="Start typing here"/></Card>:
       <Card bigCard white><CardText onChange={this.handleTextChange.bind(this)} placeholder="Start typing here"/></Card>;
@@ -124,7 +103,7 @@ class CreateCard extends Component {
 
     const cardSubmit = (this.state.color === "black")?
       blackCardSubmit:
-      whiteCardSubmit
+      whiteCardSubmit;
 
     return (
       <ContainerMargins>
@@ -192,7 +171,6 @@ const CardText = styled.textarea`
   background-color: transparent;
   width: 100%;
   height: 100%;
-  font-size: 32px;
   resize: none;
   border: none;
   outline: none;

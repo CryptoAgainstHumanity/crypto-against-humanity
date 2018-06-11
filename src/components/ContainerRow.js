@@ -5,7 +5,7 @@ import {
 
 const ContainerRow = styled.div`
   margin: auto;
-  width: ${CONTENT_WIDTH};
+  max-width: ${CONTENT_WIDTH};
   padding: 40px 0;
 
   display: flex;
@@ -14,7 +14,7 @@ const ContainerRow = styled.div`
   align-items: flex-start;
 
   ${MEDIA.tablet} {
-    flex-flow: column;
+    flex-flow: column wrap;
     align-items: center;
   }
 

@@ -1,10 +1,9 @@
 // Constants to be used for styling components across application
-
 import styled from 'styled-components';
 
 // Dimensions
 
-export const CONTENT_WIDTH = '880px';
+export const CONTENT_WIDTH = '888px';
 
 // Colors
 export const COLORS_OBJ = {

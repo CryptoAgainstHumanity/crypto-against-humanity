@@ -130,7 +130,7 @@ class WhiteCardListItem extends Component {
 }
 
 const ListItemWhiteCard = styled.li`
-  width: 505px;
+  max-width: 505px;
   padding: 0px;
 
   display: flex;
@@ -157,7 +157,7 @@ const WhiteCardDash = styled.div`
 `;
 
 const WhiteCardStats = styled.div`
-  flex: 0 0 auto;
+  flex: 0 1 auto;
 
   display: flex;
   flex-direction: row;
@@ -172,7 +172,7 @@ const WhiteCardStats = styled.div`
 `;
 
 const TradeForm = styled.div`
-  flex: 0 0 auto;
+  flex: 0 1 auto;
 
   display: flex;
   flex-flow: row nowrap;
