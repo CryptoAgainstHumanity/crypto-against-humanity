@@ -29,7 +29,7 @@ class Home extends Component {
       loadingBlackCard: true,
       whiteCards: [],
       blackCard: {},
-      originBlock: 3317454
+      originBlock: 3418530
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
@@ -98,31 +98,50 @@ class Home extends Component {
         const cardName = cachedCards[i].text;
         let needsPriceUpdate = false;
         let needsBalanceUpdate = false;
+        let calcBalance = 0;
+        let totalSupply = cachedCards[i].totalSupply;
+        let poolBalance = cachedCards[i].poolBalance;
         var bondingCurvePrice = cachedCards[i].price;
+
 
         await EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {fromBlock: this.state.originBlock, toBlock: 'latest'}, async (err, events) => {
           for(var j = 0; j < events.length; j++) {
             let event = events[j];
             if (event.returnValues.caller == accounts[0]){
               needsBalanceUpdate = true;
+              if (event.event == "Minted") {
+                calcBalance += parseInt(event.returnValues.amount)
+              } else {
+                calcBalance -= parseInt(event.returnValues.amount)
+              }
             }
             if (event.blockNumber > blockNum) {
               needsPriceUpdate = true;
+              if (event.event == "Minted") {
+                poolBalance += parseInt(event.returnValues.totalCost)
+                totalSupply += parseInt(event.returnValues.amount)
+              } else {
+                poolBalance -= parseInt(event.returnValues.reward)
+                totalSupply -= parseInt(event.returnValues.amount)
+              }
             }
           }
         })
-
         if (needsPriceUpdate) {
-          // For now I'm just calling the contract, I attempted to do the math locally, but it was off. I'll come back to it TODO
-          let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call();
-          card.price = (bondingCurvePrice / whiteCardTokenUnits).toFixed(7);
-          whiteCards[i].price = await card.price;
+          // Do math to calculate price
+          var a = parseInt(totalSupply) + Number(defaultTokenBuyAmount)
+          var b = poolBalance
+          var step1 = 10000000000 / 2
+          var step2 = step1 * (a**2)
+          var step3 = step2 / 10000000000
+          var cardMintingPrice = step3 - b
+          var cardPrice = (cardMintingPrice / whiteCardTokenUnits).toFixed(7);
+          whiteCards[i].price = cardPrice;
         }
         if (needsBalanceUpdate) {
-          // Ee can keep track of this without calling the contract by adding subtracting the burn events
-          let balance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
-          card.balance = balance / whiteCardTokenUnits
-          whiteCards[i].balance = await card.balance;
+          // set balance
+          var balance = calcBalance / whiteCardTokenUnits
+          whiteCards[i].balance = balance
         } else {
           whiteCards[i].balance = 0; // This account has never burned or minted, so their balance is 0
         }
@@ -152,16 +171,16 @@ class Home extends Component {
         let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
         // Used for math if we want to calculate price locally
-        // let bondingCurveTotalSupply = await EthPolynomialCurveToken.methods.totalSupply().call(); 
-        // let bondingCurvePoolBalance = await EthPolynomialCurveToken.methods.poolBalance().call();
+        let bondingCurveTotalSupply = await EthPolynomialCurveToken.methods.totalSupply().call(); 
+        let bondingCurvePoolBalance = await EthPolynomialCurveToken.methods.poolBalance().call();
 
         whiteCards.push({
           text,
           bondingCurveAddress: bondingCurveAddress,
           balance: bondingCurveBalance / whiteCardTokenUnits,
           price: bondingCurvePrice / whiteCardTokenUnits,
-          // totalSupply: bondingCurveTotalSupply,
-          // poolBalance: bondingCurvePoolBalance,
+          totalSupply: bondingCurveTotalSupply,
+          poolBalance: bondingCurvePoolBalance,
           color: "white-card"
         })
       }
