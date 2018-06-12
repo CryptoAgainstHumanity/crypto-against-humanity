@@ -188,7 +188,6 @@ class Home extends Component {
     let blackCard = { text: 'My centralized point of failure connection to ______ is down!', color: "black-card" }
     let text
     if (this.blackCards.length > 0) {
-      console.log("it's not down")
       let ipfsHash = this.blackCards[i].returnValues.data
       try {
         let buffer = await ipfs.object.data(ipfsHash)
