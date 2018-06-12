@@ -29,7 +29,7 @@ class Home extends Component {
       loadingBlackCard: true,
       whiteCards: [],
       blackCard: {},
-      originBlock: 3317454
+      originBlock: 3418530
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
