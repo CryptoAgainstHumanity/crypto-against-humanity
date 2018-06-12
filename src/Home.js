@@ -81,15 +81,11 @@ class Home extends Component {
       let whiteCards = cachedCards;
       for (var i = 0; i < cachedCards.length; i++) {
         EthPolynomialCurveToken.options.address = cachedCards[i].bondingCurveAddress;
-        const card = cachedCards[i]
         const cardName = cachedCards[i].text;
-        let needsPriceUpdate = false;
         let needsBalanceUpdate = false;
         let calcBalance = 0;
-        let totalSupply = cachedCards[i].totalSupply;
-        let poolBalance = cachedCards[i].poolBalance;
-        var bondingCurvePrice = cachedCards[i].price;
-
+        let totalSupply = 0;
+        let poolBalance = 0;
 
         await EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {fromBlock: this.state.originBlock, toBlock: 'latest'}, async (err, events) => {
           for(var j = 0; j < events.length; j++) {
@@ -102,29 +98,33 @@ class Home extends Component {
                 calcBalance -= parseInt(event.returnValues.amount)
               }
             }
-            if (event.blockNumber > blockNum) {
-              needsPriceUpdate = true;
-              if (event.event == "Minted") {
-                poolBalance += parseInt(event.returnValues.totalCost)
-                totalSupply += parseInt(event.returnValues.amount)
-              } else {
-                poolBalance -= parseInt(event.returnValues.reward)
-                totalSupply -= parseInt(event.returnValues.amount)
-              }
+            if (event.event == "Minted") {
+              poolBalance += parseInt(event.returnValues.totalCost)
+              totalSupply += parseInt(event.returnValues.amount)
+            } else {
+              poolBalance -= parseInt(event.returnValues.reward)
+              totalSupply -= parseInt(event.returnValues.amount)
             }
           }
         })
-        if (needsPriceUpdate) {
-          // Do math to calculate price
-          var a = parseInt(totalSupply) + Number(defaultTokenBuyAmount)
-          var b = poolBalance
-          var step1 = 10000000000 / 2
-          var step2 = step1 * (a**2)
-          var step3 = step2 / 10000000000
-          var cardMintingPrice = step3 - b
-          var cardPrice = (cardMintingPrice / whiteCardTokenUnits).toFixed(7);
-          whiteCards[i].price = cardPrice;
-        }
+        
+        // Do math to calculate price - this math to be specific:
+        // uint256 constant private PRECISION = 10000000000;
+        // uint256 constant private exponent = 1;
+        // function curveIntegral(uint256 t) internal returns (uint256) {
+        // uint256 nexp = exponent + 1;
+        // // Calculate integral of t^exponent
+        // return PRECISION.div(nexp).mul(t ** nexp).div(PRECISION);
+        // }
+        var a = parseInt(totalSupply) + Number(defaultTokenBuyAmount)
+        var b = poolBalance
+        var step1 = 10000000000 / 2
+        var step2 = step1 * (a**2)
+        var step3 = step2 / 10000000000
+        var cardMintingPrice = step3 - b
+        var cardPrice = (cardMintingPrice / whiteCardTokenUnits).toFixed(7);
+        whiteCards[i].price = cardPrice;
+
         if (needsBalanceUpdate) {
           // set balance
           var balance = calcBalance / whiteCardTokenUnits
