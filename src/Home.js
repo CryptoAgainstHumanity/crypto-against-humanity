@@ -94,24 +94,35 @@ class Home extends Component {
         EthPolynomialCurveToken.options.address = cachedCards[i].bondingCurveAddress;
         const card = cachedCards[i]
         const cardName = cachedCards[i].text;
-        let needsUpdate = false;
+        let needsPriceUpdate = false;
+        let needsBalanceUpdate = false;
         var bondingCurvePrice = cachedCards[i].price;
 
-        await EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {fromBlock: blockNum, toBlock: 'latest'}, async (err, events) => {
-          if (events.length > 0){
-            needsUpdate = true;
-          } 
+        await EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {fromBlock: this.state.originBlock, toBlock: 'latest'}, async (err, events) => {
+          for(var j = 0; j < events.length; j++) {
+            let event = events[j];
+            if (event.returnValues.caller == accounts[0]){
+              needsBalanceUpdate = true;
+            }
+            if (event.blockNumber > blockNum) {
+              needsPriceUpdate = true;
+            }
+          }
         })
 
-        if (needsUpdate) {
-          // If we add addresses to the emit events Burned and Minted, we can keep track of this without calling the contract
-          let balance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
-          card.balance = balance / whiteCardTokenUnits
+        if (needsPriceUpdate) {
           // For now I'm just calling the contract, I attempted to do the math locally, but it was off. I'll come back to it TODO
           let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call();
           card.price = (bondingCurvePrice / whiteCardTokenUnits).toFixed(7);
           whiteCards[i].price = await card.price;
+        }
+        if (needsBalanceUpdate) {
+          // Ee can keep track of this without calling the contract by adding subtracting the burn events
+          let balance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
+          card.balance = balance / whiteCardTokenUnits
           whiteCards[i].balance = await card.balance;
+        } else {
+          whiteCards[i].balance = 0; // This account has never burned or minted, so their balance is 0
         }
       }
       updatedCards = _.orderBy(whiteCards, ['price'], ['desc']);

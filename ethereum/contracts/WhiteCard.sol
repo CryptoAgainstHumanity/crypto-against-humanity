@@ -166,8 +166,8 @@ library SafeMath {
 ///         implementation that is backed by ether.
 contract EthBondingCurvedToken is EIP20 {
 
-    event Minted(uint256 amount, uint256 totalCost);
-    event Burned(uint256 amount, uint256 reward);
+    event Minted(uint256 amount, uint256 totalCost, address caller);
+    event Burned(uint256 amount, uint256 reward, address caller);
 
     using SafeMath for uint256;
 
@@ -204,7 +204,7 @@ contract EthBondingCurvedToken is EIP20 {
             msg.sender.transfer(msg.value - priceForTokens);
         }
 
-        emit Minted(numTokens, priceForTokens);
+        emit Minted(numTokens, priceForTokens, msg.sender);
     }
 
     /// @dev                Burn tokens to receive ether
@@ -218,7 +218,7 @@ contract EthBondingCurvedToken is EIP20 {
         poolBalance = poolBalance.sub(ethToReturn);
         msg.sender.transfer(ethToReturn);
 
-        emit Burned(numTokens, ethToReturn);
+        emit Burned(numTokens, ethToReturn, msg.sender);
     }
 }
 
