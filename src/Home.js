@@ -9,11 +9,13 @@ import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
 import BlackCardRegistry from './web3Contracts/BlackCardRegistry'
-import WhiteCardList from './components/white_card_list';
-import WhiteCardListItem from './components/white_card_list_item';
-import WhiteCardsInPlayView from './components/white_cards_in_play_view'
-import BlackCardDisplay from './components/black_card_display';
-import ipfsAPI from 'ipfs-api'
+import ContainerWhiteCards from './components/ContainerWhiteCards'
+import ContainerBlackCard from './components/ContainerBlackCard';
+import ipfsAPI from 'ipfs-api';
+import { LOADING } from './StyleGuide';
+import '../node_modules/font-awesome/css/font-awesome.min.css';
+
+import ContainerRow from './components/ContainerRow';
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const blackCardTimeInterval = 10000
@@ -52,7 +54,7 @@ class Home extends Component {
     } else {
       // No Cahce, get all cards
       this.loadWhiteCards(originBlock);
-    } 
+    }
 
     BlackCardRegistry.getPastEvents('_Application', {
       fromBlock: originBlock,
@@ -165,7 +167,7 @@ class Home extends Component {
       }
       whiteCards = _.orderBy(whiteCards, ['price'], ['desc'])
       localStorage.setItem("cached-block", JSON.stringify(newBlockNum.number));
-      localStorage.setItem("cached-cards", JSON.stringify(whiteCards)); 
+      localStorage.setItem("cached-cards", JSON.stringify(whiteCards));
 
       this.setState({
         whiteCards: whiteCards,
@@ -226,20 +228,22 @@ class Home extends Component {
   }
 
   render() {
-    const blackCardElem = this.state.loadingBlackCard ? <div>Loading...</div> :
-      <BlackCardDisplay blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay} className="center" />
+
+    const blackCardContainer = this.state.loadingBlackCard ?
+      <LOADING> <i className="fa fa-circle-o-notch fa-spin"></i> Loading a crappy black card...</LOADING>:
+      <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay}/>;
+
+    const whiteCardContainer = this.state.loadingWhiteCards ?
+      <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading people's lousy submissions... </LOADING>:
+      <ContainerWhiteCards whiteCards={this.state.whiteCards}/>;
+
     return (
-        <div className="row current-round-page">
-
-          <div className="column black-card-in-play">
-            {blackCardElem}
-          </div>
-
-          <div className="column white-cards-in-play">
-            <WhiteCardsInPlayView whiteCards={this.state.whiteCards} loading={this.state.loadingWhiteCards} />
-          </div>
-
-        </div>
+      <div>
+        <ContainerRow>
+          {blackCardContainer}
+          {whiteCardContainer}
+        </ContainerRow>
+      </div>
     );
   }
 }

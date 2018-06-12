@@ -3,16 +3,18 @@ import web3 from './web3';
 import sha256 from 'sha256';
 import ReactGA from 'react-ga';
 import bytes from 'bytes';
-import {
-  Button,
-  FormGroup, ButtonToolbar,
-  FormControl, InputGroup, ControlLabel,
-  ToggleButtonGroup, ToggleButton } from 'react-bootstrap'
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
 import blackCardRegistry from './web3Contracts/BlackCardRegistry';
 import nsfcCoinToken from './web3Contracts/NsfcCoinToken';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-import ipfsAPI from 'ipfs-api'
+import ipfsAPI from 'ipfs-api';
+import Btn from './components/Button';
+import Card from './components/Card';
+import ContainerColumn from './components/ContainerColumn';
+import styled from 'styled-components';
+import {
+  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS, HAS_SHADOW, FONT,
+} from './StyleGuide';
 
 class CreateCard extends Component {
 
@@ -36,7 +38,7 @@ class CreateCard extends Component {
   }
 
   handleColorChange(e) {
-    this.setState({color: e})
+    this.setState({color: e.target.value});
   }
 
   getIpfsHash(content){
@@ -83,100 +85,104 @@ class CreateCard extends Component {
 
   render() {
 
-    const styleToggleBlack = {
-      height: '40px',
-      width:'152px',
-      borderRadius: '4px',
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
+    const cardFormControl = (this.state.color === 'black') ?
+      <Card bigCard black><CardText onChange={this.handleTextChange.bind(this)} placeholder="Start typing here"/></Card>:
+      <Card bigCard white><CardText onChange={this.handleTextChange.bind(this)} placeholder="Start typing here"/></Card>;
 
-      backgroundColor: '#323639',
-      color: 'white',
-    }
+    const whiteCardSubmit = (
+      <ContainerSubmit><Btn primary type="submit">Submit bad idea</Btn></ContainerSubmit>
+      );
 
-    const styleToggleWhite = {
-      height: '40px',
-      width:'152px',
-      borderRadius: '4px',
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
+    const blackCardSubmit = (this.state.isVerified === true)?
+      (<ContainerSubmit>
+        <Btn type="submit">Verify you're worthy</Btn>
+        <Btn primary onClick={this.submitBlackCard.bind(this)} type="submit">Submit bad idea</Btn>
+      </ContainerSubmit>)
+      :
+      (<ContainerSubmit><Btn primary type="submit">Verify you're worthy</Btn></ContainerSubmit>);
 
-      backgroundColor: 'white',
-      color: '#323639',
-      marginLeft: '16px',
-    }
-
-    const styleCard = {
-      height: '400px',
-      width: '320px',
-      resize: 'none',
-      zid: '9999',
-
-      borderRadius: '4px',
-      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
-
-      fontSize: '32px',
-      padding: '20px',
-    }
-
-    if (this.state.color === 'black') {
-      styleCard.backgroundColor = '#323639';
-      styleCard.color = 'white';
-    } else {
-      styleCard.backgroundColor = 'white';
-      styleCard.color = '#323639';
-    }
-
-    const styleSubmit = {
-      width: '320px',
-      height: '40px',
-
-      borderRadius: '4px',
-      backgroundColor: '#d94a4d',
-      boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
-
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      color: 'white',
-    }
-
-    // <div className="create-card-background"></div>
+    const cardSubmit = (this.state.color === "black")?
+      blackCardSubmit:
+      whiteCardSubmit;
 
     return (
-      <div>
-        <div>
-          <div className="header-1 create-card-title">Create Card</div>
+      <ContainerMargins>
           <form onSubmit={this.handleSubmit.bind(this)}>
 
-            <ButtonToolbar className="create-card-toggle" >
-              <ToggleButtonGroup type="radio" name="options" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
-                <ToggleButton value={"black"} style={styleToggleBlack}>Black Card</ToggleButton>
-                <ToggleButton value={"white"} style={styleToggleWhite}>White Card</ToggleButton>
-              </ToggleButtonGroup>
-            </ButtonToolbar>
+            <ContainerToggle type="radio" name="options" data-toggle="buttons" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
+              <LblSelect black type="button"><input type="radio" name="options" autocomplete="off" value={"black"}/>Black Card</LblSelect>
+              <LblSelect white type="button"><input type="radio" name="options" autocomplete="off" value={"white"}/>White Card</LblSelect>
+            </ContainerToggle>
 
-            <FormGroup controlId="formControlsTextarea">
-              <FormControl
-                onChange={this.handleTextChange.bind(this)}
-                componentClass="textarea"
-                placeholder="Start typing here"
-                style={styleCard}
-              />
-            </FormGroup>
-
-            <div><b>{this.state.color == "white" ? <Button className= "primary-button" type="submit" style={styleSubmit}>Submit</Button> :
-                                                  <Button className= "primary-button" type="submit" style={styleSubmit}>Get Verified</Button>}</b></div>
-
-            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <Button onClick={this.submitBlackCard.bind(this)} type="submit" style={styleSubmit}>Submit</Button> : <div></div>}</b></div>
-            <div><b>{this.state.isVerified == true && this.state.color == "black" ? <p>*Ensure you wait until last transaction succeeded before submitting*</p> : <div></div>} </b></div>
+            {cardFormControl}
+            {cardSubmit}
           </form>
-        </div>
-      </div>
+      </ContainerMargins>
     );
   }
 }
+
+const ContainerMargins = ContainerColumn.extend`
+  form>:not(:first-child) {
+    margin-top: 16px;
+  }
+`;
+
+const ContainerToggle = styled.div`
+  display: flex;
+
+  label {
+    flex: 1 0 auto;
+    text-align: center;
+  }
+
+  >label:nth-child(1) {
+    margin-right: 16px;
+  }
+
+  input {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none;
+  }
+`;
+
+const LblSelect = styled.label`
+  padding: 0.5em 1em;
+  font-size:16px;
+  font-weight: bold;
+  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  cursor: pointer;
+  ${HAS_BORDER_RADIUS};
+  ${HAS_SHADOW};
+
+  background-color: ${props => props.white? 'white' : COLORS_OBJ.secondary.high};
+  border: 2px solid ${props => props.white? 'white' : COLORS_OBJ.secondary.high};
+  color: ${props => props.white? COLORS_TEXT.bgLight.high : COLORS_TEXT.bgDark.high};
+
+  :hover {
+    border-color: ${props => props.white? DARKEN('#ffffff') : DARKEN(COLORS_OBJ.secondary.high)};
+    background-color: ${props => props.white? DARKEN('#ffffff') : DARKEN(COLORS_OBJ.secondary.high)};
+    color: ${props => props.white? DARKEN(COLORS_OBJ.secondary.high) : DARKEN('#ffffff')};;
+  }
+`;
+
+const CardText = styled.textarea`
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+`;
+
+const ContainerSubmit = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  >:not(:first-child) {
+    margin-top: 8px;
+  }
+`;
 
 export default CreateCard;

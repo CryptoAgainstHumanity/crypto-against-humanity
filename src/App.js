@@ -1,20 +1,22 @@
 import web3 from './web3'
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import { Button } from 'react-bootstrap'
 import logo from './logo.svg';
-import './App.css';
 import {
   Route,
   NavLink,
   HashRouter
 } from "react-router-dom";
 import AboutUs from "./AboutUs";
-import Home from "./Home";
-import Rules from "./Rules";
-import HallOfShame from "./HallOfShame";
+import Btn from './components/Button';
+import ContainerApp from "./components/ContainerApp";
 import CreateCard from "./CreateCard";
+import HallOfShame from "./HallOfShame";
+import Home from "./Home";
 import LandingPage from "./LandingPage";
+import NavBar from "./components/NavBar";
+import ContainerNav from "./components/ContainerNav";
+import Rules from "./Rules";
 
 class App extends Component {
 
@@ -33,7 +35,7 @@ class App extends Component {
 
   callback(metamask, isLoggedIn, network) {
     this.setState({isLoggedIn: isLoggedIn, hasMetamask: metamask, network: network, loading: false})
-  } 
+  }
 
   checkWeb3 = async (callback) => {
     var hasMetamask = false;
@@ -72,54 +74,40 @@ class App extends Component {
   }
 
   render() {
-    const styleCreateCard = {
-      width: '107px',
-      height: '40px',
-
-      borderRadius: '4px',
-      backgroundColor: '#d94a4d',
-      // boxShadow: '0 4px 6px 0 rgba(0, 0, 0, 0.2)',
-
-      fontFamily: 'Arial',
-      fontSize: '16px',
-      fontWeight: 'bold',
-      color: 'white',
-    }
-
     if (this.state.loading) {
       return <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />;
     }
 
     return (
-    <HashRouter>
-    <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
-      <div className="appContainer">
-        <div className="topnav">
-          <a href="#home"><div className="header-brand nav-left">Crypto Against Humanity</div></a>
 
-          <div className="nav-right">
-            <a href="#home" ><NavLink to="/home">Play</NavLink></a>
-            <a href="#about-us"><NavLink to="/about-us">About Us</NavLink></a>
-            <a href="#rules"><NavLink to="/rules">Guide</NavLink></a>
-            <a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a>
-            <a href="#create-card"><NavLink to="/create-card" style={styleCreateCard}>Create Card</NavLink></a>
+      <HashRouter>
+      <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
+        <ContainerApp>
+          <ContainerNav>
+          <NavBar>
+                <div><a href="#home">Crypto Against Humanity</a></div>
+                <li><a href="#home" ><NavLink to="/home">Play</NavLink></a></li>
+                <li><a href="#about-us"><NavLink to="/about-us">About Us</NavLink></a></li>
+                <li><a href="#rules"><NavLink to="/rules">Guide</NavLink></a></li>
+                <li><a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a></li>
+                <li><a href="#create-card"><NavLink to="/create-card"><Btn primary>Create Card</Btn></NavLink></a></li>
+          </NavBar>
+          </ContainerNav>
+
+          <div className="content">
+              <Route exact path="/" component={Home}/>
+              <Route exact path="/home" component={Home}/>
+              <Route path="/about-us" component={AboutUs}/>
+              <Route path="/rules" component={Rules}/>
+              <Route path="/hall-of-shame" component={HallOfShame}/>
+              <Route path="/create-card" component={CreateCard}/>
           </div>
-        </div>
-        <div className="content">
-            <Route exact path="/" component={Home}/>
-            <Route exact path="/home" component={Home}/>
-            <Route path="/about-us" component={AboutUs}/>
-            <Route path="/rules" component={Rules}/>
-            <Route path="/hall-of-shame" component={HallOfShame}/>
-            <Route path="/create-card" component={CreateCard}/>
-        </div>
-      </div>  
-      : 
-      <div>
-          <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
-      </div>} 
-    </b></div>
-    </HashRouter>
+        </ContainerApp>
+        :
+            <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
+        }
+      </b></div>
+      </HashRouter>
     );
   }
 }

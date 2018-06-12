@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
-import HallOfShameItem from "./components/hall_of_shame_item"
+import styled from 'styled-components';
+import ContainerColumn from './components/ContainerColumn';
+import HallOfShameListItem from "./components/ListItemHallOfShame";
+import { H1 } from './StyleGuide';
 
 class HallOfShame extends Component {
   constructor(props) {
@@ -21,7 +24,7 @@ class HallOfShame extends Component {
 
     console.log(this.state.pastWinners);
     const pastWinners = this.state.pastWinners
-      .map((winner) => <HallOfShameItem
+      .map((winner) => <HallOfShameListItem
         key={winner.whiteCardTxt}
         blackCardTxt={winner.blackCardTxt}
         whiteCardTxt={winner.whiteCardTxt}
@@ -30,14 +33,18 @@ class HallOfShame extends Component {
       />);
 
     return (
-      <div>
-        <div className="header-1 centered-title">Hall of Shame 💩</div>
-        <ul className="white-card-list">
+      <ContainerColumn>
+        <H1>Hall of Shame 💩</H1>
+        <HallOfShameList>
           {pastWinners}
-        </ul>
-      </div>
+        </HallOfShameList>
+      </ContainerColumn>
     );
   }
 }
+
+const HallOfShameList = styled.ul`
+  padding: 0;
+`;
 
 export default HallOfShame;
