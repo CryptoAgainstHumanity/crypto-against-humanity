@@ -29,7 +29,8 @@ class Home extends Component {
       loadingBlackCard: true,
       whiteCards: [],
       blackCard: {},
-      originBlock: 3418530
+      originBlock: 3418530,
+      TCRoriginBlock: 3317454
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
@@ -44,9 +45,8 @@ class Home extends Component {
 
     // Check if we have cached previous white cards.
     var originBlock = this.state.originBlock;
+    var TCRoriginBlock = this.state.TCRoriginBlock;
     const cachedFromBlock = localStorage.getItem("cached-block");
-    const cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
-    const currentBlock = this.getCurrentBlock
 
     if (cachedFromBlock) {
       //Cache exists, update from cached block
@@ -57,7 +57,7 @@ class Home extends Component {
     }
 
     BlackCardRegistry.getPastEvents('_Application', {
-      fromBlock: originBlock,
+      fromBlock: TCRoriginBlock,
       toBlock: 'latest'
     }, async (err, events) => {
       this.blackCards = events
@@ -65,19 +65,6 @@ class Home extends Component {
       this.startTimer()
     })
 
-  }
-
-  async updateFromBlock(blockNum) {
-    this.loadWhiteCards(blockNum);
-  }
-
-  async getCurrentBlock() {
-    const block = await web3.eth.getBlock('latest');
-    return block.number;
-  }
-
-  async updateWhiteCards () {
-    this.loadWhiteCards(this.state.originBlock)
   }
 
   async loadWhiteCards(blockNum) {
