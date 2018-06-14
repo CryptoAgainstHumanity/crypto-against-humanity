@@ -65,6 +65,7 @@ class Home extends Component {
         this.ipfsCallback(buf.toString('utf8'), cachedCards);
       }
       if (err) {
+        console.log(err)
         this.ipfsCallback(0, 0);
       }
     })
@@ -72,7 +73,6 @@ class Home extends Component {
 
   ipfsCallback(ipfsCachedBlock, ipfsCachedCards) {
     var originBlock = this.state.originBlock;
-    var TCRoriginBlock = this.state.TCRoriginBlock;
     var cachedFromBlock = localStorage.getItem("cached-block");
     var isLocalCache = false;
     if (cachedFromBlock) {
@@ -97,21 +97,21 @@ class Home extends Component {
         this.loadWhiteCards(originBlock, isLocalCache);
       }
     }
-
-    BlackCardRegistry.getPastEvents('_Application', {
-      fromBlock: TCRoriginBlock,
-      toBlock: 'latest'
-    }, async (err, events) => {
-      this.blackCards = events
-      this.setBlackCard()
-      this.startTimer()
-    })
   }
 
 
   async loadWhiteCards(blockNum, isLocalCache) {
     this.setState({
         loadingWhiteCards: true
+    })
+
+    BlackCardRegistry.getPastEvents('_Application', {
+      fromBlock: this.state.TCRoriginBlock,
+      toBlock: 'latest'
+    }, async (err, events) => {
+      this.blackCards = events
+      this.setBlackCard()
+      this.startTimer()
     })
 
     const newBlockNum = await web3.eth.getBlock('latest');
