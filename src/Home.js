@@ -169,7 +169,7 @@ class Home extends Component {
           var step2 = step1 * (a**2)
           var step3 = step2 / 10000000000
           var cardMintingPrice = step3 - b
-          var cardPrice = (cardMintingPrice / whiteCardTokenUnits).toFixed(7);
+          var cardPrice = (cardMintingPrice / whiteCardTokenUnits);
           whiteCards[i].price = cardPrice;
 
           if (needsBalanceUpdate) {
