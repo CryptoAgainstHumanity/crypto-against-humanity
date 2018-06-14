@@ -119,7 +119,7 @@ class Home extends Component {
     const accounts = await web3.eth.getAccounts()
 
     // If we are cached to the current block, don't reload anything, unless it's a different account accessing it.
-    if (newBlockNum.number != blockNum && isLocalCache == true && JSON.parse(localStorage.getItem("last-account")) != accounts[0]) {
+    if (newBlockNum.number != blockNum || JSON.parse(localStorage.getItem("last-account")) != accounts[0] || isLocalCache == false) {
       localStorage.setItem("last-account", JSON.stringify(accounts[0])); // set last-account to this one
       const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
       const defaultTokenBuyAmount = 0.001 * 10 ** 18
@@ -189,8 +189,11 @@ class Home extends Component {
       }, async (err, events) => {
         let newBlockNum = await web3.eth.getBlock('latest');
         let whiteCards = []
+
+        // Get cached cards
         if (cachedCards && blockNum != this.state.originBlock) {
           whiteCards = cachedCards;
+          // Get updated cards from 
           if (updatedCards.length > 0) {
             whiteCards = updatedCards;
           }
