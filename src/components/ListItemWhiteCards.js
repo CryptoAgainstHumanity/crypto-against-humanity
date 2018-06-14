@@ -32,14 +32,14 @@ class WhiteCardListItem extends Component {
 		this.getBondingCurvePrice(defaultTradeAmount)
 	};
 
-  isNonNumeric = (input) => {
-    return input.match(/[^$,.\d]/);
+  isNumeric = (input) => {
+    return !isNaN(parseFloat(input)) && isFinite(input);
   };
 
 	handleTradeDisplayAmountChange (event) {
 		const input = event.target.value;
     this.setState({ tradeDisplayAmount: input});
-    if (!this.isNonNumeric(input)) {
+    if (this.isNumeric(input)) {
       this.getBondingCurvePrice(input);
     }
 	};
