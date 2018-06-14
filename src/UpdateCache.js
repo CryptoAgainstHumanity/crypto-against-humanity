@@ -135,9 +135,9 @@ class UpdateCache extends Component {
         // <Btn primary onClick={this.createFile}>Create IPFS File</Btn>
         // <Btn primary onClick={this.editFile}>Change File Content</Btn>
         // <Btn primary onClick={this.showFile}>Show File Content</Btn>
+        // <Btn primary onClick={this.makeDir}>Make IPFS Dir</Btn>
     return (
       <div>
-        <Btn primary onClick={this.makeDir}>Make IPFS Dir</Btn>
         <Btn primary onClick={this.loadWhiteCards}>Update Cache</Btn>
         <Btn primary onClick={this.showFile}>Show Card Cache</Btn>
       </div>
