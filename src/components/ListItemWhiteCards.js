@@ -26,16 +26,23 @@ class WhiteCardListItem extends Component {
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
 		this.handleBuyClick = this.handleBuyClick.bind(this);
 		this.handleSellClick = this.handleSellClick.bind(this);
-	}
+	};
 
 	componentWillMount () {
 		this.getBondingCurvePrice(defaultTradeAmount)
-	}
+	};
+
+  isNonNumeric = (input) => {
+    return input.match(/[^$,.\d]/);
+  };
 
 	handleTradeDisplayAmountChange (event) {
-		this.setState({ tradeDisplayAmount: event.target.value })
-		this.getBondingCurvePrice(event.target.value)
-	}
+		const input = event.target.value;
+    this.setState({ tradeDisplayAmount: input});
+    if (!this.isNonNumeric(input)) {
+      this.getBondingCurvePrice(input);
+    }
+	};
 
 	handleBuyClick (event) {
 		this.mintTokens()
@@ -45,7 +52,7 @@ class WhiteCardListItem extends Component {
             category: 'Bought White Card',
             action: cardText,
         });
-	}
+	};
 
 	handleSellClick (event) {
 		this.burnTokens()
@@ -55,7 +62,7 @@ class WhiteCardListItem extends Component {
             category: 'Sold White Card',
             action: cardText,
         });
-	}
+	};
 
 	async mintTokens () {
 		const accounts = await web3.eth.getAccounts()
@@ -63,7 +70,7 @@ class WhiteCardListItem extends Component {
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
 		let bondingCurvePrice = await EthPolynomialCurveToken.methods
 			.mint(tokenVal).send({ value: this.state.price * 10 ** 18, from: accounts[0] })
-	}
+	};
 
 	async burnTokens () {
 		const accounts = await web3.eth.getAccounts()
@@ -71,7 +78,7 @@ class WhiteCardListItem extends Component {
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
 		let bondingCurvePrice = await EthPolynomialCurveToken.methods
 			.burn(tokenVal).send({ from: accounts[0] })
-	}
+	};
 
 	async getBondingCurvePrice (displayVal) {
 		let tokenVal = displayVal * tokenUnits
@@ -81,7 +88,7 @@ class WhiteCardListItem extends Component {
 		this.setState({
 			price: bondingCurvePrice / 10 ** 18
 		})
-	}
+	};
 
 	render() {
 
@@ -127,7 +134,7 @@ class WhiteCardListItem extends Component {
 			</ListItemWhiteCard>
 		)
 	}
-}
+};
 
 const ListItemWhiteCard = styled.li`
   max-width: 505px;
@@ -195,6 +202,6 @@ const TradeForm = styled.div`
 function precisionRound(number, precision) {
   var factor = Math.pow(10, precision);
   return Math.round(number * factor) / factor;
-}
+};
 
 export default WhiteCardListItem;
