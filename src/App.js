@@ -14,6 +14,7 @@ import CreateCard from "./CreateCard";
 import HallOfShame from "./HallOfShame";
 import Home from "./Home";
 import LandingPage from "./LandingPage";
+import UpdateCache from "./UpdateCache";
 import NavBar from "./components/NavBar";
 import ContainerNav from "./components/ContainerNav";
 import Rules from "./Rules";
@@ -101,6 +102,7 @@ class App extends Component {
               <Route path="/rules" component={Rules}/>
               <Route path="/hall-of-shame" component={HallOfShame}/>
               <Route path="/create-card" component={CreateCard}/>
+              <Route path="/update-cache" component={UpdateCache}/>
           </div>
         </ContainerApp>
         :
