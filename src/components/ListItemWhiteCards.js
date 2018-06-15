@@ -32,15 +32,21 @@ class WhiteCardListItem extends Component {
 		this.getBondingCurvePrice(defaultTradeAmount)
 	};
 
-  isNumeric = (input) => {
-    return !isNaN(parseFloat(input)) && isFinite(input);
+  filterNonNumeric = (input) => {
+    // Remove characters that aren't digits or dots
+    const inputCleaned = input
+      .replace(/[^\d\.]/g,'');
+    // Only allow a single decimal place for floats
+    const inputSplit = inputCleaned.split('.');
+    const inputFiltered = inputSplit.shift() + (inputSplit.length ? '.' + inputSplit.join('') : '');
+    return inputFiltered;
   };
 
 	handleTradeDisplayAmountChange (event) {
-		const input = event.target.value;
-    this.setState({ tradeDisplayAmount: input});
-    if (this.isNumeric(input)) {
-      this.getBondingCurvePrice(input);
+		const filteredInput = this.filterNonNumeric(event.target.value);
+    this.setState({ tradeDisplayAmount: filteredInput});
+    if (filteredInput !== '.') {
+      this.getBondingCurvePrice(filteredInput);
     }
 	};
 
@@ -172,9 +178,10 @@ const WhiteCardStats = styled.div`
 
   H1 {
     margin: 0;
+    max-width: 240px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: clip;
   }
 `;
 
