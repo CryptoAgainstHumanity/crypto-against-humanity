@@ -45,7 +45,7 @@ class WhiteCardListItem extends Component {
 	handleTradeDisplayAmountChange (event) {
 		const filteredInput = this.filterNonNumeric(event.target.value);
     this.setState({ tradeDisplayAmount: filteredInput});
-    if (filteredInput !== '.') {
+    if ((filteredInput !== '.') && (filteredInput < 10000000000000)) {
       this.getBondingCurvePrice(filteredInput);
     }
 	};
@@ -98,9 +98,14 @@ class WhiteCardListItem extends Component {
 
 	render() {
 
-    const priceRounded = (this.state.price > 1000000)?
-      `${precisionRound(this.state.price / 1000000, 3)} Mns`:
-      precisionRound(this.state.price, 3);
+    let priceRounded = '';
+    if (this.state.price < 1000000) {
+      priceRounded = `Ξ ${precisionRound(this.state.price, 3)}`;
+    } else if (this.state.price < 1000000000) {
+      priceRounded = `Ξ ${precisionRound(this.state.price / 1000000, 3)} Mns`;
+    } else {
+      priceRounded = priceRounded = '🖐️ Bitch, please';
+    }
 
 		const balanceRounded = (this.props.balance == 0)?
 			'-':
@@ -121,7 +126,7 @@ class WhiteCardListItem extends Component {
           <WhiteCardStats>
             <div>
               <LABEL>PRICE</LABEL>
-              <H1>Ξ {priceRounded}</H1>
+              <H1>{priceRounded}</H1>
             </div>
             <div>
               <LABEL>BALANCE</LABEL>
