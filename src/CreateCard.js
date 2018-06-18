@@ -13,7 +13,7 @@ import Card from './components/Card';
 import ContainerColumn from './components/ContainerColumn';
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS, HAS_SHADOW, FONT,
+  COLORS_OBJ, COLORS_TEXT, DARKEN, HAS_BORDER_RADIUS, HAS_SHADOW,
 } from './StyleGuide';
 
 class CreateCard extends Component {

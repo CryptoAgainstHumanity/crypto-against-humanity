@@ -26,16 +26,29 @@ class WhiteCardListItem extends Component {
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
 		this.handleBuyClick = this.handleBuyClick.bind(this);
 		this.handleSellClick = this.handleSellClick.bind(this);
-	}
+	};
 
 	componentWillMount () {
 		this.getBondingCurvePrice(defaultTradeAmount)
-	}
+	};
+
+  filterNonNumeric = (input) => {
+    // Remove characters that aren't digits or dots
+    const inputCleaned = input
+      .replace(/[^\d\.]/g,'');
+    // Only allow a single decimal place for floats
+    const inputSplit = inputCleaned.split('.');
+    const inputFiltered = inputSplit.shift() + (inputSplit.length ? '.' + inputSplit.join('') : '');
+    return inputFiltered;
+  };
 
 	handleTradeDisplayAmountChange (event) {
-		this.setState({ tradeDisplayAmount: event.target.value })
-		this.getBondingCurvePrice(event.target.value)
-	}
+		const filteredInput = this.filterNonNumeric(event.target.value);
+    this.setState({ tradeDisplayAmount: filteredInput});
+    if ((filteredInput !== '.') && (filteredInput < 10000000000000)) {
+      this.getBondingCurvePrice(filteredInput);
+    }
+	};
 
 	handleBuyClick (event) {
 		this.mintTokens()
@@ -45,7 +58,7 @@ class WhiteCardListItem extends Component {
             category: 'Bought White Card',
             action: cardText,
         });
-	}
+	};
 
 	handleSellClick (event) {
 		this.burnTokens()
@@ -55,7 +68,7 @@ class WhiteCardListItem extends Component {
             category: 'Sold White Card',
             action: cardText,
         });
-	}
+	};
 
 	async mintTokens () {
 		const accounts = await web3.eth.getAccounts()
@@ -63,7 +76,7 @@ class WhiteCardListItem extends Component {
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
 		let bondingCurvePrice = await EthPolynomialCurveToken.methods
 			.mint(tokenVal).send({ value: this.state.price * 10 ** 18, from: accounts[0] })
-	}
+	};
 
 	async burnTokens () {
 		const accounts = await web3.eth.getAccounts()
@@ -71,7 +84,7 @@ class WhiteCardListItem extends Component {
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
 		let bondingCurvePrice = await EthPolynomialCurveToken.methods
 			.burn(tokenVal).send({ from: accounts[0] })
-	}
+	};
 
 	async getBondingCurvePrice (displayVal) {
 		let tokenVal = displayVal * tokenUnits
@@ -81,13 +94,18 @@ class WhiteCardListItem extends Component {
 		this.setState({
 			price: bondingCurvePrice / 10 ** 18
 		})
-	}
+	};
 
 	render() {
 
-    const priceRounded = (this.state.price > 1000000)?
-      `${precisionRound(this.state.price / 1000000, 3)} Mns`:
-      precisionRound(this.state.price, 3);
+    let priceRounded = '';
+    if (this.state.price < 1000000) {
+      priceRounded = `Ξ ${precisionRound(this.state.price, 3)}`;
+    } else if (this.state.price < 1000000000) {
+      priceRounded = `Ξ ${precisionRound(this.state.price / 1000000, 3)} Mns`;
+    } else {
+      priceRounded = priceRounded = '🖐️ Bitch, please';
+    }
 
 		const balanceRounded = (this.props.balance == 0)?
 			'-':
@@ -108,7 +126,7 @@ class WhiteCardListItem extends Component {
           <WhiteCardStats>
             <div>
               <LABEL>PRICE</LABEL>
-              <H1>Ξ {priceRounded}</H1>
+              <H1>{priceRounded}</H1>
             </div>
             <div>
               <LABEL>BALANCE</LABEL>
@@ -127,7 +145,7 @@ class WhiteCardListItem extends Component {
 			</ListItemWhiteCard>
 		)
 	}
-}
+};
 
 const ListItemWhiteCard = styled.li`
   max-width: 505px;
@@ -165,9 +183,10 @@ const WhiteCardStats = styled.div`
 
   H1 {
     margin: 0;
+    max-width: 240px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    text-overflow: clip;
   }
 `;
 
@@ -195,6 +214,6 @@ const TradeForm = styled.div`
 function precisionRound(number, precision) {
   var factor = Math.pow(10, precision);
   return Math.round(number * factor) / factor;
-}
+};
 
 export default WhiteCardListItem;
