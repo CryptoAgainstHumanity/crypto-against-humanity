@@ -44,7 +44,7 @@ class UpdateCache extends Component {
 
   async showFile (event) {
     console.log("Showing file")
-    ipfs.files.read('/' + IPFS_KEY + '/cachedCards.json', (err, buf) => {
+    ipfs.files.read('/' + IPFS_KEY + '/eventCache.json', (err, buf) => {
       console.log(buf.toString('utf8'))
     })
     event.preventDefault();
@@ -59,7 +59,7 @@ class UpdateCache extends Component {
   }
 
   async createFile(name) {
-    ipfs.files.write('/' + IPFS_KEY + '/' + name, Buffer.from('Hello, world!'), {create:true}, (err) => {
+    ipfs.files.write('/' + IPFS_KEY + '/' + name, Buffer.from('Hello, world!'), {create:true, truncate:true}, (err) => {
       console.log(err)
       console.log("created " + name)
       this.statFileToPin(name)
@@ -136,9 +136,10 @@ class UpdateCache extends Component {
         // <Btn primary onClick={this.editFile}>Change File Content</Btn>
         // <Btn primary onClick={this.showFile}>Show File Content</Btn>
         // <Btn primary onClick={this.makeDir}>Make IPFS Dir</Btn>
+        //<Btn primary onClick={this.loadWhiteCards}>Update Cache</Btn>
+
     return (
       <div>
-        <Btn primary onClick={this.loadWhiteCards}>Update Cache</Btn>
         <Btn primary onClick={this.showFile}>Show Card Cache</Btn>
       </div>
     );
