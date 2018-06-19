@@ -80,10 +80,8 @@ class Home extends Component {
 
   async getWhiteCardInfo(cardEvents) {
 
-    console.log(cardEvents)
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
-
 
     var whiteCards = []
     for (var i = 0; i < cardEvents.CreateEvents.length; i++) {

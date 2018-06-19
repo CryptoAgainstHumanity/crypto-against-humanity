@@ -1,6 +1,6 @@
 var Web3 = require('web3');
 var infuraKey = require('./keys/infuraKey.json');
-var IPFS_KEY = require('./keys/infuraKey.json');
+var IPFS_KEY = require('./keys/ipfsKey.json');
 var ipfsAPI = require('ipfs-api');
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 
