@@ -65,13 +65,16 @@ class Home extends Component {
             IPFSCardCache = JSON.parse(buf.toString('utf8'))
             this.getWhiteCardInfo(IPFSCardCache)
           } else {
+            this.loadWhiteCardsFromContract();
             console.error("IPFS file is corrupted")
           }
         } else {
+          this.loadWhiteCardsFromContract();
           console.error("Could not find IPFS file")
         }
       });
     } else {
+      this.loadWhiteCardsFromContract();
       console.error("MISSING A VALID IPFS KEY")
     }
 
@@ -148,6 +151,45 @@ class Home extends Component {
     this.setState({
       whiteCards: updatedCards,
       loadingWhiteCards: false
+    })
+  }
+
+  loadWhiteCardsFromContract (){
+    var whiteCardTokenUnits = 10 ** 12 * 10 ** 18
+    var defaultTokenBuyAmount = 0.001 * 10 ** 18
+      WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
+      fromBlock: this.state.originBlock,
+      toBlock: 'latest'
+    }, async (err, events) => {
+      console.log("Loading " + events.length + " White Cards..")
+      let whiteCards = []
+      const accounts = await web3.eth.getAccounts()
+      for(var i = 0; i < events.length; i++) {
+        let event = events[i]
+        WhiteCard.options.address = event.returnValues.card
+        let ipfsHash = await WhiteCard.methods.ipfsHash().call()
+        let text = (await ipfs.object.data(ipfsHash)).toString()
+        let bondingCurveAddress = await WhiteCard.methods.bondingCurve().call()
+        EthPolynomialCurveToken.options.address = bondingCurveAddress
+        let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
+        let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
+        let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
+        console.log("Loading a White Card...")
+        var playerBalance = precisionRound((bondingCurveBalance / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3)
+        whiteCards.push({
+          text,
+          bondingCurveAddress: bondingCurveAddress,
+          totalBalance: parseInt(bondingCurveTotalBalance),
+          balance: playerBalance,
+          price: bondingCurvePrice / whiteCardTokenUnits,
+          color: "white-card"
+        })
+      }
+      whiteCards = _.orderBy(whiteCards, ['totalBalance'], ['desc'])
+      this.setState({
+        whiteCards: whiteCards,
+        loadingWhiteCards: false
+      })
     })
   }
 
@@ -239,5 +281,8 @@ function random(seed) {
 function getRandomInt(seed, min, max) {
   return Math.floor(random(seed) * (max - min + 1)) + min;
 }
+
+
+
 
 export default Home;
