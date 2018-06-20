@@ -1,10 +1,12 @@
 import _ from 'lodash'
 import moment from 'moment'
 import web3 from './web3'
+import AWS from 'aws-sdk';
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
 import CachedCards from './data/cachedCards'
 import CachedBlock from './data/cachedBlock'
+import EventCache from './data/eventCache'
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
@@ -14,11 +16,13 @@ import ContainerBlackCard from './components/ContainerBlackCard';
 import ipfsAPI from 'ipfs-api';
 import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
-
 import ContainerRow from './components/ContainerRow';
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const blackCardTimeInterval = 10000
+const IPFS_KEY = process.env.REACT_APP_IPFS_KEY;
+
+
 
 class Home extends Component {
 
@@ -35,29 +39,17 @@ class Home extends Component {
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
 
-    if (localStorage.getItem("cached-block") < CachedBlock) {
-      localStorage.setItem("cached-block", CachedBlock);
-      localStorage.setItem("cached-cards", JSON.stringify(CachedCards));
-    }
   }
 
+
+
   componentWillMount() {
-
-    // Check if we have cached previous white cards.
-    var originBlock = this.state.originBlock;
-    var TCRoriginBlock = this.state.TCRoriginBlock;
-    const cachedFromBlock = localStorage.getItem("cached-block");
-
-    if (cachedFromBlock) {
-      //Cache exists, update from cached block
-      this.loadWhiteCards(cachedFromBlock);
-    } else {
-      // No Cahce, get all cards
-      this.loadWhiteCards(originBlock);
-    }
+    this.setState({
+        loadingWhiteCards: true
+    })
 
     BlackCardRegistry.getPastEvents('_Application', {
-      fromBlock: TCRoriginBlock,
+      fromBlock: this.state.TCRoriginBlock,
       toBlock: 'latest'
     }, async (err, events) => {
       this.blackCards = events
@@ -65,89 +57,113 @@ class Home extends Component {
       this.startTimer()
     })
 
-  }
-
-  async loadWhiteCards(blockNum) {
-    this.setState({
-        loadingWhiteCards: true
-    })
-    const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
-    const defaultTokenBuyAmount = 0.001 * 10 ** 18
-    var cachedCards = JSON.parse(localStorage.getItem("cached-cards"));
-    const accounts = await web3.eth.getAccounts()
-
-    let updatedCards = []
-    if (cachedCards){
-      let whiteCards = cachedCards;
-      for (var i = 0; i < cachedCards.length; i++) {
-        EthPolynomialCurveToken.options.address = cachedCards[i].bondingCurveAddress;
-        const cardName = cachedCards[i].text;
-        let needsBalanceUpdate = false;
-        let calcBalance = 0;
-        let totalSupply = 0;
-        let poolBalance = 0;
-
-        await EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {fromBlock: this.state.originBlock, toBlock: 'latest'}, async (err, events) => {
-          for(var j = 0; j < events.length; j++) {
-            let event = events[j];
-            if (event.returnValues.caller == accounts[0]){
-              needsBalanceUpdate = true;
-              if (event.event == "Minted") {
-                calcBalance += parseInt(event.returnValues.amount)
-              } else {
-                calcBalance -= parseInt(event.returnValues.amount)
-              }
-            }
-            if (event.event == "Minted") {
-              poolBalance += parseInt(event.returnValues.totalCost)
-              totalSupply += parseInt(event.returnValues.amount)
-            } else {
-              poolBalance -= parseInt(event.returnValues.reward)
-              totalSupply -= parseInt(event.returnValues.amount)
-            }
+    var IPFSCardCache = []
+    if (IPFS_KEY) {
+      ipfs.files.read('/' + IPFS_KEY + '/eventCache.json', (err, buf) => {
+        if (buf) {
+          if (buf.toString('utf8') != '') {
+            IPFSCardCache = JSON.parse(buf.toString('utf8'))
+            this.getWhiteCardInfo(IPFSCardCache)
+          } else {
+            this.loadWhiteCardsFromContract();
+            console.error("IPFS file is corrupted")
           }
-        })
-        
-        // Do math to calculate price - this math to be specific:
-        // uint256 constant private PRECISION = 10000000000;
-        // uint256 constant private exponent = 1;
-        // function curveIntegral(uint256 t) internal returns (uint256) {
-        // uint256 nexp = exponent + 1;
-        // // Calculate integral of t^exponent
-        // return PRECISION.div(nexp).mul(t ** nexp).div(PRECISION);
-        // }
-        var a = parseInt(totalSupply) + Number(defaultTokenBuyAmount)
-        var b = poolBalance
-        var step1 = 10000000000 / 2
-        var step2 = step1 * (a**2)
-        var step3 = step2 / 10000000000
-        var cardMintingPrice = step3 - b
-        var cardPrice = (cardMintingPrice / whiteCardTokenUnits).toFixed(7);
-        whiteCards[i].price = cardPrice;
-
-        if (needsBalanceUpdate) {
-          // set balance
-          var balance = calcBalance / whiteCardTokenUnits
-          whiteCards[i].balance = balance
         } else {
-          whiteCards[i].balance = 0; // This account has never burned or minted, so their balance is 0
+          this.loadWhiteCardsFromContract();
+          console.error("Could not find IPFS file")
         }
-      }
-      updatedCards = _.orderBy(whiteCards, ['price'], ['desc']);
+      });
+    } else {
+      this.loadWhiteCardsFromContract();
+      console.error("MISSING A VALID IPFS KEY")
     }
 
-    WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
-      fromBlock: blockNum,
-      toBlock: 'latest'
-    }, async (err, events) => {
-      let newBlockNum = await web3.eth.getBlock('latest');
-      let whiteCards = []
-      if (cachedCards && blockNum != this.state.originBlock) {
-        whiteCards = cachedCards;
-        if (updatedCards.length > 0) {
-          whiteCards = updatedCards;
+
+  }
+
+  async getWhiteCardInfo(cardEvents) {
+
+    const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
+    const defaultTokenBuyAmount = 0.001 * 10 ** 18
+
+    var whiteCards = []
+    for (var i = 0; i < cardEvents.CreateEvents.length; i++) {
+      whiteCards.push({
+        text: cardEvents.CreateEvents[i].text,
+        bondingCurveAddress: cardEvents.CreateEvents[i].tokenAddress,
+        blockNum: cardEvents.CreateEvents[i].blockNumber
+      })
+    }
+
+    var cardsWithInfo = []
+    var updatedCards = []
+    const accounts = await web3.eth.getAccounts();
+    for (var i = 0; i < whiteCards.length; i++) {
+      var tokenBalance = 0;
+      var poolBalance = 0;
+      var totalSupply = 0;
+      for (var j = 0; j < cardEvents.MintBurnEvents.length; j++) {
+        if (cardEvents.MintBurnEvents[j].tokenAddress == whiteCards[i].bondingCurveAddress) {
+          if (cardEvents.MintBurnEvents[j].caller == accounts[0]) {
+            if (cardEvents.MintBurnEvents[j].type == "Minted") {
+              tokenBalance += precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
+              poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
+              totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
+            } else {
+              tokenBalance -= precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
+              poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
+              totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
+            }
+          } else {
+            if (cardEvents.MintBurnEvents[j].type == "Minted") {
+              poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
+              totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
+            } else {
+              poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
+              totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
+            }
+          }
         }
       }
+      // var a = Number(totalSupply) + Number(defaultTokenBuyAmount)
+      // var b = Number(poolBalance)
+      // var step1 = 10000000000 / 2
+      // var step2 = step1 * (a**2)
+      // var step3 = step2 / 10000000000
+      // var cardMintingPrice = step3 - b
+      // var cardPrice = (cardMintingPrice / whiteCardTokenUnits);
+
+      cardsWithInfo.push({
+        text: whiteCards[i].text,
+        bondingCurveAddress: whiteCards[i].bondingCurveAddress,
+        blockNum: whiteCards[i].blockNum,
+        balance: tokenBalance,
+        price: Number(poolBalance) - Number(totalSupply)
+      })
+
+    }
+
+    // Order by price
+    updatedCards = _.orderBy(cardsWithInfo, ['price'], ['desc']); 
+
+    // Order by newest
+    //updatedCards = _.orderBy(cardsWithInfo, ['blockNum'], ['desc']); 
+    this.setState({
+      whiteCards: updatedCards,
+      loadingWhiteCards: false
+    })
+  }
+
+  loadWhiteCardsFromContract (){
+    var whiteCardTokenUnits = 10 ** 12 * 10 ** 18
+    var defaultTokenBuyAmount = 0.001 * 10 ** 18
+      WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
+      fromBlock: this.state.originBlock,
+      toBlock: 'latest'
+    }, async (err, events) => {
+      console.log("Loading " + events.length + " White Cards..")
+      let whiteCards = []
+      const accounts = await web3.eth.getAccounts()
       for(var i = 0; i < events.length; i++) {
         let event = events[i]
         WhiteCard.options.address = event.returnValues.card
@@ -157,24 +173,19 @@ class Home extends Component {
         EthPolynomialCurveToken.options.address = bondingCurveAddress
         let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
-        // Used for math if we want to calculate price locally
-        let bondingCurveTotalSupply = await EthPolynomialCurveToken.methods.totalSupply().call(); 
-        let bondingCurvePoolBalance = await EthPolynomialCurveToken.methods.poolBalance().call();
-
+        let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
+        console.log("Loading a White Card...")
+        var playerBalance = precisionRound((bondingCurveBalance / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3)
         whiteCards.push({
           text,
           bondingCurveAddress: bondingCurveAddress,
-          balance: bondingCurveBalance / whiteCardTokenUnits,
+          totalBalance: parseInt(bondingCurveTotalBalance),
+          balance: playerBalance,
           price: bondingCurvePrice / whiteCardTokenUnits,
-          totalSupply: bondingCurveTotalSupply,
-          poolBalance: bondingCurvePoolBalance,
           color: "white-card"
         })
       }
-      whiteCards = _.orderBy(whiteCards, ['price'], ['desc'])
-      localStorage.setItem("cached-block", JSON.stringify(newBlockNum.number));
-      localStorage.setItem("cached-cards", JSON.stringify(whiteCards));
-
+      whiteCards = _.orderBy(whiteCards, ['totalBalance'], ['desc'])
       this.setState({
         whiteCards: whiteCards,
         loadingWhiteCards: false
@@ -234,7 +245,6 @@ class Home extends Component {
   }
 
   render() {
-
     const blackCardContainer = this.state.loadingBlackCard ?
       <LOADING> <i className="fa fa-circle-o-notch fa-spin"></i> Loading a crappy black card...</LOADING>:
       <ContainerBlackCard blackCard={this.state.blackCard} timeRemaining={this.state.timerDisplay}/>;
@@ -254,6 +264,11 @@ class Home extends Component {
   }
 }
 
+function precisionRound(number, precision) {
+  var factor = Math.pow(10, precision);
+  return Math.round(number * factor) / factor;
+}
+
 function getRoundedTime() {
   return Math.floor(moment().unix() / blackCardTimeInterval) * blackCardTimeInterval
 }
@@ -266,5 +281,8 @@ function random(seed) {
 function getRandomInt(seed, min, max) {
   return Math.floor(random(seed) * (max - min + 1)) + min;
 }
+
+
+
 
 export default Home;

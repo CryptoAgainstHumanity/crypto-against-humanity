@@ -109,7 +109,7 @@ class WhiteCardListItem extends Component {
 
 		const balanceRounded = (this.props.balance == 0)?
 			'-':
-			precisionRound(this.props.balance * 10 ** 4 * 10 ** 18, 3);
+			this.props.balance;
 
 		const btnSell = this.props.balance == 0 ? null : (
 			<Btn primary onClick={this.handleSellClick}>

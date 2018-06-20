@@ -27,6 +27,7 @@ class CreateCard extends Component {
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
+
   }
 
   onSubmit = async (event) => {
@@ -56,7 +57,7 @@ class CreateCard extends Component {
 
   createIpfsHash = async (cardString) => {
     console.log('createIpfsHash!')
-    const buffer = new Buffer(cardString)
+    const buffer = new Buffer(cardString) // This should be Buffer.from()
     const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
     const hash = await ipfs.add(buffer)
     return hash[0].hash
