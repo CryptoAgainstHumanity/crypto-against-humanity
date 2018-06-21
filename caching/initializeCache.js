@@ -148,27 +148,32 @@ var EventLog = {
 
 var whiteCardEvents = [];
 var numCards = 9999999999
-console.log("Getting White Card Created Events");
-setTimeout(getMintBurnEvents, 1000);
-WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
-fromBlock: 3418530,
-toBlock: 'latest'
-}, async (err, events) => {
-	numCards = events.length;
-	for(var i = 0; i < events.length; i++) {
-		WhiteCard.options.address = events[i].returnValues.card;
-		let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call();
-		let ipfsHash = await WhiteCard.methods.ipfsHash().call()
-		let text = (await ipfs.object.data(ipfsHash)).toString('utf8')
-       	EventLog.CreateEvents.push({
-       		txHash: events[i].transactionHash,
-       		cardAddress: events[i].returnValues.card,
-       		blockNumber: events[i].blockNumber,
-       		tokenAddress: bondingCurveTokenAddress,
-       		text: text
-        })
-	}
-})
+setTimeout(getWhiteCardCreatedEvents, 5000);
+setTimeout(getMintBurnEvents, 5000);
+
+
+function getWhiteCardCreatedEvents() {
+	console.log("Getting White Card Created Events");
+	WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
+	fromBlock: 3418530,
+	toBlock: 'latest'
+	}, async (err, events) => {
+		numCards = events.length;
+		for(var i = 0; i < events.length; i++) {
+			WhiteCard.options.address = events[i].returnValues.card;
+			let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call();
+			let ipfsHash = await WhiteCard.methods.ipfsHash().call()
+			let text = (await ipfs.object.data(ipfsHash)).toString('utf8')
+	       	EventLog.CreateEvents.push({
+	       		txHash: events[i].transactionHash,
+	       		cardAddress: events[i].returnValues.card,
+	       		blockNumber: events[i].blockNumber,
+	       		tokenAddress: bondingCurveTokenAddress,
+	       		text: text
+	        })
+		}
+	})
+}
 
 function getMintBurnEvents() {
 	if (EventLog.CreateEvents.length == numCards) {
@@ -210,6 +215,7 @@ function getMintBurnEvents() {
 		}
 	} else {
 		setTimeout(getMintBurnEvents, 1000);
+		process.stdout.write('.')
 	}
 } 
 
