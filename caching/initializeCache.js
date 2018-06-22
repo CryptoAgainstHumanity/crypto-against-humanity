@@ -168,9 +168,9 @@ function getWhiteCardCreatedEvents() {
 			numCards = events.length;
 			for(var i = 0; i < events.length; i++) {
 				WhiteCard.options.address = events[i].returnValues.card;
-				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call().catch(err => process.exit(1))
-				let ipfsHash = await WhiteCard.methods.ipfsHash().call().catch(err => process.exit(1))
-				let content = await ipfs.object.data(ipfsHash).catch(err => process.exit(1))
+				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call()
+				let ipfsHash = await WhiteCard.methods.ipfsHash().call()
+				let content = await ipfs.object.data(ipfsHash)
 				var text  = content.toString('utf8')
 		       	EventLog.CreateEvents.push({
 		       		txHash: events[i].transactionHash,
@@ -235,7 +235,7 @@ function getMintBurnEvents() {
 } 
 
 function cacheHelper() {
-	setTimeout(startContinuousCaching, 10000);
+	//setTimeout(startContinuousCaching, 10000);
 	uploadCache();
 }
 
@@ -250,14 +250,14 @@ function uploadCache() {
 	if (!isUpdatingIpfs && lastEventLogLength != logLength) {
 		lastEventLogLength = logLength
 		if (lastCreateEventLogLength != eventLog.CreateEvents.length) {
-			console.log("New Create Events!")
-			for (var i = lastCreateEventLogLength; i < eventLog.CreateEvents.length; i++) {
-				setInterval(refreshMintBurnCache, 5000, eventLog.CreateEvents[i].tokenAddress);
-			}
+			//console.log("New Create Events!")
+			// for (var i = lastCreateEventLogLength; i < eventLog.CreateEvents.length; i++) {
+			// 	setInterval(refreshMintBurnCache, 5000, eventLog.CreateEvents[i].tokenAddress);
+			// }
 			lastCreateEventLogLength = eventLog.CreateEvents.length
 		}
 		if (lastMintBurnEventLogLength != eventLog.MintBurnEvents.length) {
-			console.log("New Mint/Burn Events!")
+			//console.log("New Mint/Burn Events!")
 			lastMintBurnEventLogLength = eventLog.MintBurnEvents.length
 		}
 		isUpdatingIpfs = true;
@@ -266,95 +266,94 @@ function uploadCache() {
 	     ipfs.files.write('/' + IPFS_KEY + '/eventCache.json', Buffer.from(content), {create:true, truncate:true}, (err) => {
 	      if (!err) {
 	      	console.log("Success!")
-	      	console.log("Polling for new events...")
 	      	isUpdatingIpfs = false;
 	      }
 	    })
  	}
 }
 
-var isCachingCreateEvents = false;
-var isCachingMintBurnEvents = false;
-function startContinuousCaching() {
-	setInterval(refreshCreateCache, 1000);
-}
+// var isCachingCreateEvents = false;
+// var isCachingMintBurnEvents = false;
+// function startContinuousCaching() {
+// 	setInterval(refreshCreateCache, 1000);
+// }
 
-function refreshCreateCache() {
-	if (!isCachingCreateEvents){
-		isCachingCreateEvents = true;
-		WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
-		fromBlock: 3418530,
-		toBlock: 'latest'
-		}, async (err, events) => {
-			if (err) {
-				process.exit(1)
-			}
-			for(var i = EventLog.CreateEvents.length; i < events.length; i++) {
-				WhiteCard.options.address = events[i].returnValues.card;
-				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call().catch(err => process.exit(1))
-				let ipfsHash = await WhiteCard.methods.ipfsHash().call().catch(err => process.exit(1))
-				let content = await ipfs.object.data(ipfsHash).catch(err => process.exit(1))
-				var text  = content.toString('utf8')
-		       	EventLog.CreateEvents.push({
-		       		txHash: events[i].transactionHash,
-		       		cardAddress: events[i].returnValues.card,
-		       		blockNumber: events[i].blockNumber,
-		       		tokenAddress: bondingCurveTokenAddress,
-		       		text: text
-		        })
-			}
-			isCachingCreateEvents = false;
-		})
-		uploadCache();
-	}
-}
+// function refreshCreateCache() {
+// 	if (!isCachingCreateEvents){
+// 		isCachingCreateEvents = true;
+// 		WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
+// 		fromBlock: 3418530,
+// 		toBlock: 'latest'
+// 		}, async (err, events) => {
+// 			if (err) {
+// 				process.exit(1)
+// 			}
+// 			for(var i = EventLog.CreateEvents.length; i < events.length; i++) {
+// 				WhiteCard.options.address = events[i].returnValues.card;
+// 				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call().catch(err => process.exit(1))
+// 				let ipfsHash = await WhiteCard.methods.ipfsHash().call().catch(err => process.exit(1))
+// 				let content = await ipfs.object.data(ipfsHash).catch(err => process.exit(1))
+// 				var text  = content.toString('utf8')
+// 		       	EventLog.CreateEvents.push({
+// 		       		txHash: events[i].transactionHash,
+// 		       		cardAddress: events[i].returnValues.card,
+// 		       		blockNumber: events[i].blockNumber,
+// 		       		tokenAddress: bondingCurveTokenAddress,
+// 		       		text: text
+// 		        })
+// 			}
+// 			isCachingCreateEvents = false;
+// 		})
+// 		uploadCache();
+// 	}
+// }
 
-function refreshMintBurnCache(tokenAddress){
-	var eventLog = JSON.parse(JSON.stringify(EventLog));
-	EthPolynomialCurveToken.options.address = tokenAddress;
-	EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {
-	fromBlock: 3418530,
-	toBlock: 'latest'
-	}, async (err, events) => {
-		if (err) {
-			process.exit(1)
-		}
-		for(var j = 0; j < events.length; j++) {
-			var isNew = true;
-			for (var k = 0; k < eventLog.MintBurnEvents.length; k++){
-				if (events[j].transactionHash == eventLog.MintBurnEvents[k].txHash){
-					isNew = false;
-				}
-			}
-			if (isNew) {
-				if (events[j].event == "Minted") {
-			       	EventLog.MintBurnEvents.push({
-			       		txHash: events[j].transactionHash,
-			       		blockNumber: events[j].blockNumber,
-			       		type: events[j].event,
-			       		amount: events[j].returnValues.amount,
-			       		costReward: events[j].returnValues.totalCost,
-			       		caller: events[j].returnValues.caller,
-			       		tokenAddress: events[j].address,
-			       		blockNumber: events[j].blockNumber
-			        })
-		       	} else {
-			       	EventLog.MintBurnEvents.push({
-			       		txHash: events[j].transactionHash,
-			       		blockNumber: events[j].blockNumber,
-			       		type: events[j].event,
-			       		amount: events[j].returnValues.amount,
-			       		costReward: events[j].returnValues.reward,
-			       		caller: events[j].returnValues.caller,
-			       		tokenAddress: events[j].address,
-			       		blockNumber: events[j].blockNumber
-			        })
-		       	}
-	       	}
-		}
-	})
+// function refreshMintBurnCache(tokenAddress){
+// 	var eventLog = JSON.parse(JSON.stringify(EventLog));
+// 	EthPolynomialCurveToken.options.address = tokenAddress;
+// 	EthPolynomialCurveToken.getPastEvents(['Minted', 'Burned'], {
+// 	fromBlock: 3418530,
+// 	toBlock: 'latest'
+// 	}, async (err, events) => {
+// 		if (err) {
+// 			process.exit(1)
+// 		}
+// 		for(var j = 0; j < events.length; j++) {
+// 			var isNew = true;
+// 			for (var k = 0; k < eventLog.MintBurnEvents.length; k++){
+// 				if (events[j].transactionHash == eventLog.MintBurnEvents[k].txHash){
+// 					isNew = false;
+// 				}
+// 			}
+// 			if (isNew) {
+// 				if (events[j].event == "Minted") {
+// 			       	EventLog.MintBurnEvents.push({
+// 			       		txHash: events[j].transactionHash,
+// 			       		blockNumber: events[j].blockNumber,
+// 			       		type: events[j].event,
+// 			       		amount: events[j].returnValues.amount,
+// 			       		costReward: events[j].returnValues.totalCost,
+// 			       		caller: events[j].returnValues.caller,
+// 			       		tokenAddress: events[j].address,
+// 			       		blockNumber: events[j].blockNumber
+// 			        })
+// 		       	} else {
+// 			       	EventLog.MintBurnEvents.push({
+// 			       		txHash: events[j].transactionHash,
+// 			       		blockNumber: events[j].blockNumber,
+// 			       		type: events[j].event,
+// 			       		amount: events[j].returnValues.amount,
+// 			       		costReward: events[j].returnValues.reward,
+// 			       		caller: events[j].returnValues.caller,
+// 			       		tokenAddress: events[j].address,
+// 			       		blockNumber: events[j].blockNumber
+// 			        })
+// 		       	}
+// 	       	}
+// 		}
+// 	})
 
-}
+// }
 
 
 
