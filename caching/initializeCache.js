@@ -126,6 +126,8 @@ if (web3 != "undefined") {
 }
 
 
+
+var isPinned = false;
 ipfs.files.mkdir('/' + IPFS_KEY, {parents:true}, async (err) => {
   	if (!err) {
 	  	console.log("Created IPFS Directory");
@@ -134,6 +136,7 @@ ipfs.files.mkdir('/' + IPFS_KEY, {parents:true}, async (err) => {
 	        ipfs.pin.add(stats.hash, function (err) {
 		      if (!err) {
 		        console.log("Pinned IPFS Directory");
+		        isPinned = true;
 		      }
 		    })
 	      }
@@ -148,36 +151,42 @@ var EventLog = {
 
 var whiteCardEvents = [];
 var numCards = 9999999999
-setTimeout(getWhiteCardCreatedEvents, 5000);
-setTimeout(getMintBurnEvents, 5000);
+getWhiteCardCreatedEvents()
 
 
 function getWhiteCardCreatedEvents() {
-	console.log("Getting White Card Created Events");
-	WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
-	fromBlock: 3418530,
-	toBlock: 'latest'
-	}, async (err, events) => {
-		numCards = events.length;
-		for(var i = 0; i < events.length; i++) {
-			WhiteCard.options.address = events[i].returnValues.card;
-			let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call();
-			let ipfsHash = await WhiteCard.methods.ipfsHash().call()
-			let text = (await ipfs.object.data(ipfsHash)).toString('utf8')
-	       	EventLog.CreateEvents.push({
-	       		txHash: events[i].transactionHash,
-	       		cardAddress: events[i].returnValues.card,
-	       		blockNumber: events[i].blockNumber,
-	       		tokenAddress: bondingCurveTokenAddress,
-	       		text: text
-	        })
-		}
-	})
+	if (isPinned) {
+		setTimeout(getMintBurnEvents, 1000);
+		console.log("Getting White Card Created Events");
+		WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
+		fromBlock: 3418530,
+		toBlock: 'latest'
+		}, async (err, events) => {
+			numCards = events.length;
+			for(var i = 0; i < events.length; i++) {
+				WhiteCard.options.address = events[i].returnValues.card;
+				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call()
+				let ipfsHash = await WhiteCard.methods.ipfsHash().call()
+				let content = await ipfs.object.data(ipfsHash)
+				var text  = content.toString('utf8')
+		       	EventLog.CreateEvents.push({
+		       		txHash: events[i].transactionHash,
+		       		cardAddress: events[i].returnValues.card,
+		       		blockNumber: events[i].blockNumber,
+		       		tokenAddress: bondingCurveTokenAddress,
+		       		text: text
+		        })
+			}
+		})
+	} else {
+		setTimeout(getWhiteCardCreatedEvents, 1000);
+	}
 }
 
 function getMintBurnEvents() {
 	if (EventLog.CreateEvents.length == numCards) {
-		console.log("Got Create Events");
+		console.log("Got Create Events!");
+		console.log("Getting Mint/Burn Events... (This may take a while)")
 		setTimeout(cacheHelper, 60000);
 		var mintBurnEvents = [];
 		for (var i = 0; i < EventLog.CreateEvents.length; i++) {
@@ -251,6 +260,7 @@ function uploadCache() {
 	     ipfs.files.write('/' + IPFS_KEY + '/eventCache.json', Buffer.from(content), {create:true, truncate:true}, (err) => {
 	      if (!err) {
 	      	console.log("Success!")
+	      	console.log("Polling for new events...")
 	      	isUpdatingIpfs = false;
 	      }
 	    })
@@ -275,7 +285,8 @@ function refreshCreateCache() {
 				WhiteCard.options.address = events[i].returnValues.card;
 				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call();
 				let ipfsHash = await WhiteCard.methods.ipfsHash().call()
-				let text = (await ipfs.object.data(ipfsHash)).toString('utf8')
+				let content = await ipfs.object.data(ipfsHash)
+				var text  = content.toString('utf8')
 		       	EventLog.CreateEvents.push({
 		       		txHash: events[i].transactionHash,
 		       		cardAddress: events[i].returnValues.card,
