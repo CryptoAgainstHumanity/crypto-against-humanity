@@ -162,12 +162,15 @@ function getWhiteCardCreatedEvents() {
 		fromBlock: 3418530,
 		toBlock: 'latest'
 		}, async (err, events) => {
+			if (err) {
+				process.exit(1)
+			}
 			numCards = events.length;
 			for(var i = 0; i < events.length; i++) {
 				WhiteCard.options.address = events[i].returnValues.card;
-				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call()
-				let ipfsHash = await WhiteCard.methods.ipfsHash().call()
-				let content = await ipfs.object.data(ipfsHash)
+				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call().catch(err => process.exit(1))
+				let ipfsHash = await WhiteCard.methods.ipfsHash().call().catch(err => process.exit(1))
+				let content = await ipfs.object.data(ipfsHash).catch(err => process.exit(1))
 				var text  = content.toString('utf8')
 		       	EventLog.CreateEvents.push({
 		       		txHash: events[i].transactionHash,
@@ -186,7 +189,7 @@ function getWhiteCardCreatedEvents() {
 function getMintBurnEvents() {
 	if (EventLog.CreateEvents.length == numCards) {
 		console.log("Got Create Events!");
-		console.log("Getting Mint/Burn Events... (This may take a while)")
+		console.log("Getting Mint/Burn Events, This will take 60 seconds...")
 		setTimeout(cacheHelper, 60000);
 		var mintBurnEvents = [];
 		for (var i = 0; i < EventLog.CreateEvents.length; i++) {
@@ -195,6 +198,9 @@ function getMintBurnEvents() {
 			fromBlock: 3418530,
 			toBlock: 'latest'
 			}, async (err, events) => {
+				if (err){
+					process.exit(1)
+				}
 				for(var j = 0; j < events.length; j++) {
 					if (events[j].event == "Minted") {
 				       	EventLog.MintBurnEvents.push({
@@ -276,16 +282,18 @@ function startContinuousCaching() {
 function refreshCreateCache() {
 	if (!isCachingCreateEvents){
 		isCachingCreateEvents = true;
-
 		WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
 		fromBlock: 3418530,
 		toBlock: 'latest'
 		}, async (err, events) => {
+			if (err) {
+				process.exit(1)
+			}
 			for(var i = EventLog.CreateEvents.length; i < events.length; i++) {
 				WhiteCard.options.address = events[i].returnValues.card;
-				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call();
-				let ipfsHash = await WhiteCard.methods.ipfsHash().call()
-				let content = await ipfs.object.data(ipfsHash)
+				let bondingCurveTokenAddress = await WhiteCard.methods.bondingCurve().call().catch(err => process.exit(1))
+				let ipfsHash = await WhiteCard.methods.ipfsHash().call().catch(err => process.exit(1))
+				let content = await ipfs.object.data(ipfsHash).catch(err => process.exit(1))
 				var text  = content.toString('utf8')
 		       	EventLog.CreateEvents.push({
 		       		txHash: events[i].transactionHash,
@@ -308,6 +316,9 @@ function refreshMintBurnCache(tokenAddress){
 	fromBlock: 3418530,
 	toBlock: 'latest'
 	}, async (err, events) => {
+		if (err) {
+			process.exit(1)
+		}
 		for(var j = 0; j < events.length; j++) {
 			var isNew = true;
 			for (var k = 0; k < eventLog.MintBurnEvents.length; k++){
