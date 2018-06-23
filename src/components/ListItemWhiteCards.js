@@ -74,8 +74,10 @@ class WhiteCardListItem extends Component {
 		const accounts = await web3.eth.getAccounts()
 		let tokenVal = this.state.tradeDisplayAmount * tokenUnits
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
-		let bondingCurvePrice = await EthPolynomialCurveToken.methods
-			.mint(tokenVal).send({ value: this.state.price * 10 ** 18, from: accounts[0] })
+    let bondingCurvePrice = await EthPolynomialCurveToken.methods
+      .getMintingPrice(tokenVal).call()
+		await EthPolynomialCurveToken.methods
+			.mint(tokenVal).send({ value: bondingCurvePrice, from: accounts[0] })
 	};
 
 	async burnTokens () {
@@ -87,12 +89,15 @@ class WhiteCardListItem extends Component {
 	};
 
 	async getBondingCurvePrice (displayVal) {
-		let tokenVal = displayVal * tokenUnits
-		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
-		let bondingCurvePrice = await EthPolynomialCurveToken.methods
-			.getMintingPrice(tokenVal).call()
+    var a = Number(this.props.totalSupply) + Number(displayVal * tokenUnits)
+    var b = Number(this.props.poolBalance)
+    var step1 = 10000000000 / 2
+    var step2 = step1 * (a**2)
+    var step3 = step2 / 10000000000
+    var cardMintingPrice = step3 - b
+    var cardPrice = (cardMintingPrice / 10 ** 18);
 		this.setState({
-			price: bondingCurvePrice / 10 ** 18
+			price: cardPrice
 		})
 	};
 
@@ -107,9 +112,16 @@ class WhiteCardListItem extends Component {
       priceRounded = priceRounded = '🖐️ Bitch, please';
     }
 
-		const balanceRounded = (this.props.balance == 0)?
-			'-':
-			this.props.balance;
+    let balanceRounded = '';
+    if (this.props.balance < 1) {
+      balanceRounded = '-'
+    } else {
+      balanceRounded = precisionRound(this.props.balance, 1)
+    }
+
+		// const balanceRounded = (this.props.balance == 0)?
+		// 	'-':
+		// 	this.props.balance;
 
 		const btnSell = this.props.balance == 0 ? null : (
 			<Btn primary onClick={this.handleSellClick}>
