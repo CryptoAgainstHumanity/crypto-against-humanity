@@ -132,9 +132,9 @@ class Home extends Component {
       // var step3 = step2 / 10000000000
       // var cardMintingPrice = step3 - b
       // var cardPrice = (cardMintingPrice / whiteCardTokenUnits);
-
+      var text = whiteCards[i].text;
       cardsWithInfo.push({
-        text: whiteCards[i].text,
+        text: text.replace(/[\x00-\x1F\x7F-\x9F]/g, ''),
         bondingCurveAddress: whiteCards[i].bondingCurveAddress,
         blockNum: whiteCards[i].blockNum,
         balance: tokenBalance,
