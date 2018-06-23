@@ -5,7 +5,7 @@ import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
 import web3 from '../web3'
 import {
-  COLORS_OBJ, COLORS_TEXT, HAS_BORDER_RADIUS, HAS_SHADOW, DARKEN,
+  COLORS_OBJ, COLORS_TEXT, HAS_BORDER_RADIUS, HAS_SHADOW, DARKEN, MEDIA,
 } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
@@ -135,6 +135,7 @@ const Container = styled.div`
 const BtnDropDown = Btn.extend`
   border: none
   border-bottom: 2px solid ${COLORS_TEXT.bgLight.high};
+  margin-bottom: 16px;
   color: ${COLORS_TEXT.bgLight.high};
   border-radius: 0;
   width: 160px;
@@ -149,7 +150,7 @@ const BtnDropDown = Btn.extend`
 
 const DropdownSort = styled.div`
   position: absolute;
-  top: 144px;
+  top: 148px;
   width: 156px;
   display: flex;
   flex-direction: column;
@@ -168,6 +169,10 @@ const DropdownSort = styled.div`
       background-color: ${DARKEN('#FFFFFF')};
       color: ${COLORS_TEXT.bgLight.high};
     }
+  }
+
+  ${MEDIA.tablet} {
+    top: 734px;
   }
 `;
 
