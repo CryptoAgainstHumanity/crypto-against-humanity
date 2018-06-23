@@ -3,31 +3,43 @@ import Btn from './Button';
 import React, { Component } from 'react';
 import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
+import web3 from '../web3'
 import {
   COLORS_OBJ, COLORS_TEXT, HAS_BORDER_RADIUS, HAS_SHADOW, DARKEN,
 } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
-const MILISECONDS_PER_HOUR = 3600000;
+const AVG_HOURS_PER_ETH_BLOCK = 0.0042; // 15 seconds / 60 secs p. min / 60 min . pour
 
 class ContainerWhiteCards extends Component {
 	constructor(props) {
     super(props)
     this.state = {
-      whiteCardSortType: 'Trendy Cards',
+      whiteCardSortType: 'Pricey Cards',
       showSortMenu: false,
+      blockNumCurrent: 3490823,
     }
+  }
+
+  componentDidMount() {
+    // get updated block number
+    web3.eth.getBlockNumber((err, blockNumCurrent) => {
+      this.setState({blockNumCurrent: blockNumCurrent})
+    });
   }
 
    // Trendingscore based on Hacker News ranking algorithm (source: https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d)
   getTrendingScore = (card) => {
     // NOTE will need to reverse engineer the 'points' based on curve used
-    const points = card.price + 1;
-    const hoursSinceSubmission = (Date.now() - card.timestamp) / MILISECONDS_PER_HOUR;
-    const gravity = 1.8;
-    const score = (points-1) / Math.pow((hoursSinceSubmission+2), gravity);
-    return score;
+      const points = card.price;
+      const blockNumCard = card.blockNum;
+      const hoursSinceSubmission = (this.state.blockNumCurrent - blockNumCard) * AVG_HOURS_PER_ETH_BLOCK;
+      const gravity = 1.8;
+      const score = (points-1) / Math.pow((hoursSinceSubmission+2), gravity);
+      // console.log(`score since is ${score}`);
+    // console.log(`hours since is ${hoursSinceSubmission}`);
   }
+
 
   getSortedCards = (whiteCards) => {
     const sortType = this.state.whiteCardSortType;
@@ -36,10 +48,11 @@ class ContainerWhiteCards extends Component {
       return _.orderBy(whiteCards, ['price'], ['desc'])
     }
     if (sortType === 'New Cards') {
-      return _.orderBy(whiteCards, ['timestamp'], ['desc'])
+      return _.orderBy(whiteCards, ['blockNum'], ['desc'])
     }
     if (sortType === 'Your Cards') {
-      return whiteCards.filter(card => card.balance > 0);
+      const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
+      return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
     }
     if (sortType === 'Trendy Cards') {
       const whiteCardsSorted = whiteCards
@@ -87,6 +100,9 @@ class ContainerWhiteCards extends Component {
     const sortTypeButtons = sortTypes.map((type) =>
         <Btn onClick={this.handleSort} value={type}>{type}</Btn>
       );
+
+    // console.log(whiteCards);
+    console.log(whiteCardsSorted);
 
     return (
 			<div>
