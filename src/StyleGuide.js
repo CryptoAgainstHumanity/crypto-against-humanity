@@ -59,8 +59,8 @@ export const DARKEN = (color) => {
 // Fonts
 
 export const FONT = {
-  heading: 'Arial',
-  body: 'Arial',
+  heading: 'Arial, sans-serif',
+  body: 'Arial. sans-serif',
 }
 
 // Borders-raduis, Shadows,
