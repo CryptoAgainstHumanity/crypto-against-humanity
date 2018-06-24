@@ -6,7 +6,7 @@ import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
 import web3 from '../web3'
-import { COLORS_TEXT } from '../StyleGuide';
+import { COLORS_TEXT, COLORS_OBJ } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
 const AVG_HOURS_PER_ETH_BLOCK = 0.0042; // 15 seconds / 60 secs p. min / 60 min . pour
@@ -149,13 +149,13 @@ const BtnDropDown = Btn.extend`
   margin-right: 16px;
   width: 160px;
   border: none
-  border-bottom: 2px solid ${COLORS_TEXT.bgLight.low};
+  border-bottom: 2px solid ${COLORS_OBJ.secondary.medium};
   color: ${COLORS_TEXT.bgLight.low};
   border-radius: 0;
 
   :hover {
     color: ${COLORS_TEXT.bgLight.high};
-    border-bottom: 2px solid ${COLORS_TEXT.bgLight.high};
+    border-bottom: 2px solid ${COLORS_OBJ.secondary.high};
     background-color: transparent;
   }
 `;

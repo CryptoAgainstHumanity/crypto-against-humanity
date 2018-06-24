@@ -21,7 +21,7 @@ export const COLORS_OBJ = {
 export const COLORS_TEXT = {
   bgLight : {
     high: '#323639',
-    medium: '#6A6B6D',
+    medium: '#A7A7A7',
     low: '#939496',
   },
   bgDark : {
