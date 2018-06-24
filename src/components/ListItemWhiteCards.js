@@ -20,7 +20,7 @@ class WhiteCardListItem extends Component {
 
 		this.state = {
 			price: 0,
-			tradeDisplayAmount: defaultTradeAmount
+			tradeDisplayAmount: defaultTradeAmount,
 		}
 
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
@@ -28,8 +28,9 @@ class WhiteCardListItem extends Component {
 		this.handleSellClick = this.handleSellClick.bind(this);
 	};
 
-	componentWillMount () {
+	componentDidMount () {
 		this.getBondingCurvePrice(defaultTradeAmount)
+    console.log('componentDidMount')
 	};
 
   filterNonNumeric = (input) => {
@@ -94,6 +95,7 @@ class WhiteCardListItem extends Component {
 		this.setState({
 			price: bondingCurvePrice / 10 ** 18
 		})
+    // console.log('getBondingCurvePrice called')
 	};
 
 	render() {
@@ -126,7 +128,9 @@ class WhiteCardListItem extends Component {
           <WhiteCardStats>
             <div>
               <LABEL>PRICE</LABEL>
+              <H1>{this.props.bondingCurveAddress}</H1>
               <H1>{priceRounded}</H1>
+              <H1>{this.props.price}</H1>
             </div>
             <div>
               <LABEL>BALANCE</LABEL>

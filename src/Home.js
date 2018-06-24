@@ -64,7 +64,6 @@ class Home extends Component {
           if (buf.toString('utf8') != '') {
             IPFSCardCache = JSON.parse(buf.toString('utf8'))
             this.getWhiteCardInfo(IPFSCardCache)
-            console.log(IPFSCardCache);
           } else {
             this.loadWhiteCardsFromContract();
             console.error("IPFS file is corrupted")

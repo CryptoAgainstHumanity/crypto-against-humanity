@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import Btn from './Button';
+import DropdownMenu from './DropdownMenu';
 import React, { Component } from 'react';
 import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
@@ -17,6 +18,7 @@ class ContainerWhiteCards extends Component {
     super(props)
     this.state = {
       whiteCards: [],
+      sortTypeOptions: ['Trendy Cards', 'Pricey Cards', 'New Cards', 'Your Cards'],
       sortType: 'Pricey Cards',
       showSortMenu: false,
       blockNumCurrent: 3490823,
@@ -24,7 +26,8 @@ class ContainerWhiteCards extends Component {
   }
 
   componentDidMount() {
-    this.setState({whiteCards: this.props.whiteCards});
+    const sortedCards = this.getSortedCards(this.props.whiteCards, this.state.sortType);
+    this.setState({whiteCards: sortedCards});
 
     // get updated block number
     web3.eth.getBlockNumber((err, blockNumCurrent) => {
@@ -67,6 +70,9 @@ class ContainerWhiteCards extends Component {
     const updatedCards = this.getSortedCards(whiteCards, sortType);
     this.setState({sortType: sortType});
     this.setState({whiteCards: updatedCards});
+
+    console.log(sortType);
+    console.log(updatedCards);
   }
 
   handleSearch = (event) => {
@@ -91,84 +97,60 @@ class ContainerWhiteCards extends Component {
     })
   }
 
-
 	render() {
-
-    const sortTypes = ['Trendy Cards', 'Pricey Cards', 'New Cards', 'Your Cards'];
-    const sortTypeButtons = sortTypes.map((type) =>
+    // const sortTypes = ['Trendy Cards', 'Pricey Cards', 'New Cards', 'Your Cards'];
+    const sortTypeButtons = this.state.sortTypeOptions.map((type) =>
         <Btn onClick={this.handleSort} value={type}>{type}</Btn>
       );
 
     return (
-			<div>
-        <SearchBar handleSearch={this.handleSearch}/>
-        <BtnDropDown onClick={this.showSortMenu}>
-          {this.state.sortType} <i class="fa fa-caret-down"/>
-        </BtnDropDown>
-        {this.state.showSortMenu?
-          <DropdownSort>
-            {sortTypeButtons}
-          </DropdownSort> :
-          ( null )
-        }
       <Container>
+
+        <HeaderWhiteCards>
+          <BtnDropDown onClick={this.showSortMenu}>
+            {this.state.sortType} <i class="fa fa-caret-down"/>
+          </BtnDropDown>
+          {this.state.showSortMenu?
+            <DropdownMenu>
+              {sortTypeButtons}
+            </DropdownMenu> :
+            ( null )
+          }
+          <SearchBar handleSearch={this.handleSearch}/>
+        </HeaderWhiteCards>
+
         <ListWhiteCards whiteCards={this.state.whiteCards}/>
+
       </Container>
-      </div>
 		);
 	}
 }
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  height: calc(100vh - 64px - 64px - 56px - 16px);
+  height: calc(100vh - 64px - 64px);
   width: 528px;
   overflow: auto;
 `;
 
-const BtnDropDown = Btn.extend`
-  border: none
-  border-bottom: 2px solid ${COLORS_TEXT.bgLight.high};
+const HeaderWhiteCards = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
   margin-bottom: 16px;
-  color: ${COLORS_TEXT.bgLight.high};
-  border-radius: 0;
+`;
+
+const BtnDropDown = Btn.extend`
+  margin-right: 16px;
   width: 160px;
+  border: none
+  border-bottom: 2px solid ${COLORS_TEXT.bgLight.low};
+  color: ${COLORS_TEXT.bgLight.low};
+  border-radius: 0;
 
   :hover {
     color: ${COLORS_TEXT.bgLight.high};
     border-bottom: 2px solid ${COLORS_TEXT.bgLight.high};
     background-color: transparent;
-  }
-
-`;
-
-const DropdownSort = styled.div`
-  position: absolute;
-  top: 148px;
-  width: 156px;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border: 2px solid ${COLORS_OBJ.secondary.high};
-  ${HAS_BORDER_RADIUS};
-  ${HAS_SHADOW};
-
-  button {
-    border: none;
-    border-radius: 0;
-    transition: none;
-    color: ${COLORS_OBJ.secondary.high};
-
-    :hover {
-      background-color: ${DARKEN('#FFFFFF')};
-      color: ${COLORS_TEXT.bgLight.high};
-    }
-  }
-
-  ${MEDIA.tablet} {
-    top: 734px;
   }
 `;
 

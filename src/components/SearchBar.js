@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  COLORS_OBJ, COLORS_TEXT, HAS_BORDER_RADIUS, DARKEN,
-} from '../StyleGuide';
+import { COLORS_OBJ, COLORS_TEXT, MEDIA } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
 const SearchBar = (props) => {
@@ -15,27 +13,27 @@ const SearchBar = (props) => {
 };
 
 const SearchGroup = styled.form`
+  width: calc(24px + 220px);
   border-bottom: 2px solid ${COLORS_OBJ.secondary.medium};
   color: ${COLORS_TEXT.bgLight.low};
+  font-size:16px;
+
   :focus-within {
     color: ${COLORS_TEXT.bgLight.high};
+    border-bottom: 2px solid ${COLORS_OBJ.secondary.high};
+  }
+
+  ${MEDIA.tablet} {
+    display: none;
   }
 `;
 
-const SearchIcon = styled.img`
-  height: 24px;
-  width: 24px;
-`;
-
 const SearchForm = styled.input`
-  background-color: transparent;
+  width: 220px;
   padding: 0.5em 1em;
+  background-color: transparent;
   border: none;
   outline: none;
-
-  font-size:16px;
-  font-weight: bold;
 `;
-
 
 export default SearchBar;
