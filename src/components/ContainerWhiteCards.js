@@ -3,6 +3,7 @@ import Btn from './Button';
 import React, { Component } from 'react';
 import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
+import SearchBar from './SearchBar';
 import web3 from '../web3'
 import {
   COLORS_OBJ, COLORS_TEXT, HAS_BORDER_RADIUS, HAS_SHADOW, DARKEN, MEDIA,
@@ -15,6 +16,7 @@ class ContainerWhiteCards extends Component {
 	constructor(props) {
     super(props)
     this.state = {
+      whiteCards: [],
       whiteCardSortType: 'Pricey Cards',
       showSortMenu: false,
       blockNumCurrent: 3490823,
@@ -22,6 +24,8 @@ class ContainerWhiteCards extends Component {
   }
 
   componentDidMount() {
+    this.setState({whiteCards: this.props.whiteCards});
+
     // get updated block number
     web3.eth.getBlockNumber((err, blockNumCurrent) => {
       this.setState({blockNumCurrent: blockNumCurrent})
@@ -36,36 +40,62 @@ class ContainerWhiteCards extends Component {
       const hoursSinceSubmission = (this.state.blockNumCurrent - blockNumCard) * AVG_HOURS_PER_ETH_BLOCK;
       const gravity = 1.8;
       const score = (points-1) / Math.pow((hoursSinceSubmission+2), gravity);
-      // console.log(`score since is ${score}`);
-    // console.log(`hours since is ${hoursSinceSubmission}`);
   }
 
 
-  getSortedCards = (whiteCards) => {
-    const sortType = this.state.whiteCardSortType;
+  // getSortedCards = (whiteCards) => {
+  //   const sortType = this.state.whiteCardSortType;
+
+  //   if (sortType === 'Pricey Cards') {
+  //     return _.orderBy(whiteCards, ['price'], ['desc'])
+  //   }
+  //   if (sortType === 'New Cards') {
+  //     return _.orderBy(whiteCards, ['blockNum'], ['desc'])
+  //   }
+  //   if (sortType === 'Your Cards') {
+  //     const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
+  //     return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
+  //   }
+  //   if (sortType === 'Trendy Cards') {
+  //     const whiteCardsSorted = whiteCards
+  //       .slice()
+  //       .sort((a, b) => this.getTrendingScore(b)- this.getTrendingScore(a));
+  //     return whiteCardsSorted;
+  //   }
+
+  //   return whiteCards;
+  // }
+
+  filterCards = (whiteCards) => {
+    const filteredCards = '';
+  }
+
+  handleSort = (event) => {
+    // this.setState({whiteCardSortType: event.target.value})
+
+    const whiteCards = this.props.whiteCards;
+    let updatedCards = this.state.whiteCards;
+    const sortType = event.target.value;
 
     if (sortType === 'Pricey Cards') {
-      return _.orderBy(whiteCards, ['price'], ['desc'])
+      updatedCards = _.orderBy(whiteCards, ['price'], ['desc'])
     }
     if (sortType === 'New Cards') {
-      return _.orderBy(whiteCards, ['blockNum'], ['desc'])
+      updatedCards = _.orderBy(whiteCards, ['blockNum'], ['desc'])
     }
     if (sortType === 'Your Cards') {
       const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
-      return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
+      updatedCards = _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
     }
     if (sortType === 'Trendy Cards') {
       const whiteCardsSorted = whiteCards
         .slice()
         .sort((a, b) => this.getTrendingScore(b)- this.getTrendingScore(a));
-      return whiteCardsSorted;
+      updatedCards = whiteCardsSorted;
     }
 
-    return whiteCards;
-  }
+    this.setState({whiteCards: updatedCards});
 
-  handleSort = (event) => {
-    this.setState({whiteCardSortType: event.target.value})
   }
 
   showSortMenu = (event) => {
@@ -83,11 +113,11 @@ class ContainerWhiteCards extends Component {
 
 
 	render() {
-		const {whiteCards} = this.props;
+		// const {whiteCards} = this.props;
 
-    const whiteCardsSorted = this.getSortedCards(whiteCards);
+    // const whiteCardsSorted = this.getSortedCards(this.state.whiteCards);
 
-    const whiteCardsDiv = whiteCardsSorted.map((card) => {
+    const whiteCardsDiv = this.state.whiteCards.map((card) => {
       return <div key={card.text}>
         Price: {card.price} -----
         Balance: {card.balance} -----
@@ -102,10 +132,11 @@ class ContainerWhiteCards extends Component {
       );
 
     // console.log(whiteCards);
-    console.log(whiteCardsSorted);
+    // console.log(whiteCardsSorted);
 
     return (
 			<div>
+        <SearchBar></SearchBar>
         <BtnDropDown onClick={this.showSortMenu}>
           {this.state.whiteCardSortType} <i class="fa fa-caret-down"/>
         </BtnDropDown>
@@ -116,7 +147,7 @@ class ContainerWhiteCards extends Component {
           ( null )
         }
       <Container>
-        <ListWhiteCards whiteCards={whiteCardsSorted}/>
+        <ListWhiteCards whiteCards={this.state.whiteCards}/>
       </Container>
       </div>
 		);
@@ -127,7 +158,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 
-  height: calc(100vh - 64px - 64px);
+  height: calc(100vh - 64px - 64px - 56px - 16px);
   width: 528px;
   overflow: auto;
 `;
