@@ -30,7 +30,6 @@ class WhiteCardListItem extends Component {
 
 	componentDidMount () {
 		this.getBondingCurvePrice(defaultTradeAmount)
-    console.log('componentDidMount')
 	};
 
   filterNonNumeric = (input) => {
@@ -106,10 +105,10 @@ class WhiteCardListItem extends Component {
 	render() {
 
     let priceRounded = '';
-    if (this.state.price < 1000000) {
-      priceRounded = `Ξ ${precisionRound(this.state.price, 3)}`;
-    } else if (this.state.price < 1000000000) {
-      priceRounded = `Ξ ${precisionRound(this.state.price / 1000000, 3)} Mns`;
+    if (this.props.price < 1000000) {
+      priceRounded = `Ξ ${precisionRound(this.props.price, 3)}`;
+    } else if (this.props.price < 1000000000) {
+      priceRounded = `Ξ ${precisionRound(this.props.price / 1000000, 3)} Mns`;
     } else {
       priceRounded = priceRounded = '🖐️ Bitch, please';
     }
@@ -140,9 +139,7 @@ class WhiteCardListItem extends Component {
           <WhiteCardStats>
             <div>
               <LABEL>PRICE</LABEL>
-              <H1>{this.props.bondingCurveAddress}</H1>
               <H1>{priceRounded}</H1>
-              <H1>{this.props.price}</H1>
             </div>
             <div>
               <LABEL>BALANCE</LABEL>

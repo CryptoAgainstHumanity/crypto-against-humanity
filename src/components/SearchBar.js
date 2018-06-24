@@ -17,6 +17,7 @@ const SearchGroup = styled.form`
   border-bottom: 2px solid ${COLORS_OBJ.secondary.medium};
   color: ${COLORS_TEXT.bgLight.low};
   font-size:16px;
+  font-weight: bold;
 
   :focus-within {
     color: ${COLORS_TEXT.bgLight.high};

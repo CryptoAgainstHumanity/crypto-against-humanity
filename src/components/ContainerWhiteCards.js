@@ -6,9 +6,7 @@ import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
 import web3 from '../web3'
-import {
-  COLORS_OBJ, COLORS_TEXT, HAS_BORDER_RADIUS, HAS_SHADOW, DARKEN, MEDIA,
-} from '../StyleGuide';
+import { COLORS_TEXT } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
 const AVG_HOURS_PER_ETH_BLOCK = 0.0042; // 15 seconds / 60 secs p. min / 60 min . pour
@@ -18,14 +16,14 @@ class ContainerWhiteCards extends Component {
     super(props)
     this.state = {
       whiteCards: [],
-      sortTypeOptions: ['Trendy Cards', 'Pricey Cards', 'New Cards', 'Your Cards'],
+      sortTypeOptions: ['Pricey Cards', 'Trendy Cards', 'New Cards', 'Your Cards'],
       sortType: 'Pricey Cards',
       showSortMenu: false,
-      blockNumCurrent: 3490823,
+      blockNumCurrent: 0,
     }
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const sortedCards = this.getSortedCards(this.props.whiteCards, this.state.sortType);
     this.setState({whiteCards: sortedCards});
 
@@ -38,11 +36,15 @@ class ContainerWhiteCards extends Component {
    // Trendingscore based on Hacker News ranking algorithm (source: https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d)
   getTrendingScore = (card) => {
     // NOTE will need to reverse engineer the 'points' based on curve used
-      const points = card.price;
+      const points = card.totalSupply / (10**8);
       const blockNumCard = card.blockNum;
       const hoursSinceSubmission = (this.state.blockNumCurrent - blockNumCard) * AVG_HOURS_PER_ETH_BLOCK;
       const gravity = 1.8;
-      const score = (points-1) / Math.pow((hoursSinceSubmission+2), gravity);
+      if (points > 0 ) {
+        const score = (points) / Math.pow((hoursSinceSubmission+2), gravity);
+        return score;
+      }
+      return 0;
   }
 
   getSortedCards = (whiteCards, sortType) => {
@@ -70,13 +72,9 @@ class ContainerWhiteCards extends Component {
     const updatedCards = this.getSortedCards(whiteCards, sortType);
     this.setState({sortType: sortType});
     this.setState({whiteCards: updatedCards});
-
-    console.log(sortType);
-    console.log(updatedCards);
   }
 
   handleSearch = (event) => {
-    console.log('hello world');
     const searchText = event.target.value.toLowerCase();
     let filteredCards = this.props.whiteCards
       .filter(card => card.text.toLowerCase().search(searchText) !== -1);
@@ -98,7 +96,6 @@ class ContainerWhiteCards extends Component {
   }
 
 	render() {
-    // const sortTypes = ['Trendy Cards', 'Pricey Cards', 'New Cards', 'Your Cards'];
     const sortTypeButtons = this.state.sortTypeOptions.map((type) =>
         <Btn onClick={this.handleSort} value={type}>{type}</Btn>
       );
