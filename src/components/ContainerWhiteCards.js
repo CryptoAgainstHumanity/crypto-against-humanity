@@ -18,6 +18,7 @@ class ContainerWhiteCards extends Component {
       whiteCards: [],
       sortTypeOptions: ['Pricey Cards', 'Trendy Cards', 'New Cards', 'Your Cards'],
       sortType: 'Pricey Cards',
+      searchText: '',
       showSortMenu: false,
       blockNumCurrent: 0,
     }
@@ -69,16 +70,24 @@ class ContainerWhiteCards extends Component {
   handleSort = (event) => {
     const whiteCards = this.props.whiteCards;
     const sortType = event.target.value;
-    const updatedCards = this.getSortedCards(whiteCards, sortType);
+    const sortedCards = this.getSortedCards(whiteCards, sortType);
+    const updatedCards = this.getSearchedCards(sortedCards, this.state.searchText);
     this.setState({sortType: sortType});
     this.setState({whiteCards: updatedCards});
   }
 
-  handleSearch = (event) => {
-    const searchText = event.target.value.toLowerCase();
-    let filteredCards = this.props.whiteCards
+  getSearchedCards = (whiteCards, searchText) => {
+    const filteredCards = whiteCards
       .filter(card => card.text.toLowerCase().search(searchText) !== -1);
+    return filteredCards;
+  }
+
+  handleSearch = (event) => {
+    const whiteCards = this.props.whiteCards;
+    const searchText = event.target.value.toLowerCase();
+    const filteredCards = this.getSearchedCards(whiteCards, searchText);
     const updatedCards = this.getSortedCards(filteredCards, this.state.sortType);
+    this.setState({searchText: searchText});
     this.setState({whiteCards: updatedCards});
   }
 
