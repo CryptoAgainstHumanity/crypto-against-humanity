@@ -8,24 +8,25 @@ export const CONTENT_WIDTH = '888px';
 // Colors
 export const COLORS_OBJ = {
   primary : {
-    high: '#D94A4D',
+    red: '#D94A4D',
+    green: '#4CB191',
   },
   secondary : {
-    high: '#323639',
-    medium: '#A7A7A7',
-    low: '#CED4DA',
+    high: '#333333',
+    medium: '#757575',
+    low: '#A1A1A1',
   },
   background : '#e9ebee',
 };
 
 export const COLORS_TEXT = {
   bgLight : {
-    high: '#323639',
-    medium: '#A7A7A7',
-    low: '#939496',
+    high: COLORS_OBJ.secondary.high,
+    medium: COLORS_OBJ.secondary.medium,
+    low: COLORS_OBJ.secondary.low,
   },
   bgDark : {
-    high: 'white',
+    high: '#FFFFFF',
     medium: '#D6D6D6',
     low: '#323639',
   },

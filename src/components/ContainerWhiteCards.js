@@ -150,7 +150,7 @@ const BtnDropDown = Btn.extend`
   width: 160px;
   border: none
   border-bottom: 2px solid ${COLORS_OBJ.secondary.medium};
-  color: ${COLORS_TEXT.bgLight.low};
+  color: ${COLORS_TEXT.bgLight.medium};
   border-radius: 0;
 
   :hover {

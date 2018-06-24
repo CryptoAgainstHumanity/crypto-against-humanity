@@ -8,18 +8,18 @@ import {
 const Btn = styled.button`
   padding: 0.5em 1em;
   background-color: transparent;
-  border: 2px solid ${COLORS_OBJ.primary.high};
+  border: 2px solid ${COLORS_OBJ.primary.red};
   ${HAS_BORDER_RADIUS};
 
   font-size:16px;
   font-weight: bold;
 
-  background-color: ${props => props.primary? COLORS_OBJ.primary.high : 'none'};
-  color: ${props => props.primary? 'white' : COLORS_OBJ.primary.high}
+  background-color: ${props => props.primary? COLORS_OBJ.primary.red : 'none'};
+  color: ${props => props.primary? 'white' : COLORS_OBJ.primary.red}
 
   :hover {
-    border-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.high) : COLORS_OBJ.primary.high};
-    background-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.high) : COLORS_OBJ.primary.high};
+    border-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.red) : COLORS_OBJ.primary.red};
+    background-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.red) : COLORS_OBJ.primary.red};
     color: white;
   }
 
