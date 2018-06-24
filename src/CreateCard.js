@@ -22,7 +22,7 @@ class CreateCard extends Component {
     super(props)
     this.state = {
       value: '',
-      color: "black",
+      color: "white",
       isVerified: false
     };
     ReactGA.initialize('UA-120470128-1');
@@ -111,8 +111,8 @@ class CreateCard extends Component {
           <form onSubmit={this.handleSubmit.bind(this)}>
 
             <ContainerToggle type="radio" name="options" data-toggle="buttons" onChange={this.handleColorChange.bind(this)} defaultValue={this.state.color}>
-              <LblSelect black type="button"><input type="radio" name="options" autocomplete="off" value={"black"}/>Black Card</LblSelect>
               <LblSelect white type="button"><input type="radio" name="options" autocomplete="off" value={"white"}/>White Card</LblSelect>
+              <LblSelect black type="button"><input type="radio" name="options" autocomplete="off" value={"black"}/>Black Card</LblSelect>
             </ContainerToggle>
 
             {cardFormControl}
