@@ -17,7 +17,7 @@ class ContainerWhiteCards extends Component {
     super(props)
     this.state = {
       whiteCards: [],
-      whiteCardSortType: 'Pricey Cards',
+      sortType: 'Pricey Cards',
       showSortMenu: false,
       blockNumCurrent: 3490823,
     }
@@ -42,60 +42,40 @@ class ContainerWhiteCards extends Component {
       const score = (points-1) / Math.pow((hoursSinceSubmission+2), gravity);
   }
 
-
-  // getSortedCards = (whiteCards) => {
-  //   const sortType = this.state.whiteCardSortType;
-
-  //   if (sortType === 'Pricey Cards') {
-  //     return _.orderBy(whiteCards, ['price'], ['desc'])
-  //   }
-  //   if (sortType === 'New Cards') {
-  //     return _.orderBy(whiteCards, ['blockNum'], ['desc'])
-  //   }
-  //   if (sortType === 'Your Cards') {
-  //     const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
-  //     return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
-  //   }
-  //   if (sortType === 'Trendy Cards') {
-  //     const whiteCardsSorted = whiteCards
-  //       .slice()
-  //       .sort((a, b) => this.getTrendingScore(b)- this.getTrendingScore(a));
-  //     return whiteCardsSorted;
-  //   }
-
-  //   return whiteCards;
-  // }
-
-  filterCards = (whiteCards) => {
-    const filteredCards = '';
-  }
-
-  handleSort = (event) => {
-    // this.setState({whiteCardSortType: event.target.value})
-
-    const whiteCards = this.props.whiteCards;
-    let updatedCards = this.state.whiteCards;
-    const sortType = event.target.value;
-
+  getSortedCards = (whiteCards, sortType) => {
     if (sortType === 'Pricey Cards') {
-      updatedCards = _.orderBy(whiteCards, ['price'], ['desc'])
+      return _.orderBy(whiteCards, ['price'], ['desc'])
     }
     if (sortType === 'New Cards') {
-      updatedCards = _.orderBy(whiteCards, ['blockNum'], ['desc'])
+      return _.orderBy(whiteCards, ['blockNum'], ['desc'])
     }
     if (sortType === 'Your Cards') {
       const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
-      updatedCards = _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
+      return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
     }
     if (sortType === 'Trendy Cards') {
       const whiteCardsSorted = whiteCards
         .slice()
         .sort((a, b) => this.getTrendingScore(b)- this.getTrendingScore(a));
-      updatedCards = whiteCardsSorted;
+      return whiteCardsSorted;
     }
+  }
 
+  handleSort = (event) => {
+    const whiteCards = this.props.whiteCards;
+    const sortType = event.target.value;
+    const updatedCards = this.getSortedCards(whiteCards, sortType);
+    this.setState({sortType: sortType});
     this.setState({whiteCards: updatedCards});
+  }
 
+  handleSearch = (event) => {
+    console.log('hello world');
+    const searchText = event.target.value.toLowerCase();
+    let filteredCards = this.props.whiteCards
+      .filter(card => card.text.toLowerCase().search(searchText) !== -1);
+    const updatedCards = this.getSortedCards(filteredCards, this.state.sortType);
+    this.setState({whiteCards: updatedCards});
   }
 
   showSortMenu = (event) => {
@@ -113,32 +93,17 @@ class ContainerWhiteCards extends Component {
 
 
 	render() {
-		// const {whiteCards} = this.props;
-
-    // const whiteCardsSorted = this.getSortedCards(this.state.whiteCards);
-
-    const whiteCardsDiv = this.state.whiteCards.map((card) => {
-      return <div key={card.text}>
-        Price: {card.price} -----
-        Balance: {card.balance} -----
-        Trending: {this.getTrendingScore(card)} -----
-        Text: {card.text}
-      </div>
-    });
 
     const sortTypes = ['Trendy Cards', 'Pricey Cards', 'New Cards', 'Your Cards'];
     const sortTypeButtons = sortTypes.map((type) =>
         <Btn onClick={this.handleSort} value={type}>{type}</Btn>
       );
 
-    // console.log(whiteCards);
-    // console.log(whiteCardsSorted);
-
     return (
 			<div>
-        <SearchBar></SearchBar>
+        <SearchBar handleSearch={this.handleSearch}/>
         <BtnDropDown onClick={this.showSortMenu}>
-          {this.state.whiteCardSortType} <i class="fa fa-caret-down"/>
+          {this.state.sortType} <i class="fa fa-caret-down"/>
         </BtnDropDown>
         {this.state.showSortMenu?
           <DropdownSort>
