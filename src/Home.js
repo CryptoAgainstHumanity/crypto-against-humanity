@@ -64,6 +64,7 @@ class Home extends Component {
           if (buf.toString('utf8') != '') {
             IPFSCardCache = JSON.parse(buf.toString('utf8'))
             this.getWhiteCardInfo(IPFSCardCache)
+            console.log(IPFSCardCache);
           } else {
             this.loadWhiteCardsFromContract();
             console.error("IPFS file is corrupted")
@@ -144,10 +145,10 @@ class Home extends Component {
     }
 
     // Order by price
-    updatedCards = _.orderBy(cardsWithInfo, ['price'], ['desc']); 
+    updatedCards = _.orderBy(cardsWithInfo, ['price'], ['desc']);
 
     // Order by newest
-    //updatedCards = _.orderBy(cardsWithInfo, ['blockNum'], ['desc']); 
+    //updatedCards = _.orderBy(cardsWithInfo, ['blockNum'], ['desc']);
     this.setState({
       whiteCards: updatedCards,
       loadingWhiteCards: false
