@@ -1,11 +1,9 @@
 import _ from 'lodash'
 import moment from 'moment'
 import web3 from './web3'
-import AWS from 'aws-sdk';
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
-import CachedCards from './data/cachedCards'
-import CachedBlock from './data/cachedBlock'
+import BlackCards from './data/blackCards.json'
 import EventCache from './data/eventCache'
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
@@ -34,11 +32,29 @@ class Home extends Component {
       whiteCards: [],
       blackCard: {},
       originBlock: 3418530,
-      TCRoriginBlock: 3317454
+      TCRoriginBlock: 3317454,
+      web3Id: 9999999,
+      accounts: [1, 2, 3, 4, 5, 6, 7]
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
 
+    if (web3 != 'undefined') {
+      web3.eth.net.getId((err, id) => {
+          this.setState({
+            web3Id: id
+          })
+      })
+      web3.eth.getAccounts((err, accounts) => {
+          this.setState({
+            accounts: accounts
+          })
+      })
+    } else {
+      this.setState({
+        web3Id: 'undefined'
+      })
+    }
   }
 
 
@@ -48,14 +64,24 @@ class Home extends Component {
         loadingWhiteCards: true
     })
 
-    BlackCardRegistry.getPastEvents('_Application', {
-      fromBlock: this.state.TCRoriginBlock,
-      toBlock: 'latest'
-    }, async (err, events) => {
-      this.blackCards = events
+    if (BlackCardRegistry != "undefined") {
+      BlackCardRegistry.getPastEvents('_Application', {
+        fromBlock: this.state.TCRoriginBlock,
+        toBlock: 'latest'
+      }, async (err, events) => {
+        if (events.length == 0) {
+          this.blackCards = BlackCards
+        } else {
+          this.blackCards = events
+        }
+        this.setBlackCard()
+        this.startTimer()
+      })
+    } else {
+      this.blackCards = BlackCards
       this.setBlackCard()
       this.startTimer()
-    })
+    }
 
     var IPFSCardCache = []
     if (IPFS_KEY) {
@@ -97,7 +123,13 @@ class Home extends Component {
 
     var cardsWithInfo = []
     var updatedCards = []
-    const accounts = await web3.eth.getAccounts();
+    var accounts = "";
+    if (web3 != 'undefined') {
+      var networkId = await web3.eth.net.getId();
+      if (networkId == 3) { //if ropsten
+        accounts = await web3.eth.getAccounts();
+      }
+    }
     for (var i = 0; i < whiteCards.length; i++) {
       var tokenBalance = 0;
       var poolBalance = 0;
@@ -125,29 +157,42 @@ class Home extends Component {
           }
         }
       }
-      // var a = Number(totalSupply) + Number(defaultTokenBuyAmount)
-      // var b = Number(poolBalance)
-      // var step1 = 10000000000 / 2
-      // var step2 = step1 * (a**2)
-      // var step3 = step2 / 10000000000
-      // var cardMintingPrice = step3 - b
-      // var cardPrice = (cardMintingPrice / whiteCardTokenUnits);
 
+    // let tokenVal = 1 * tokenUnits //10 ** 8
+    // EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
+    // let bondingCurvePrice = await EthPolynomialCurveToken.methods
+    //   .getMintingPrice(tokenVal).call()
+    // this.setState({
+    //   price: bondingCurvePrice / 10 ** 18
+    // })
+
+
+      var a = Number(totalSupply) + Number(10 ** 8)
+      var b = Number(poolBalance)
+      var step1 = 10000000000 / 2
+      var step2 = step1 * (a**2)
+      var step3 = step2 / 10000000000
+      var cardMintingPrice = step3 - b
+      var cardPrice = (cardMintingPrice / 10 ** 18);
+
+      var text = whiteCards[i].text;
       cardsWithInfo.push({
-        text: whiteCards[i].text,
+        text: text.replace(/[\x00-\x1F\x7F-\x9F]/g, ''),
         bondingCurveAddress: whiteCards[i].bondingCurveAddress,
         blockNum: whiteCards[i].blockNum,
         balance: tokenBalance,
-        price: Number(poolBalance) - Number(totalSupply)
+        price: cardPrice,
+        totalSupply: totalSupply,
+        poolBalance: poolBalance
       })
 
     }
 
     // Order by price
-    updatedCards = _.orderBy(cardsWithInfo, ['price'], ['desc']); 
+    updatedCards = _.orderBy(cardsWithInfo, ['price'], ['desc']);
 
     // Order by newest
-    //updatedCards = _.orderBy(cardsWithInfo, ['blockNum'], ['desc']); 
+    //updatedCards = _.orderBy(cardsWithInfo, ['blockNum'], ['desc']);
     this.setState({
       whiteCards: updatedCards,
       loadingWhiteCards: false
@@ -253,8 +298,26 @@ class Home extends Component {
       <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading people's lousy submissions... </LOADING>:
       <ContainerWhiteCards whiteCards={this.state.whiteCards}/>;
 
+    var doDisplayMessage = false;
+    var displayMessage = ''
+    if (web3 == 'undefined') {
+      doDisplayMessage = true;
+      displayMessage = "You don't have Metamask and will be unable to interact with the site!"
+    } else if (this.state.web3Id != 3 && this.state.web3Id != 9999999) {
+      doDisplayMessage = true;
+      displayMessage = "You need to switch to the ropsten test network to interact with the site!"
+    } else if (this.state.accounts.length == 0) {
+      doDisplayMessage = true;
+      displayMessage = "You need to log into metamask to interact with the site!"
+    }
+    //var statusMessage = 
+    var status = doDisplayMessage ?
+    <div class="alert alert-info" role="alert" > {displayMessage} </div> :
+    <div></div>;
+
     return (
       <div>
+        {status}
         <ContainerRow>
           {blackCardContainer}
           {whiteCardContainer}

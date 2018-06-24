@@ -32,6 +32,7 @@ class App extends Component {
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
     this.checkWeb3(this.callback);
+    //this.callback(hasMetamask, isLoggedIn, network);
   }
 
   callback(metamask, isLoggedIn, network) {
@@ -75,14 +76,14 @@ class App extends Component {
   }
 
   render() {
-    if (this.state.loading) {
-      return <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />;
-    }
+    // if (this.state.loading) {
+    //   return <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />;
+    // }
 
     return (
 
       <HashRouter>
-      <div><b>{this.state.isLoggedIn == true && this.state.network == "Ropsten" ?
+      <div>
         <ContainerApp>
           <ContainerNav>
           <NavBar>
@@ -105,10 +106,7 @@ class App extends Component {
               <Route path="/update-cache" component={UpdateCache}/>
           </div>
         </ContainerApp>
-        :
-            <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />
-        }
-      </b></div>
+      </div>
       </HashRouter>
     );
   }

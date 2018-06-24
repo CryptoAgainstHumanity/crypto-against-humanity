@@ -12,7 +12,7 @@ export const COLORS_OBJ = {
   },
   secondary : {
     high: '#323639',
-    medium: '#323639',
+    medium: '#A7A7A7',
     low: '#CED4DA',
   },
   background : '#e9ebee',
