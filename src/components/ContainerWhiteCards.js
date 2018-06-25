@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Btn from './Button';
 import DropdownMenu from './DropdownMenu';
+import HeaderWhiteCards from './HeaderWhiteCards';
 import React, { Component } from 'react';
 import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
@@ -16,8 +17,8 @@ class ContainerWhiteCards extends Component {
     super(props)
     this.state = {
       whiteCards: [],
-      sortTypeOptions: ['Pricey Cards', 'Trendy Cards', 'New Cards', 'Your Cards'],
-      sortType: 'Pricey Cards',
+      sortTypeOptions: ['Price', 'Hot', 'New', 'Yours'],
+      sortType: 'Price',
       searchText: '',
       showSortMenu: false,
       blockNumCurrent: 0,
@@ -49,17 +50,17 @@ class ContainerWhiteCards extends Component {
   }
 
   getSortedCards = (whiteCards, sortType) => {
-    if (sortType === 'Pricey Cards') {
+    if (sortType === 'Price') {
       return _.orderBy(whiteCards, ['price'], ['desc'])
     }
-    if (sortType === 'New Cards') {
+    if (sortType === 'New') {
       return _.orderBy(whiteCards, ['blockNum'], ['desc'])
     }
-    if (sortType === 'Your Cards') {
+    if (sortType === 'Yours') {
       const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
       return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
     }
-    if (sortType === 'Trendy Cards') {
+    if (sortType === 'Hot') {
       const whiteCardsSorted = whiteCards
         .slice()
         .sort((a, b) => this.getTrendingScore(b)- this.getTrendingScore(a));
@@ -91,39 +92,17 @@ class ContainerWhiteCards extends Component {
     this.setState({whiteCards: updatedCards});
   }
 
-  showSortMenu = (event) => {
-    event.preventDefault();
-    this.setState({showSortMenu: true}, () => {
-      document.addEventListener('click', this.closeSortMenu);
-    });
-  }
-
-  closeSortMenu = () => {
-    this.setState({showSortMenu: false}, () => {
-      document.removeEventListener('click', this.closeSortMenu);
-    })
-  }
-
 	render() {
-    const sortTypeButtons = this.state.sortTypeOptions.map((type) =>
-        <Btn onClick={this.handleSort} value={type}>{type}</Btn>
-      );
-
     return (
       <Container>
 
-        <HeaderWhiteCards>
-          <BtnDropDown onClick={this.showSortMenu}>
-            {this.state.sortType} <i class="fa fa-caret-down"/>
-          </BtnDropDown>
-          {this.state.showSortMenu?
-            <DropdownMenu>
-              {sortTypeButtons}
-            </DropdownMenu> :
-            ( null )
-          }
-          <SearchBar handleSearch={this.handleSearch}/>
-        </HeaderWhiteCards>
+        <HeaderWhiteCards
+          sortTypeOptions={this.state.sortTypeOptions}
+          sortType={this.state.sortType}
+          showSortMenu={this.showSortMenu}
+          handleSort ={this.handleSort}
+          handleSearch ={this.handleSearch}
+          />
 
         <ListWhiteCards whiteCards={this.state.whiteCards}/>
 
@@ -136,28 +115,6 @@ const Container = styled.div`
   height: calc(100vh - 64px - 24px);
   width: 528px;
   overflow: auto;
-`;
-
-const HeaderWhiteCards = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  margin-bottom: 16px;
-`;
-
-const BtnDropDown = Btn.extend`
-  margin-right: 16px;
-  width: 160px;
-  border: none
-  border-bottom: 2px solid ${COLORS_OBJ.secondary.medium};
-  color: ${COLORS_TEXT.bgLight.medium};
-  border-radius: 0;
-
-  :hover {
-    color: ${COLORS_TEXT.bgLight.high};
-    border-bottom: 2px solid ${COLORS_OBJ.secondary.high};
-    background-color: transparent;
-  }
 `;
 
 export default ContainerWhiteCards;

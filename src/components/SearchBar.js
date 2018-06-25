@@ -13,7 +13,7 @@ const SearchBar = (props) => {
 };
 
 const SearchGroup = styled.form`
-  width: calc(24px + 220px);
+  width: calc(24px + 176px);
   border-bottom: 2px solid ${COLORS_OBJ.secondary.medium};
   color: ${COLORS_TEXT.bgLight.medium};
   font-size:16px;
@@ -30,7 +30,7 @@ const SearchGroup = styled.form`
 `;
 
 const SearchForm = styled.input`
-  width: 220px;
+  width: 176px;
   padding: 0.5em 1em;
   background-color: transparent;
   border: none;
