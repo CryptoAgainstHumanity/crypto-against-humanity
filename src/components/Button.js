@@ -8,14 +8,14 @@ import {
 const Btn = styled.button`
   padding: 0.25em 1em;
   background-color: transparent;
-  border: 2px solid ${COLORS_OBJ.primary.red};
   ${HAS_BORDER_RADIUS};
 
   font-size:16px;
   font-weight: bold;
 
+  border: 2px solid ${COLORS_OBJ.primary.red};
   background-color: ${props => props.primary? COLORS_OBJ.primary.red : 'none'};
-  color: ${props => props.primary? 'white' : COLORS_OBJ.primary.red}
+  color: ${props => props.primary? 'white' : COLORS_OBJ.primary.red};
 
   :hover {
     border-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.red) : COLORS_OBJ.primary.red};
