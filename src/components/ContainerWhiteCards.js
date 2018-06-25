@@ -16,7 +16,7 @@ class ContainerWhiteCards extends Component {
     super(props)
     this.state = {
       whiteCards: [],
-      sortTypeOptions: ['Pricey Cards', 'Trendy Cards', 'New Cards', 'Your Cards'],
+      sortTypeOptions: ['Pricey Cards', 'Trendy Cards', 'New Cards', 'My Cards'],
       sortType: 'Pricey Cards',
       searchText: '',
       showSortMenu: false,
@@ -55,7 +55,7 @@ class ContainerWhiteCards extends Component {
     if (sortType === 'New Cards') {
       return _.orderBy(whiteCards, ['blockNum'], ['desc'])
     }
-    if (sortType === 'Your Cards') {
+    if (sortType === 'My Cards') {
       const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
       return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
     }

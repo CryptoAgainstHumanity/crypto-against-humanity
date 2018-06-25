@@ -21,14 +21,15 @@ class WhiteCardListItem extends Component {
 		this.state = {
 			price: 0,
 			tradeDisplayAmount: defaultTradeAmount,
-		}
+      text: this.props.text
+    }
 
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
 		this.handleBuyClick = this.handleBuyClick.bind(this);
 		this.handleSellClick = this.handleSellClick.bind(this);
 	};
 
-	componentDidMount () {
+	componentWillMount () {
 		this.getBondingCurvePrice(defaultTradeAmount)
 	};
 
@@ -99,16 +100,25 @@ class WhiteCardListItem extends Component {
 		this.setState({
 			price: cardPrice
 		})
-    // console.log('getBondingCurvePrice called')
 	};
 
 	render() {
 
+    // If cards have re-arranged
+    if (this.props.text != this.state.text) {
+      this.setState({
+        text: this.props.text,
+        tradeDisplayAmount: defaultTradeAmount
+      })
+      this.getBondingCurvePrice(this.state.tradeDisplayAmount);
+    }
+
+
     let priceRounded = '';
-    if (this.props.price < 1000000) {
-      priceRounded = `Ξ ${precisionRound(this.props.price, 3)}`;
-    } else if (this.props.price < 1000000000) {
-      priceRounded = `Ξ ${precisionRound(this.props.price / 1000000, 3)} Mns`;
+    if (this.state.price < 1000000) {
+      priceRounded = `Ξ ${precisionRound(this.state.price, 3)}`;
+    } else if (this.state.price < 1000000000) {
+      priceRounded = `Ξ ${precisionRound(this.state.price / 1000000, 3)} Mns`;
     } else {
       priceRounded = priceRounded = '🖐️ Bitch, please';
     }
