@@ -6,6 +6,10 @@ import SearchBar from './SearchBar';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 import { COLORS_TEXT, COLORS_OBJ } from '../StyleGuide';
 
+import {
+  Link
+} from "react-router-dom";
+
 class HeaderWhiteCards extends Component {
   constructor(props) {
     super(props)
@@ -46,6 +50,9 @@ class HeaderWhiteCards extends Component {
           ( null )
         }
         <SearchBar handleSearch={handleSearch}/>
+        <BtnCreateCard primary>
+          <Link to='/create-card'>Create Card</Link>
+        </BtnCreateCard>
       </HeaderList>
     );
   }
@@ -56,20 +63,35 @@ const HeaderList = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   margin-bottom: 16px;
+
+  >form {
+    margin-right: auto
+  }
 `;
 
 const BtnDropDown = Btn.extend`
   margin-right: 16px;
   width: 96px;
   border: none
-  border-bottom: 2px solid ${COLORS_OBJ.secondary.medium};
-  color: ${COLORS_TEXT.bgLight.medium};
+  border-bottom: 2px solid ${COLORS_OBJ.secondary.low};
+  color: ${COLORS_TEXT.bgLight.low};
   border-radius: 0;
 
   :hover {
     color: ${COLORS_TEXT.bgLight.high};
     border-bottom: 2px solid ${COLORS_OBJ.secondary.high};
     background-color: transparent;
+  }
+`;
+
+const BtnCreateCard = Btn.extend`
+  a {
+    color: inherit;
+    text-decoration: none !important;
+
+    :hover {
+      color: inherit;
+    }
   }
 `;
 

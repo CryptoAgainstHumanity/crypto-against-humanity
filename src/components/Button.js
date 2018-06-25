@@ -6,7 +6,7 @@ import {
 // Default is secondary, for primary button use <Btn primary></Btn>
 
 const Btn = styled.button`
-  padding: 0.5em 1em;
+  padding: 0.25em 1em;
   background-color: transparent;
   border: 2px solid ${COLORS_OBJ.primary.red};
   ${HAS_BORDER_RADIUS};

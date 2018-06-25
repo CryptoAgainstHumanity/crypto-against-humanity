@@ -80,9 +80,6 @@ class App extends Component {
     //   return <LandingPage hasMetamask={this.state.hasMetamask} network={this.state.network} />;
     // }
 
-    // <li><a href="#create-card"><NavLink to="/create-card"><Btn primary>Create Card</Btn></NavLink></a></li>
-    // <Route path="/create-card" component={CreateCard}/>
-
     return (
 
       <HashRouter>
@@ -105,6 +102,7 @@ class App extends Component {
               <Route path="/rules" component={Rules}/>
               <Route path="/hall-of-shame" component={HallOfShame}/>
               <Route path="/update-cache" component={UpdateCache}/>
+              <Route path="/create-card" component={CreateCard}/>
           </div>
         </ContainerApp>
       </div>
