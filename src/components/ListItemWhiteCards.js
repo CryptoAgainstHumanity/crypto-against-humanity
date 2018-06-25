@@ -26,13 +26,13 @@ class WhiteCardListItem extends Component {
 		}
 
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
-		this.handleBuyClick = this.handleBuyClick.bind(this);
-		this.handleSellClick = this.handleSellClick.bind(this);
-	};
+		// this.handleBuyClick = this.handleBuyClick.bind(this);
+		// this.handleSellClick = this.handleSellClick.bind(this);
+	}
 
 	componentDidMount () {
 		this.getBondingCurvePrice(defaultTradeAmount)
-	};
+	}
 
   filterNonNumeric = (input) => {
     // Remove characters that aren't digits or dots
@@ -42,27 +42,31 @@ class WhiteCardListItem extends Component {
     const inputSplit = inputCleaned.split('.');
     const inputFiltered = inputSplit.shift() + (inputSplit.length ? '.' + inputSplit.join('') : '');
     return inputFiltered;
-  };
+  }
 
-	handleTradeDisplayAmountChange (event) {
+	handleTradeDisplayAmountChange = (event) => {
 		const filteredInput = this.filterNonNumeric(event.target.value);
     this.setState({ tradeDisplayAmount: filteredInput});
     if ((filteredInput !== '.') && (filteredInput < 10000000000000)) {
       this.getBondingCurvePrice(filteredInput);
     }
-	};
+	}
 
-	handleBuyClick (event) {
-		this.mintTokens()
+	handleBuyClick = (event) => {
+		console.log('handleBuyClick');
+
+    this.mintTokens()
 		event.preventDefault();
 		const cardText = this.props.text;
         ReactGA.event({
             category: 'Bought White Card',
             action: cardText,
         });
-	};
+	}
 
-	handleSellClick (event) {
+	handleSellClick = (event) => {
+    console.log('handleSellClick');
+
 		this.burnTokens()
 		event.preventDefault();
 		const cardText = this.props.text;
@@ -70,7 +74,7 @@ class WhiteCardListItem extends Component {
             category: 'Sold White Card',
             action: cardText,
         });
-	};
+	}
 
 	async mintTokens () {
 		const accounts = await web3.eth.getAccounts()
@@ -80,7 +84,7 @@ class WhiteCardListItem extends Component {
       .getMintingPrice(tokenVal).call()
 		await EthPolynomialCurveToken.methods
 			.mint(tokenVal).send({ value: bondingCurvePrice, from: accounts[0] })
-	};
+	}
 
 	async burnTokens () {
 		const accounts = await web3.eth.getAccounts()
@@ -88,7 +92,7 @@ class WhiteCardListItem extends Component {
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
 		let bondingCurvePrice = await EthPolynomialCurveToken.methods
 			.burn(tokenVal).send({ from: accounts[0] })
-	};
+	}
 
 	async getBondingCurvePrice (displayVal) {
     var a = Number(this.props.totalSupply) + Number(displayVal * tokenUnits)
@@ -101,8 +105,11 @@ class WhiteCardListItem extends Component {
 		this.setState({
 			price: cardPrice
 		})
-    // console.log('getBondingCurvePrice called')
-	};
+	}
+
+  testFunction = () => {
+    console.log('hello test');
+  }
 
 	render() {
 
@@ -122,15 +129,11 @@ class WhiteCardListItem extends Component {
       balanceRounded = precisionRound(this.props.balance, 1)
     }
 
-		// const balanceRounded = (this.props.balance == 0)?
-		// 	'-':
-		// 	this.props.balance;
-
-		const btnSell = this.props.balance == 0 ? null : (
-			<Btn primary onClick={this.handleSellClick}>
-				Sell
-			</Btn>
-		)
+		// const btnSell = this.props.balance == 0 ? null : (
+		// 	<Btn primary onClick={this.handleSellClick}>
+		// 		Sell
+		// 	</Btn>
+		// )
 
   //     <WhiteCardDash>
   //   <WhiteCardStats>
@@ -164,7 +167,11 @@ class WhiteCardListItem extends Component {
 
         <WhiteCardBalance
           balance={balanceRounded}
+          handleBuyClick={this.testFunction}
+          handleSellClick={this.testFunction}
         />
+
+        <Btn primary onClick={this.testFunction}>Buy</Btn>
 
 			</ListItemWhiteCard>
 		)

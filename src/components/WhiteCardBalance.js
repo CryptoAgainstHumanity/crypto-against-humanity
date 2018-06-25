@@ -15,15 +15,17 @@ const WhiteCardBalance = (props) => {
       const hasNoBalance = true;
     }
 
+    const {handleSellClick, handleBuyClick} = props;
+
+    // handleBuyClick();
+
     const sellBtn = (props.balance > 0)?
-      <SellBtn>Sell Card</SellBtn>:
-      <SellBtn hasNoBalance>Sell Card</SellBtn>;
+      <SellBtn onclick={handleSellClick}>Sell Card</SellBtn>:
+      <SellBtn hasNoBalance onclick={handleSellClick}>Sell Card</SellBtn>;
 
     const tagBalance = (props.balance > 0)?
       <Tag>{tagBalanceName}</Tag>:
       null ;
-
-
 
     return (
       <Container>
@@ -34,7 +36,7 @@ const WhiteCardBalance = (props) => {
         </BalanceDiv>
 
         <TradeForm>
-          <BuyBtn>Buy Card</BuyBtn>
+          <BuyBtn onclick={handleBuyClick}>Buy Card</BuyBtn>
           {sellBtn}
         </TradeForm>
 
