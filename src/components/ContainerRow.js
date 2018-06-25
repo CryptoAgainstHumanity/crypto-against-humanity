@@ -6,7 +6,7 @@ import {
 const ContainerRow = styled.div`
   margin: auto;
   max-width: ${CONTENT_WIDTH};
-  padding: 40px 0;
+  padding: 40px 0 0 0;
 
   display: flex;
   flex-flow: row wrap;

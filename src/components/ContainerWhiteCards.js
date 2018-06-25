@@ -133,7 +133,7 @@ class ContainerWhiteCards extends Component {
 }
 
 const Container = styled.div`
-  height: calc(100vh - 64px - 64px);
+  height: calc(100vh - 64px - 24px);
   width: 528px;
   overflow: auto;
 `;
