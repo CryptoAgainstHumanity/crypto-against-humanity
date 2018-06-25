@@ -1,11 +1,13 @@
-import web3 from '../web3'
+import Btn from './Button';
+import Card from './Card';
+import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
+import InputText from './InputText';
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import styled from 'styled-components';
-import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
-import Btn from './Button';
-import Card from './Card';
-import InputText from './InputText';
+import web3 from '../web3';
+import WhiteCardPrice from './WhiteCardPrice';
+import WhiteCardBalance from './WhiteCardBalance';
 import {
   H1, LABEL,
 } from '../StyleGuide';
@@ -106,9 +108,9 @@ class WhiteCardListItem extends Component {
 
     let priceRounded = '';
     if (this.props.price < 1000000) {
-      priceRounded = `Ξ ${precisionRound(this.props.price, 3)}`;
+      priceRounded = precisionRound(this.props.price, 3);
     } else if (this.props.price < 1000000000) {
-      priceRounded = `Ξ ${precisionRound(this.props.price / 1000000, 3)} Mns`;
+      priceRounded = precisionRound(this.props.price / 1000000, 3);
     } else {
       priceRounded = priceRounded = '🖐️ Bitch, please';
     }
@@ -130,30 +132,39 @@ class WhiteCardListItem extends Component {
 			</Btn>
 		)
 
+  //     <WhiteCardDash>
+  //   <WhiteCardStats>
+  //     <div>
+  //       <LABEL>PRICE</LABEL>
+  //       <H1>{priceRounded}</H1>
+  //     </div>
+  //     <div>
+  //       <LABEL>BALANCE</LABEL>
+  //       <H1>{balanceRounded}</H1>
+  //     </div>
+  //   </WhiteCardStats>
+
+
+  //   <TradeForm controlId="formValidationWarning3" validationState="warning">
+  //     <InputText type="text" onChange={this.handleTradeDisplayAmountChange} value={this.state.tradeDisplayAmount} placeholder="Quantity"/>
+  //     <Btn primary onClick={this.handleBuyClick}>Buy</Btn>
+  //     {btnSell}
+  //   </TradeForm>
+  // </WhiteCardDash>
+
 		return (
 			<ListItemWhiteCard>
 
         <Card smallCard white>{this.props.text}</Card>
 
-        <WhiteCardDash>
-          <WhiteCardStats>
-            <div>
-              <LABEL>PRICE</LABEL>
-              <H1>{priceRounded}</H1>
-            </div>
-            <div>
-              <LABEL>BALANCE</LABEL>
-              <H1>{balanceRounded}</H1>
-            </div>
-          </WhiteCardStats>
+        <WhiteCardPrice
+          price={priceRounded}
+          priceChange = {-0.0276}
+        />
 
-
-          <TradeForm controlId="formValidationWarning3" validationState="warning">
-            <InputText type="text" onChange={this.handleTradeDisplayAmountChange} value={this.state.tradeDisplayAmount} placeholder="Quantity"/>
-            <Btn primary onClick={this.handleBuyClick}>Buy</Btn>
-            {btnSell}
-          </TradeForm>
-        </WhiteCardDash>
+        <WhiteCardBalance
+          balance={balanceRounded}
+        />
 
 			</ListItemWhiteCard>
 		)
@@ -161,7 +172,7 @@ class WhiteCardListItem extends Component {
 };
 
 const ListItemWhiteCard = styled.li`
-  max-width: 505px;
+  max-width: 488px;
   padding: 0px;
 
   display: flex;
