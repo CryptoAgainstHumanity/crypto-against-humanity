@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  COLORS_TEXT, MEDIA,
+  COLORS_OBJ, COLORS_TEXT, MEDIA,
 } from '../StyleGuide';
 
 const NavBar = styled.ul`
@@ -20,7 +20,7 @@ const NavBar = styled.ul`
   }
 
   // logo
-  div {
+  >div {
     margin-right: auto;
 
     ${MEDIA.tablet} {
@@ -29,16 +29,12 @@ const NavBar = styled.ul`
     }
 
     a {
-    font-size: 28px;
+    font-size: 20px;
+    font-weight: bold;
     color: ${COLORS_TEXT.bgDark.high};
-    letter-spacing: 0.8px;
+    letter-spacing: 0.9px;
     text-decoration: none;
     white-space: nowrap;
-
-    ${MEDIA.phone} {
-      font-size: 24px;
-    }
-
     }
   }
 
@@ -48,25 +44,26 @@ const NavBar = styled.ul`
     list-style: none;
 
     a{
-      color: ${COLORS_TEXT.bgDark.medium};
+      color: ${COLORS_TEXT.bgDark.low};
+      font-weight: bold;
+      margin-right: 16px;
+      font-size: 16px;
       opacity: 1;
       text-decoration: none;
       white-space: nowrap;
 
-      :hover, .active {
+      :hover {
         color: ${COLORS_TEXT.bgDark.high};
         opacity: 1.00;
       }
-    }
-  }
 
-  // all except logo and create-card btn
-  >li:not(:first-child):not(:last-child) {
-    margin-right: 16px;
-    font-size: 16px;
+      .active {
+        color: ${COLORS_TEXT.bgDark.high};
+      }
 
-    ${MEDIA.tablet} {
+      ${MEDIA.tablet} {
       display: none;
+      }
     }
   }
 `;

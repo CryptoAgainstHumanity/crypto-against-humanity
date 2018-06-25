@@ -28,7 +28,7 @@ export const COLORS_TEXT = {
   bgDark : {
     high: '#FFFFFF',
     medium: '#D6D6D6',
-    low: '#323639',
+    low: '#A1A1A1',
   },
 };
 
