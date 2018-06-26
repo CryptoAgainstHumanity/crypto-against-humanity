@@ -29,9 +29,18 @@ class ContainerWhiteCards extends Component {
     this.setState({whiteCards: sortedCards});
 
     // get updated block number
-    web3.eth.getBlockNumber((err, blockNumCurrent) => {
-      this.setState({blockNumCurrent: blockNumCurrent})
-    });
+    // web3.eth.getBlockNumber((err, blockNumCurrent) => {
+    //   this.setState({blockNumCurrent: blockNumCurrent})
+    // });
+
+    // get updated block number
+    var blockNum = 0;
+    for (var i=0; i < sortedCards.length; i++) {
+      if (sortedCards[i].blockNum > blockNum) {
+        blockNum = sortedCards[i].blockNum
+      }
+    }
+    this.setState({blockNumCurrent: blockNum})
   }
 
    // Trendingscore based on Hacker News ranking algorithm (source: https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d)
