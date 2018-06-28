@@ -15,6 +15,9 @@ import ipfsAPI from 'ipfs-api';
 import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import ContainerRow from './components/ContainerRow';
+import { cdn } from '@widgetbot/crate'
+
+
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const blackCardTimeInterval = 10000
@@ -57,12 +60,22 @@ class Home extends Component {
     }
   }
 
-
+  async loadDiscordWidget () { 
+    const Crate = await cdn()
+    const myCrate = new Crate({
+        server: '461374222137032735',
+        channel: '461684080527015936'
+    })
+  }
 
   componentWillMount() {
     this.setState({
         loadingWhiteCards: true
     })
+
+    this.loadDiscordWidget();
+
+
 
     if (BlackCardRegistry != "undefined") {
       BlackCardRegistry.getPastEvents('_Application', {
@@ -314,7 +327,6 @@ class Home extends Component {
     var status = doDisplayMessage ?
     <div class="alert alert-info" role="alert" > {displayMessage} </div> :
     <div></div>;
-
     return (
       <div>
         {status}
