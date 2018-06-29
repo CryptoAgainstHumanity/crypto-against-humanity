@@ -29,10 +29,9 @@ class LandingPage extends Component {
       <ContainerApp>
       <ContainerColumn>
 
-        <H1>{message}</H1>
         <br/>
 
-        <H2>Want to play?</H2>
+        <H1>Want to play?</H1>
         <PARAGRAPH>All you need is:</PARAGRAPH>
         <PARAGRAPH><b>MetaMask Browser Extension Installed</b></PARAGRAPH>
         <PARAGRAPH><b>MetaMask connected to the Ropsten Test network</b></PARAGRAPH>

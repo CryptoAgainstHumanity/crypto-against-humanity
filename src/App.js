@@ -104,6 +104,7 @@ class App extends Component {
               <Route path="/hall-of-shame" component={HallOfShame}/>
               <Route path="/create-card" component={CreateCard}/>
               <Route path="/update-cache" component={UpdateCache}/>
+              <Route path="/landing-page" component={LandingPage}/>
           </div>
         </ContainerApp>
       </div>

@@ -325,7 +325,7 @@ class Home extends Component {
     }
     //var statusMessage = 
     var status = doDisplayMessage ?
-    <div class="alert alert-info" role="alert" > {displayMessage} </div> :
+    <div class="alert alert-info" role="alert" > <a href="/#/landing-page">{displayMessage} </a></div> :
     <div></div>;
     return (
       <div>
