@@ -229,17 +229,19 @@ class Home extends Component {
         let text = (await ipfs.object.data(ipfsHash)).toString()
         let bondingCurveAddress = await WhiteCard.methods.bondingCurve().call()
         EthPolynomialCurveToken.options.address = bondingCurveAddress
-        let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
+        //let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
+        let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(10 ** 8).call()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
         let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
         console.log("Loading a White Card...")
         var playerBalance = precisionRound((bondingCurveBalance / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3)
         whiteCards.push({
           text,
+          blockNum: events[i].blockNumber,
           bondingCurveAddress: bondingCurveAddress,
           totalBalance: parseInt(bondingCurveTotalBalance),
           balance: playerBalance,
-          price: bondingCurvePrice / whiteCardTokenUnits,
+          price: bondingCurvePrice / 10 ** 18,
           color: "white-card"
         })
       }
