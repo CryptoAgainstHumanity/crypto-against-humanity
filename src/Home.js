@@ -15,6 +15,7 @@ import ipfsAPI from 'ipfs-api';
 import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import ContainerRow from './components/ContainerRow';
+import HeaderNotification from './components/HeaderNotification';
 import { cdn } from '@widgetbot/crate'
 
 
@@ -60,7 +61,7 @@ class Home extends Component {
     }
   }
 
-  async loadDiscordWidget () { 
+  async loadDiscordWidget () {
     const Crate = await cdn()
     const myCrate = new Crate({
         server: '461374222137032735',
@@ -325,13 +326,15 @@ class Home extends Component {
       doDisplayMessage = true;
       displayMessage = "You need to log into metamask to interact with the site!"
     }
-    //var statusMessage = 
-    var status = doDisplayMessage ?
-    <div class="alert alert-info" role="alert" > <a href="/#/landing-page">{displayMessage} </a></div> :
+    //var statusMessage =
+    var headerNotification = doDisplayMessage ?
+    (<HeaderNotification role="alert" >
+      <p>{displayMessage} For more information <a href="/#/landing-page">click here</a></p>
+    </HeaderNotification>) :
     <div></div>;
     return (
       <div>
-        {status}
+        {headerNotification}
         <ContainerRow>
           {blackCardContainer}
           {whiteCardContainer}

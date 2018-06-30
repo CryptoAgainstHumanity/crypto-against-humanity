@@ -141,7 +141,7 @@ export const PARAGRAPH = styled.p`
 const SIZES = {
   desktop: 992,
   tablet: 768,
-  phone: 376
+  phone: 425,
 }
 
 export const MEDIA = {
