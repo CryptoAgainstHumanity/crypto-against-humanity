@@ -147,7 +147,8 @@ const Container = styled.div`
   overflow: auto;
 
   ${MEDIA.phone} {
-    width:auto
+    height: auto;
+    width: auto;
   }
 `;
 
@@ -170,6 +171,10 @@ const BtnDropDown = Btn.extend`
     color: ${COLORS_TEXT.bgLight.high};
     border-bottom: 2px solid ${COLORS_TEXT.bgLight.high};
     background-color: transparent;
+  }
+
+  ${MEDIA.phone} {
+    display: none;
   }
 `;
 
