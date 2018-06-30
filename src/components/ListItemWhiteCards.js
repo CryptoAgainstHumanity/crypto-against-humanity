@@ -7,7 +7,7 @@ import Btn from './Button';
 import Card from './Card';
 import InputText from './InputText';
 import {
-  H1, LABEL,
+  H1, LABEL, MEDIA,
 } from '../StyleGuide';
 
 const tokenUnits = 10 ** 8
@@ -195,6 +195,10 @@ const WhiteCardDash = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  ${MEDIA.phone} {
+    display:none
+  }
 `;
 
 const WhiteCardStats = styled.div`
@@ -210,6 +214,10 @@ const WhiteCardStats = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: clip;
+  }
+
+  ${MEDIA.phone} {
+    display:none
   }
 `;
 

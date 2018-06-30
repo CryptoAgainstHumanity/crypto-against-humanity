@@ -327,14 +327,14 @@ class Home extends Component {
       displayMessage = "You need to log into metamask to interact with the site!"
     }
     //var statusMessage =
-    var status = doDisplayMessage ?
+    var headerNotification = doDisplayMessage ?
     (<HeaderNotification role="alert" >
       <p>{displayMessage} For more information <a href="/#/landing-page">click here</a></p>
     </HeaderNotification>) :
     <div></div>;
     return (
       <div>
-        {status}
+        {headerNotification}
         <ContainerRow>
           {blackCardContainer}
           {whiteCardContainer}

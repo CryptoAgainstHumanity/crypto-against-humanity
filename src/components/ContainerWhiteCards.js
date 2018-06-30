@@ -6,7 +6,7 @@ import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
 import web3 from '../web3'
-import { COLORS_TEXT } from '../StyleGuide';
+import { COLORS_TEXT, MEDIA } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
 const AVG_HOURS_PER_ETH_BLOCK = 0.0042; // 15 seconds / 60 secs p. min / 60 min . pour
@@ -145,6 +145,10 @@ const Container = styled.div`
   height: calc(100vh - 64px - 64px);
   width: 528px;
   overflow: auto;
+
+  ${MEDIA.phone} {
+    width:auto
+  }
 `;
 
 const HeaderWhiteCards = styled.div`
