@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CONTENT_WIDTH } from '../StyleGuide';
+import { CONTENT_WIDTH, MEDIA } from '../StyleGuide';
 
 
 const ContainerColumn = styled.div`
@@ -17,6 +17,10 @@ const ContainerColumn = styled.div`
 
   >* {
     text-align: center;
+  }
+
+  ${MEDIA.tablet} {
+    width: auto;
   }
 `;
 
