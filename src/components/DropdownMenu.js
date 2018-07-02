@@ -27,7 +27,7 @@ const DropdownMenu = styled.div`
   }
 
   ${MEDIA.tablet} {
-    top: 734px;
+    top: 824px;
   }
 `;
 

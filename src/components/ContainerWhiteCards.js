@@ -7,7 +7,7 @@ import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
 import web3 from '../web3'
-import { COLORS_TEXT, COLORS_OBJ } from '../StyleGuide';
+import { COLORS_TEXT, COLORS_OBJ, MEDIA } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
 const AVG_HOURS_PER_ETH_BLOCK = 0.0042; // 15 seconds / 60 secs p. min / 60 min . pour
@@ -17,7 +17,7 @@ class ContainerWhiteCards extends Component {
     super(props)
     this.state = {
       whiteCards: [],
-      sortTypeOptions: ['Price', 'Hot', 'New', 'Yours'],
+      sortTypeOptions: ['Price', 'Hot', 'New', 'My Cards'],
       sortType: 'Price',
       searchText: '',
       showSortMenu: false,
@@ -30,9 +30,18 @@ class ContainerWhiteCards extends Component {
     this.setState({whiteCards: sortedCards});
 
     // get updated block number
-    web3.eth.getBlockNumber((err, blockNumCurrent) => {
-      this.setState({blockNumCurrent: blockNumCurrent})
-    });
+    // web3.eth.getBlockNumber((err, blockNumCurrent) => {
+    //   this.setState({blockNumCurrent: blockNumCurrent})
+    // });
+
+    // get updated block number
+    var blockNum = 0;
+    for (var i=0; i < sortedCards.length; i++) {
+      if (sortedCards[i].blockNum > blockNum) {
+        blockNum = sortedCards[i].blockNum
+      }
+    }
+    this.setState({blockNumCurrent: blockNum})
   }
 
    // Trendingscore based on Hacker News ranking algorithm (source: https://medium.com/hacking-and-gonzo/how-hacker-news-ranking-algorithm-works-1d9b0cf2c08d)
@@ -56,7 +65,7 @@ class ContainerWhiteCards extends Component {
     if (sortType === 'New') {
       return _.orderBy(whiteCards, ['blockNum'], ['desc'])
     }
-    if (sortType === 'Yours') {
+    if (sortType === 'My Cards') {
       const whiteCardsOwned = whiteCards.filter(card => card.balance > 0);
       return _.orderBy(whiteCardsOwned, ['balance'], ['desc']);
     }
@@ -115,6 +124,37 @@ const Container = styled.div`
   height: calc(100vh - 64px - 24px);
   width: 528px;
   overflow: auto;
+
+  ${MEDIA.phone} {
+    height: auto;
+    width: auto;
+  }
+`;
+
+// const HeaderWhiteCards = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: flex-start;
+//   margin-bottom: 16px;
+// `;
+
+const BtnDropDown = Btn.extend`
+  margin-right: 16px;
+  width: 160px;
+  border: none
+  border-bottom: 2px solid ${COLORS_TEXT.bgLight.low};
+  color: ${COLORS_TEXT.bgLight.low};
+  border-radius: 0;
+
+  :hover {
+    color: ${COLORS_TEXT.bgLight.high};
+    border-bottom: 2px solid ${COLORS_TEXT.bgLight.high};
+    background-color: transparent;
+  }
+
+  ${MEDIA.phone} {
+    display: none;
+  }
 `;
 
 export default ContainerWhiteCards;

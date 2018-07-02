@@ -9,7 +9,7 @@ import web3 from '../web3';
 import WhiteCardPrice from './WhiteCardPrice';
 import WhiteCardBalance from './WhiteCardBalance';
 import {
-  H1, LABEL,
+  H1, LABEL, MEDIA,
 } from '../StyleGuide';
 
 const tokenUnits = 10 ** 8
@@ -23,14 +23,15 @@ class WhiteCardListItem extends Component {
 		this.state = {
 			price: 0,
 			tradeDisplayAmount: defaultTradeAmount,
-		}
+      text: this.props.text
+    }
 
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
 		// this.handleBuyClick = this.handleBuyClick.bind(this);
 		// this.handleSellClick = this.handleSellClick.bind(this);
 	}
 
-	componentDidMount () {
+	componentWillMount () {
 		this.getBondingCurvePrice(defaultTradeAmount)
 	}
 
@@ -107,11 +108,17 @@ class WhiteCardListItem extends Component {
 		})
 	}
 
-  testFunction = () => {
-    console.log('hello test');
-  }
-
 	render() {
+
+    // If cards have re-arranged
+    if (this.props.text != this.state.text) {
+      this.setState({
+        text: this.props.text,
+        tradeDisplayAmount: defaultTradeAmount
+      })
+      this.getBondingCurvePrice(this.state.tradeDisplayAmount);
+    }
+
 
     let priceRounded = '';
     if (this.props.price < 1000000) {
@@ -203,6 +210,10 @@ const WhiteCardDash = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  ${MEDIA.phone} {
+    display:none
+  }
 `;
 
 const WhiteCardStats = styled.div`
@@ -218,6 +229,10 @@ const WhiteCardStats = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: clip;
+  }
+
+  ${MEDIA.phone} {
+    display:none
   }
 `;
 

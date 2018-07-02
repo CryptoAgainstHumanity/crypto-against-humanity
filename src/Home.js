@@ -15,6 +15,10 @@ import ipfsAPI from 'ipfs-api';
 import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import ContainerRow from './components/ContainerRow';
+import HeaderNotification from './components/HeaderNotification';
+import { cdn } from '@widgetbot/crate'
+
+
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
 const blackCardTimeInterval = 10000
@@ -57,12 +61,22 @@ class Home extends Component {
     }
   }
 
-
+  async loadDiscordWidget () {
+    const Crate = await cdn()
+    const myCrate = new Crate({
+        server: '461374222137032735',
+        channel: '461684080527015936'
+    })
+  }
 
   componentWillMount() {
     this.setState({
         loadingWhiteCards: true
     })
+
+    this.loadDiscordWidget();
+
+
 
     if (BlackCardRegistry != "undefined") {
       BlackCardRegistry.getPastEvents('_Application', {
@@ -216,17 +230,19 @@ class Home extends Component {
         let text = (await ipfs.object.data(ipfsHash)).toString()
         let bondingCurveAddress = await WhiteCard.methods.bondingCurve().call()
         EthPolynomialCurveToken.options.address = bondingCurveAddress
-        let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
+        //let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(defaultTokenBuyAmount).call()
+        let bondingCurvePrice = await EthPolynomialCurveToken.methods.getMintingPrice(10 ** 8).call()
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
         let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
         console.log("Loading a White Card...")
         var playerBalance = precisionRound((bondingCurveBalance / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3)
         whiteCards.push({
           text,
+          blockNum: events[i].blockNumber,
           bondingCurveAddress: bondingCurveAddress,
           totalBalance: parseInt(bondingCurveTotalBalance),
           balance: playerBalance,
-          price: bondingCurvePrice / whiteCardTokenUnits,
+          price: bondingCurvePrice / 10 ** 18,
           color: "white-card"
         })
       }
@@ -310,14 +326,15 @@ class Home extends Component {
       doDisplayMessage = true;
       displayMessage = "You need to log into metamask to interact with the site!"
     }
-    //var statusMessage = 
-    var status = doDisplayMessage ?
-    <div class="alert alert-info" role="alert" > {displayMessage} </div> :
+    //var statusMessage =
+    var headerNotification = doDisplayMessage ?
+    (<HeaderNotification role="alert" >
+      <p>{displayMessage} For more information <a href="/#/landing-page">click here</a></p>
+    </HeaderNotification>) :
     <div></div>;
-
     return (
       <div>
-        {status}
+        {headerNotification}
         <ContainerRow>
           {blackCardContainer}
           {whiteCardContainer}
