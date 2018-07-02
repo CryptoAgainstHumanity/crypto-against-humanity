@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import WhiteCardPriceChart from './WhiteCardPriceChart';
 import { COLORS_OBJ, COLORS_TEXT, H3, LABEL } from '../StyleGuide';
 
 const WhiteCardPrice = (props) => {
@@ -18,9 +19,7 @@ const WhiteCardPrice = (props) => {
         </PriceDiv>
         {priceChange}
 
-        <PriceChart>
-          Placeholder
-        </PriceChart>
+        <WhiteCardPriceChart/>
 
       </Container>
   );
