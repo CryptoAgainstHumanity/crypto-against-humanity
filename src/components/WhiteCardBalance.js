@@ -55,23 +55,17 @@ class WhiteCardBalance extends Component {
         onClick={handleSellClick}
         onMouseEnter={this.onMouseEnterSellBtn}
         onMouseLeave={this.onMouseLeaveSellBtn}
-        >
-        {this.state.sellBtnText}
-      </SellBtn>
+      >{this.state.sellBtnText}</SellBtn>
       :
       <SellBtn
         hasNoBalance
-        >
-        {this.state.sellBtnText}
-      </SellBtn>;
+      >{this.state.sellBtnText}</SellBtn>;
 
     const buyBtn = <BuyBtn
-      onClick={handleBuyClick}
-      onMouseEnter={this.onMouseEnterBuyBtn}
-      onMouseLeave={this.onMouseLeaveBuyBtn}
-      >
-      {this.state.buyBtnText}
-      </BuyBtn>
+        onClick={handleBuyClick}
+        onMouseEnter={this.onMouseEnterBuyBtn}
+        onMouseLeave={this.onMouseLeaveBuyBtn}
+      >{this.state.buyBtnText}</BuyBtn>
 
     const tagBalance = (balance > 0)?
       <Tag>{tagBalanceName}</Tag>:

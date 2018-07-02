@@ -5,9 +5,10 @@ import { COLORS_OBJ, COLORS_TEXT, H3, LABEL } from '../StyleGuide';
 const WhiteCardPrice = (props) => {
 
   const percentChange = props.priceChange * 100
-  const isNegativeChange = (props.priceChange < 0)?
-    true:
-    false;
+
+  const priceChange = (props.priceChange < 0)?
+    <PriceChange isNegativeChange>{percentChange}%</PriceChange>:
+    <PriceChange>{percentChange}%</PriceChange>;
 
   return (
       <Container>
@@ -15,7 +16,7 @@ const WhiteCardPrice = (props) => {
         <PriceDiv>
           <Tag>Ξ</Tag><H3>{props.price}</H3>
         </PriceDiv>
-        <PriceChange isNegativeChange>{percentChange}%</PriceChange>
+        {priceChange}
 
         <PriceChart>
           Placeholder
