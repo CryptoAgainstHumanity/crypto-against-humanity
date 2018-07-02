@@ -54,8 +54,6 @@ class WhiteCardListItem extends Component {
 	}
 
 	handleBuyClick = (event) => {
-		console.log('handleBuyClick');
-
     this.mintTokens()
 		event.preventDefault();
 		const cardText = this.props.text;
@@ -66,8 +64,6 @@ class WhiteCardListItem extends Component {
 	}
 
 	handleSellClick = (event) => {
-    console.log('handleSellClick');
-
 		this.burnTokens()
 		event.preventDefault();
 		const cardText = this.props.text;
@@ -107,6 +103,10 @@ class WhiteCardListItem extends Component {
 			price: cardPrice
 		})
 	}
+
+  testFunction = () => {
+    console.log('Test Function');
+  }
 
 	render() {
 
@@ -174,8 +174,8 @@ class WhiteCardListItem extends Component {
 
         <WhiteCardBalance
           balance={balanceRounded}
-          handleBuyClick={this.testFunction}
-          handleSellClick={this.testFunction}
+          handleBuyClick={this.handleBuyClick}
+          handleSellClick={this.handleSellClick}
         />
 
         <Btn primary onClick={this.testFunction}>Buy</Btn>
