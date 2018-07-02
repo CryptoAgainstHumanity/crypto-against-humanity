@@ -28,7 +28,7 @@ const Btn = styled.button`
   }
 
   // Animation for hover, source: Bootstrap 4
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  // transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 `;
 
 export default Btn;

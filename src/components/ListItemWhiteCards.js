@@ -104,10 +104,6 @@ class WhiteCardListItem extends Component {
 		})
 	}
 
-  testFunction = () => {
-    console.log('Test Function');
-  }
-
 	render() {
 
     // If cards have re-arranged
@@ -136,32 +132,6 @@ class WhiteCardListItem extends Component {
       balanceRounded = precisionRound(this.props.balance, 1)
     }
 
-		// const btnSell = this.props.balance == 0 ? null : (
-		// 	<Btn primary onClick={this.handleSellClick}>
-		// 		Sell
-		// 	</Btn>
-		// )
-
-  //     <WhiteCardDash>
-  //   <WhiteCardStats>
-  //     <div>
-  //       <LABEL>PRICE</LABEL>
-  //       <H1>{priceRounded}</H1>
-  //     </div>
-  //     <div>
-  //       <LABEL>BALANCE</LABEL>
-  //       <H1>{balanceRounded}</H1>
-  //     </div>
-  //   </WhiteCardStats>
-
-
-  //   <TradeForm controlId="formValidationWarning3" validationState="warning">
-  //     <InputText type="text" onChange={this.handleTradeDisplayAmountChange} value={this.state.tradeDisplayAmount} placeholder="Quantity"/>
-  //     <Btn primary onClick={this.handleBuyClick}>Buy</Btn>
-  //     {btnSell}
-  //   </TradeForm>
-  // </WhiteCardDash>
-
 		return (
 			<ListItemWhiteCard>
 
@@ -174,11 +144,11 @@ class WhiteCardListItem extends Component {
 
         <WhiteCardBalance
           balance={balanceRounded}
+          buyPrice={9.99}
+          sellPrice={8.99}
           handleBuyClick={this.handleBuyClick}
           handleSellClick={this.handleSellClick}
         />
-
-        <Btn primary onClick={this.testFunction}>Buy</Btn>
 
 			</ListItemWhiteCard>
 		)
@@ -200,60 +170,6 @@ const ListItemWhiteCard = styled.li`
 
   :not(:first-child) {
     margin-top: 24px;
-  }
-`;
-
-const WhiteCardDash = styled.div`
-  flex: 1 1 auto;
-  padding: 24px 0 16px 24px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  ${MEDIA.phone} {
-    display:none
-  }
-`;
-
-const WhiteCardStats = styled.div`
-  flex: 0 1 auto;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  H1 {
-    margin: 0;
-    max-width: 240px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: clip;
-  }
-
-  ${MEDIA.phone} {
-    display:none
-  }
-`;
-
-const TradeForm = styled.div`
-  flex: 0 1 auto;
-
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-start;
-
-  input {
-    flex: 1 1 auto;
-    max-width: 182px;
-  }
-
-  button {
-    flex: 0 0 auto;
-  }
-
-  >:not(:first-child) {
-    margin-left: 8px;
   }
 `;
 
