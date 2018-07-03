@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import web3 from '../web3';
 import WhiteCardPrice from './WhiteCardPrice';
 import WhiteCardBalance from './WhiteCardBalance';
-import { GetBuyPrice } from '../Utilities'
+import { GetBuyPriceRounded, GetSellPriceRounded, GetBuyPrice} from '../Utilities'
 import {
   H1, LABEL, MEDIA,
 } from '../StyleGuide';
@@ -28,12 +28,12 @@ class WhiteCardListItem extends Component {
     }
 
 		this.handleTradeDisplayAmountChange = this.handleTradeDisplayAmountChange.bind(this);
-		// this.handleBuyClick = this.handleBuyClick.bind(this);
-		// this.handleSellClick = this.handleSellClick.bind(this);
 	}
 
 	componentWillMount () {
-		this.getBondingCurvePrice(defaultTradeAmount)
+    this.setState({
+        price: GetBuyPrice(this.props.totalSupply, this.props.poolBalance)
+    })
 	}
 
   filterNonNumeric = (input) => {
@@ -92,32 +92,15 @@ class WhiteCardListItem extends Component {
 			.burn(tokenVal).send({ from: accounts[0] })
 	}
 
-	async getBondingCurvePrice (displayVal) {
-    const cardPrice = GetBuyPrice(this.props.totalSupply, this.props.poolBalance);
-		this.setState({
-			price: cardPrice
-		})
-	}
-
 	render() {
 
     // If cards have re-arranged
     if (this.props.text != this.state.text) {
       this.setState({
         text: this.props.text,
-        tradeDisplayAmount: defaultTradeAmount
+        tradeDisplayAmount: defaultTradeAmount,
+        price: GetBuyPrice(this.props.totalSupply, this.props.poolBalance)
       })
-      this.getBondingCurvePrice(this.state.tradeDisplayAmount);
-    }
-
-
-    let priceRounded = '';
-    if (this.props.price < 1000000) {
-      priceRounded = precisionRound(this.props.price, 3);
-    } else if (this.props.price < 1000000000) {
-      priceRounded = precisionRound(this.props.price / 1000000, 3);
-    } else {
-      priceRounded = priceRounded = '🖐️ Bitch, please';
     }
 
     let balanceRounded = '';
@@ -133,14 +116,14 @@ class WhiteCardListItem extends Component {
         <Card smallCard white>{this.props.text}</Card>
 
         <WhiteCardPrice
-          price={priceRounded}
+          price={GetBuyPriceRounded(this.props.totalSupply, this.props.poolBalance)}
           priceChange = {-0.0276}
         />
 
         <WhiteCardBalance
           balance={balanceRounded}
-          buyPrice={9.99}
-          sellPrice={8.99}
+          buyPrice={GetBuyPriceRounded(this.props.totalSupply, this.props.poolBalance)}
+          sellPrice={GetSellPriceRounded(this.props.totalSupply, this.props.poolBalance)}
           handleBuyClick={this.handleBuyClick}
           handleSellClick={this.handleSellClick}
         />

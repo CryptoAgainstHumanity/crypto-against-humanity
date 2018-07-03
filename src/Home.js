@@ -4,7 +4,6 @@ import web3 from './web3'
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
 import BlackCards from './data/blackCards.json'
-import EventCache from './data/eventCache'
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'

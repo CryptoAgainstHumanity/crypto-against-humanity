@@ -4,8 +4,6 @@ import web3 from './web3'
 import _ from 'lodash'
 import ipfsAPI from 'ipfs-api';
 import Btn from './components/Button';
-import CachedCards from './data/cachedCards'
-import CachedBlock from './data/cachedBlock'
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
