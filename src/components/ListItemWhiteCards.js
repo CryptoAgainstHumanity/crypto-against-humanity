@@ -118,6 +118,7 @@ class WhiteCardListItem extends Component {
         <WhiteCardPrice
           price={GetBuyPriceRounded(this.props.totalSupply, this.props.poolBalance)}
           priceChange = {-0.0276}
+          events={this.props.events}
         />
 
         <WhiteCardBalance

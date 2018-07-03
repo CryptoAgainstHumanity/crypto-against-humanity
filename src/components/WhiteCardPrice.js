@@ -19,7 +19,9 @@ const WhiteCardPrice = (props) => {
         </PriceDiv>
         {priceChange}
 
-        <WhiteCardPriceChart/>
+        <WhiteCardPriceChart
+          events={props.events}
+        />
 
       </Container>
   );
