@@ -18,7 +18,7 @@ const WhiteCardPrice = (props) => {
   }
 
 
-  const priceChange = (props.priceChange < 0)?
+  const priceChange = (percentChange < 0)?
     <PriceChange isNegativeChange>{percentChange}%</PriceChange>:
     <PriceChange>{percentChange}%</PriceChange>;
 

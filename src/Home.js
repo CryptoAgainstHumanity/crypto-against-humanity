@@ -126,12 +126,16 @@ class Home extends Component {
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
 
+    // Remove Duplicate Events
+    const mintBurnEvents = uniqBy(cardEvents.MintBurnEvents, JSON.stringify)
+    const createEvents = uniqBy(cardEvents.CreateEvents, JSON.stringify)
+
     var whiteCards = []
-    for (var i = 0; i < cardEvents.CreateEvents.length; i++) {
+    for (var i = 0; i < createEvents.length; i++) {
       whiteCards.push({
-        text: cardEvents.CreateEvents[i].text,
-        bondingCurveAddress: cardEvents.CreateEvents[i].tokenAddress,
-        blockNum: cardEvents.CreateEvents[i].blockNumber
+        text: createEvents[i].text,
+        bondingCurveAddress: createEvents[i].tokenAddress,
+        blockNum: createEvents[i].blockNumber
       })
     }
 
@@ -149,25 +153,25 @@ class Home extends Component {
       var poolBalance = 0;
       var totalSupply = 0;
       var events = [];
-      for (var j = 0; j < cardEvents.MintBurnEvents.length; j++) {
-        if (cardEvents.MintBurnEvents[j].tokenAddress == whiteCards[i].bondingCurveAddress) {
-          if (cardEvents.MintBurnEvents[j].caller == accounts[0]) {
-            if (cardEvents.MintBurnEvents[j].type == "Minted") {
-              tokenBalance += precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
+      for (var j = 0; j < mintBurnEvents.length; j++) {
+        if (mintBurnEvents[j].tokenAddress == whiteCards[i].bondingCurveAddress) {
+          if (mintBurnEvents[j].caller == accounts[0]) {
+            if (mintBurnEvents[j].type == "Minted") {
+              tokenBalance += precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             } else {
-              tokenBalance -= precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
+              tokenBalance -= precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             }
           }
-          if (cardEvents.MintBurnEvents[j].type == "Minted") {
-            poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
-            totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
+          if (mintBurnEvents[j].type == "Minted") {
+            poolBalance += Number(mintBurnEvents[j].costReward)
+            totalSupply += Number(mintBurnEvents[j].amount)
           } else {
-            poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
-            totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
+            poolBalance -= Number(mintBurnEvents[j].costReward)
+            totalSupply -= Number(mintBurnEvents[j].amount)
           }
           events.push({
             price: GetBuyPrice(totalSupply, poolBalance),
-            blockNum: cardEvents.MintBurnEvents[j].blockNumber
+            blockNum: mintBurnEvents[j].blockNumber
           })
         }
       }
@@ -344,6 +348,14 @@ function random(seed) {
 
 function getRandomInt(seed, min, max) {
   return Math.floor(random(seed) * (max - min + 1)) + min;
+}
+
+function uniqBy(a, key) {
+    var seen = {};
+    return a.filter(function(item) {
+        var k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
 }
 
 
