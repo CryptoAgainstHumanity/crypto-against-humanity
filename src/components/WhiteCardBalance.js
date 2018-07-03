@@ -21,7 +21,7 @@ class WhiteCardBalance extends Component {
   }
 
   onMouseEnterBuyBtn = () => {
-    this.setState({buyBtnText: `${this.state.buyPrice} ETH`});
+    this.setState({buyBtnText: `${this.props.buyPrice} ETH`});
   }
 
   onMouseLeaveBuyBtn = () => {
@@ -29,7 +29,7 @@ class WhiteCardBalance extends Component {
   }
 
   onMouseEnterSellBtn = () => {
-    this.setState({sellBtnText: `${this.state.sellPrice} ETH`});
+    this.setState({sellBtnText: `${this.props.sellPrice} ETH`});
   }
 
   onMouseLeaveSellBtn = () => {

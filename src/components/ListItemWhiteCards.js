@@ -22,7 +22,6 @@ class WhiteCardListItem extends Component {
 		super(props)
 
 		this.state = {
-			price: 0,
 			tradeDisplayAmount: defaultTradeAmount,
       text: this.props.text
     }
@@ -32,7 +31,8 @@ class WhiteCardListItem extends Component {
 
 	componentWillMount () {
     this.setState({
-        price: GetBuyPrice(this.props.totalSupply, this.props.poolBalance)
+        buyPrice: GetBuyPriceRounded(this.props.totalSupply, this.props.poolBalance),
+        sellPrice: GetSellPriceRounded(this.props.totalSupply, this.props.poolBalance)
     })
 	}
 
@@ -99,7 +99,8 @@ class WhiteCardListItem extends Component {
       this.setState({
         text: this.props.text,
         tradeDisplayAmount: defaultTradeAmount,
-        price: GetBuyPrice(this.props.totalSupply, this.props.poolBalance)
+        buyPrice: GetBuyPriceRounded(this.props.totalSupply, this.props.poolBalance),
+        sellPrice: GetSellPriceRounded(this.props.totalSupply, this.props.poolBalance)
       })
     }
 
@@ -116,15 +117,15 @@ class WhiteCardListItem extends Component {
         <Card smallCard white>{this.props.text}</Card>
 
         <WhiteCardPrice
-          price={GetBuyPriceRounded(this.props.totalSupply, this.props.poolBalance)}
+          price={this.state.buyPrice}
           priceChange = {-0.0276}
           events={this.props.events}
         />
 
         <WhiteCardBalance
           balance={balanceRounded}
-          buyPrice={GetBuyPriceRounded(this.props.totalSupply, this.props.poolBalance)}
-          sellPrice={GetSellPriceRounded(this.props.totalSupply, this.props.poolBalance)}
+          buyPrice={this.state.buyPrice}
+          sellPrice={this.state.sellPrice}
           handleBuyClick={this.handleBuyClick}
           handleSellClick={this.handleSellClick}
         />
