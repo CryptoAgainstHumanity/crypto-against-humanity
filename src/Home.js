@@ -148,27 +148,27 @@ class Home extends Component {
       var tokenBalance = 0;
       var poolBalance = 0;
       var totalSupply = 0;
+      var events = [];
       for (var j = 0; j < cardEvents.MintBurnEvents.length; j++) {
         if (cardEvents.MintBurnEvents[j].tokenAddress == whiteCards[i].bondingCurveAddress) {
           if (cardEvents.MintBurnEvents[j].caller == accounts[0]) {
             if (cardEvents.MintBurnEvents[j].type == "Minted") {
               tokenBalance += precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
-              poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
             } else {
               tokenBalance -= precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
-              poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
-            }
-          } else {
-            if (cardEvents.MintBurnEvents[j].type == "Minted") {
-              poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
-            } else {
-              poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
             }
           }
+          if (cardEvents.MintBurnEvents[j].type == "Minted") {
+            poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
+            totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
+          } else {
+            poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
+            totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
+          }
+          events.push({
+            price: GetBuyPrice(totalSupply, poolBalance),
+            blockNum: cardEvents.MintBurnEvents[j].blockNumber
+          })
         }
       }
 
@@ -180,7 +180,8 @@ class Home extends Component {
         balance: tokenBalance,
         price: GetBuyPrice(totalSupply, poolBalance),
         totalSupply: totalSupply,
-        poolBalance: poolBalance
+        poolBalance: poolBalance,
+        events: events
       })
 
     }
