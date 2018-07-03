@@ -19,7 +19,7 @@ export function GetBuyPriceRounded(totalSupply, poolBalance) {
   if (buyPrice < 0.001) {
 	priceRounded = 0;
   } else {
-	priceRounded = precisionRound(buyPrice, 3);
+	priceRounded = PrecisionRound(buyPrice, 3);
   }
   return priceRounded;
 }
@@ -41,12 +41,12 @@ export function GetSellPriceRounded(totalSupply, poolBalance) {
   if (sellPrice < 0.001) {
 	priceRounded = 0;
   } else {
-	priceRounded = precisionRound(sellPrice, 3);
+	priceRounded = PrecisionRound(sellPrice, 3);
   }
   return priceRounded;
 }
 
-export function precisionRound(number, precision) {
+export function PrecisionRound(number, precision) {
   var factor = Math.pow(10, precision);
   return Math.round(number * factor) / factor;
 };

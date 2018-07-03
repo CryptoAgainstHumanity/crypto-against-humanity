@@ -2,10 +2,21 @@ import React from 'react';
 import styled from 'styled-components';
 import WhiteCardPriceChart from './WhiteCardPriceChart';
 import { COLORS_OBJ, COLORS_TEXT, H3, LABEL } from '../StyleGuide';
+import { PrecisionRound } from '../Utilities'
 
 const WhiteCardPrice = (props) => {
 
-  const percentChange = props.priceChange * 100
+  //const percentChange = props.priceChange * 100
+
+  var percentChange = 0
+  if (props.events.length > 1) {
+    const A = props.events[props.events.length - 1].price - props.events[props.events.length - 2].price
+    const B = props.events[props.events.length - 1].price
+    percentChange = PrecisionRound((A / B) * 100, 2);
+  } else if (props.events.length == 1) {
+    percentChange = 100
+  }
+
 
   const priceChange = (props.priceChange < 0)?
     <PriceChange isNegativeChange>{percentChange}%</PriceChange>:
