@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import web3 from '../web3';
 import WhiteCardPrice from './WhiteCardPrice';
 import WhiteCardBalance from './WhiteCardBalance';
+import { GetBuyPrice } from '../Utilities'
 import {
   H1, LABEL, MEDIA,
 } from '../StyleGuide';
@@ -92,13 +93,7 @@ class WhiteCardListItem extends Component {
 	}
 
 	async getBondingCurvePrice (displayVal) {
-    var a = Number(this.props.totalSupply) + Number(displayVal * tokenUnits)
-    var b = Number(this.props.poolBalance)
-    var step1 = 10000000000 / 2
-    var step2 = step1 * (a**2)
-    var step3 = step2 / 10000000000
-    var cardMintingPrice = step3 - b
-    var cardPrice = (cardMintingPrice / 10 ** 18);
+    const cardPrice = GetBuyPrice(this.props.totalSupply, this.props.poolBalance);
 		this.setState({
 			price: cardPrice
 		})

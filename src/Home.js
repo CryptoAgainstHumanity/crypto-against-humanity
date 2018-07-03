@@ -16,6 +16,7 @@ import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import ContainerRow from './components/ContainerRow';
 import HeaderNotification from './components/HeaderNotification';
+import { GetBuyPrice } from './Utilities'
 import { cdn } from '@widgetbot/crate'
 
 
@@ -172,30 +173,13 @@ class Home extends Component {
         }
       }
 
-    // let tokenVal = 1 * tokenUnits //10 ** 8
-    // EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
-    // let bondingCurvePrice = await EthPolynomialCurveToken.methods
-    //   .getMintingPrice(tokenVal).call()
-    // this.setState({
-    //   price: bondingCurvePrice / 10 ** 18
-    // })
-
-
-      var a = Number(totalSupply) + Number(10 ** 8)
-      var b = Number(poolBalance)
-      var step1 = 10000000000 / 2
-      var step2 = step1 * (a**2)
-      var step3 = step2 / 10000000000
-      var cardMintingPrice = step3 - b
-      var cardPrice = (cardMintingPrice / 10 ** 18);
-
       var text = whiteCards[i].text;
       cardsWithInfo.push({
         text: text.replace(/[\x00-\x1F\x7F-\x9F]/g, ''),
         bondingCurveAddress: whiteCards[i].bondingCurveAddress,
         blockNum: whiteCards[i].blockNum,
         balance: tokenBalance,
-        price: cardPrice,
+        price: GetBuyPrice(totalSupply, poolBalance),
         totalSupply: totalSupply,
         poolBalance: poolBalance
       })
