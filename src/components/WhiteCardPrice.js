@@ -13,33 +13,20 @@ const WhiteCardPrice = (props) => {
   const { events, blockNumCurrent, price } = props;
 
   const blockNumFirstRelevant = blockNumCurrent - BLOCKS_PER_MONTH;
-  // console.log('current blockNum ' + props.blockNumCurrent);
-  // console.log('first relevant block ' +blockNumFirstRelevant);
 
-  const eventsNotRelevant = events.filter(event => event.blockNum < blockNumFirstRelevant)
-
-  const eventFirstRelevant = events.find(event => event.blockNum > blockNumFirstRelevant);
+  const eventsPrevious = events.filter(event => event.blockNum < blockNumFirstRelevant);
+  const eventFirstRelevant = eventsPrevious[eventsPrevious - 1];
   const priceFirstRelevant = eventFirstRelevant?
     eventFirstRelevant.price:
     INITIAL_PRICE;
-
   const priceChange = price - priceFirstRelevant;
   const percentChange = PrecisionRound((priceChange / priceFirstRelevant) * 100, 2);
 
-  console.log('price ' + price);
-  console.log('price first relevant ' + priceFirstRelevant);
-  console.log('price change ' + priceChange);
-  console.log('percent change ' + percentChange);
-  console.log(' ');
-
-  // var percentChange = 0
-  // if (events.length > 1) {
-  //   const A = props.events[props.events.length - 1].price - events[events.length - 2].price
-  //   const B = props.events[props.events.length - 1].price
-  //   percentChange = PrecisionRound((A / B) * 100, 2);
-  // } else if (events.length == 1) {
-  //   percentChange = 100
-  // }
+  // console.log('price ' + price);
+  // console.log('price first relevant ' + priceFirstRelevant);
+  // console.log('price change ' + priceChange);
+  // console.log('percent change ' + percentChange);
+  // console.log(' ');
 
   const priceChangeLbl = (percentChange < 0)?
     <PriceChange isNegativeChange>{percentChange}%</PriceChange>:
