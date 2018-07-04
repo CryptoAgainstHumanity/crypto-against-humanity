@@ -1,7 +1,7 @@
 import Btn from './Button';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { COLORS_OBJ, COLORS_TEXT, H3, LABEL } from '../StyleGuide';
+import { COLORS_OBJ, COLORS_TEXT, H3, LABEL, MEDIA } from '../StyleGuide';
 
 class WhiteCardBalance extends Component {
   constructor(props) {
@@ -95,6 +95,10 @@ const Container = styled.div`
   padding: 16px 32px;
   display: flex;
   flex-direction: column;
+
+  ${MEDIA.phone} {
+    display:none
+  }
 `;
 
 const Label = LABEL.extend`

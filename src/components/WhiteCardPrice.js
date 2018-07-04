@@ -28,7 +28,7 @@ const WhiteCardPrice = (props) => {
         <PriceDiv>
           <Tag>Ξ</Tag><H3>{props.price}</H3>
         </PriceDiv>
-        {priceChange}
+        {priceChange}<Tag>Today</Tag>
 
         <WhiteCardPriceChart
           events={props.events}
