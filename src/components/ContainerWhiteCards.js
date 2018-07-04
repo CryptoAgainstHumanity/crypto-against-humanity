@@ -111,9 +111,12 @@ class ContainerWhiteCards extends Component {
           showSortMenu={this.showSortMenu}
           handleSort ={this.handleSort}
           handleSearch ={this.handleSearch}
-          />
+        />
 
-        <ListWhiteCards whiteCards={this.state.whiteCards}/>
+        <ListWhiteCards
+          whiteCards={this.state.whiteCards}
+          blockNumCurrent={this.state.blockNumCurrent}
+        />
 
       </Container>
 		);

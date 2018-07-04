@@ -111,6 +111,8 @@ class WhiteCardListItem extends Component {
       balanceRounded = precisionRound(this.props.balance, 1)
     }
 
+    console.log(this.props.text);
+
 		return (
 			<ListItemWhiteCard>
 
@@ -118,8 +120,8 @@ class WhiteCardListItem extends Component {
 
         <WhiteCardPrice
           price={this.state.buyPrice}
-          priceChange = {-0.0276}
           events={this.props.events}
+          blockNumCurrent={this.props.blockNumCurrent}
         />
 
         <WhiteCardBalance

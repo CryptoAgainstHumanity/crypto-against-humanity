@@ -9,12 +9,17 @@ constructor(props) {
 }
 
   render() {
-    const data = []
-    data.push({name: 'block0', price: 0.005})
-    data.push({name: 'block1', price: 0.005})
-    for (var i = 0; i < this.props.events.length; i++) {
-      data.push({name: this.props.events[i].blockNum, price: this.props.events[i].price})
+    const { blockNumCurrent, blockNumFirstRelevant, events } = this.props;
+
+    const relevantEvents = events.filter(event => event.blockNum >= blockNumFirstRelevant);
+
+    const data = [];
+    data.push({blockNum: '0', price: 0.005})
+    data.push({blockNum: '1', price: 0.005})
+    for (var i = 0; i < relevantEvents.length; i++) {
+      data.push({blockNum: relevantEvents[i].blockNum, price: relevantEvents[i].price})
     }
+
     return (
       <PriceChart>
         <LineChart width={96} height={56} data={data}>
