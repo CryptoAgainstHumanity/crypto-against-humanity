@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import SearchBar from './SearchBar';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
-import { COLORS_TEXT, COLORS_OBJ } from '../StyleGuide';
+import { COLORS_TEXT, COLORS_OBJ, MEDIA } from '../StyleGuide';
 
 import {
   Link
@@ -92,6 +92,10 @@ const BtnCreateCard = Btn.extend`
     :hover {
       color: inherit;
     }
+  }
+
+  ${MEDIA.phone} {
+    display:none
   }
 `;
 

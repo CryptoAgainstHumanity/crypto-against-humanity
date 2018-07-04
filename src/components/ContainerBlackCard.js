@@ -14,7 +14,6 @@ class ContainerBlackCard extends Component {
 	render() {
 		return (
 			<BlackCardContainer>
-
 				<Card bigCard black>{this.props.blackCard.text}</Card>
       	<TimeContainer>
       		<LABEL>TIME REMAINING</LABEL>
