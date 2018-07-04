@@ -17,7 +17,7 @@ constructor(props) {
     }
     return (
       <PriceChart>
-        <LineChart width={96} height={72} data={data}>
+        <LineChart width={96} height={56} data={data}>
           <Line type='monotone' dataKey='price' stroke={COLORS_OBJ.secondary.medium} strokeWidth={2} />
         </LineChart>
       </PriceChart>

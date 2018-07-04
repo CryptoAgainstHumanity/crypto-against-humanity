@@ -1,7 +1,7 @@
 import Btn from './Button';
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { COLORS_OBJ, COLORS_TEXT, H3, LABEL, MEDIA } from '../StyleGuide';
+import { COLORS_OBJ, COLORS_TEXT, H2, LABEL, MEDIA } from '../StyleGuide';
 
 class WhiteCardBalance extends Component {
   constructor(props) {
@@ -75,7 +75,7 @@ class WhiteCardBalance extends Component {
       <Container>
         <Label>BALANCE</Label>
         <BalanceDiv>
-          <H3>{balance}</H3>
+          <H2>{balance}</H2>
           {tagBalance}
         </BalanceDiv>
 
@@ -102,8 +102,10 @@ const Container = styled.div`
 `;
 
 const Label = LABEL.extend`
-  font-size: 14px;
+  height: 20px;
+  font-size: 12px;
   margin: 0;
+  color: ${COLORS_TEXT.bgLight.low}
 `;
 
 const BalanceDiv = styled.div`
@@ -116,7 +118,7 @@ const BalanceDiv = styled.div`
 const Tag = styled.span`
   margin-left: 4px;
   font-size: 14px;
-  color: ${COLORS_TEXT.bgLight.medium}
+  color: ${COLORS_TEXT.bgLight.low}
 `;
 
 const TradeForm = styled.div`

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import WhiteCardPriceChart from './WhiteCardPriceChart';
-import { COLORS_OBJ, COLORS_TEXT, H3, LABEL } from '../StyleGuide';
+import { COLORS_OBJ, COLORS_TEXT, H2, LABEL } from '../StyleGuide';
 import { PrecisionRound } from '../Utilities'
 
 const WhiteCardPrice = (props) => {
@@ -17,22 +17,27 @@ const WhiteCardPrice = (props) => {
     percentChange = 100
   }
 
-
   const priceChange = (percentChange < 0)?
     <PriceChange isNegativeChange>{percentChange}%</PriceChange>:
-    <PriceChange>{percentChange}%</PriceChange>;
+    <PriceChange>+{percentChange}% </PriceChange>;
 
   return (
       <Container>
-        <Label>PRICE</Label>
-        <PriceDiv>
-          <Tag>Ξ</Tag><H3>{props.price}</H3>
-        </PriceDiv>
-        {priceChange}<Tag>Today</Tag>
+        <div>
+          <Label>PRICE</Label>
+          <PriceDiv>
+            <Tag>Ξ</Tag><H2>{props.price}</H2>
+          </PriceDiv>
+        </div>
+
+        <div>
+        <Label>THIS WEEK</Label>
+        {priceChange}
 
         <WhiteCardPriceChart
           events={props.events}
         />
+        </div>
 
       </Container>
   );
@@ -44,11 +49,14 @@ const Container = styled.div`
   padding: 16px 32px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Label = LABEL.extend`
-  font-size: 14px;
+  height: 20px;
+  font-size: 12px;
   margin: 0;
+  color: ${COLORS_TEXT.bgLight.low}
 `;
 
 const PriceDiv = styled.div`
@@ -59,12 +67,14 @@ const PriceDiv = styled.div`
 const Tag = styled.span`
   margin-right: 4px;
   font-size: 14px;
-  color: ${COLORS_TEXT.bgLight.medium}
+  color: ${COLORS_TEXT.bgLight.low}
 `;
 
 const PriceChange = styled.div`
   color: ${props => props.isNegativeChange? COLORS_OBJ.primary.red : COLORS_OBJ.primary.green};
-  margin-bottom: auto;
+  font-weight: bold;
+  text-align: right;
+  // margin-bottom: auto;
 `;
 
 const PriceChart = styled.div`

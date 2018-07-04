@@ -97,6 +97,7 @@ export const H2 = styled.h2`
   font-family: ${FONT.heading};
   font-weight: bold;
   color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
+  margin: 0;
   `;
 
 export const H3 = styled.h3`
