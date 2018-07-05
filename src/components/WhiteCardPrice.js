@@ -32,9 +32,14 @@ const WhiteCardPrice = (props) => {
     String(percentChange/1000) + 'k':
     String(percentChange);
 
-  const priceChangeLbl = (percentChange < 0)?
-    <PriceChange isNegativeChange>{percentChangeFormatted}%</PriceChange>:
-    <PriceChange>+{percentChangeFormatted}% </PriceChange>;
+  let priceChangeFormatted = '';
+  if (percentChange === 0) {
+    priceChangeFormatted = <PriceChange noChange>-%</PriceChange>;
+  } else if (percentChange < 0) {
+    priceChangeFormatted = <PriceChange isNegativeChange>{percentChangeFormatted}%</PriceChange>;
+  } else {
+    priceChangeFormatted = <PriceChange>+{percentChangeFormatted}% </PriceChange>;
+  }
 
   return (
       <Container>
@@ -47,7 +52,7 @@ const WhiteCardPrice = (props) => {
 
         <div>
         <Label>LAST 28 DAYS</Label>
-        {priceChangeLbl}
+        {priceChangeFormatted}
 
         <WhiteCardPriceChart
           events={props.events}
@@ -93,6 +98,8 @@ const PriceChange = styled.div`
   font-weight: bold;
   text-align: right;
   // margin-bottom: auto;
+
+  ${props => props.noChange? `color: ${COLORS_TEXT.bgLight.medium}` : ''};
 `;
 
 const PriceChart = styled.div`
