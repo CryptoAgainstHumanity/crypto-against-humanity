@@ -119,6 +119,7 @@ class WhiteCardListItem extends Component {
         <WhiteCardPrice
           price={this.state.buyPrice}
           events={this.props.events}
+          blockNum={this.props.blockNum}
           blockNumCurrent={this.props.blockNumCurrent}
         />
 

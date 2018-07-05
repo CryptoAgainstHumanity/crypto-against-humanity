@@ -10,7 +10,7 @@ const INITIAL_PRICE = 0.005;
 
 const WhiteCardPrice = (props) => {
 
-  const { events, blockNumCurrent, price } = props;
+  const { events, blockNumCurrent, blockNum, price } = props;
 
   const blockNumFirstRelevant = blockNumCurrent - BLOCKS_PER_MONTH;
 
@@ -56,6 +56,7 @@ const WhiteCardPrice = (props) => {
 
         <WhiteCardPriceChart
           events={props.events}
+          blockNum={blockNum}
           blockNumCurrent={blockNumCurrent}
           blockNumFirstRelevant={blockNumFirstRelevant}
           priceFirstRelevant= {priceFirstRelevant}

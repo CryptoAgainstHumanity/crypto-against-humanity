@@ -16,6 +16,7 @@ const ListWhiteCards = ((props) => {
 			poolBalance={card.poolBalance}
 			totalSupply={card.totalSupply}
 			events={card.events}
+			blockNum={card.blockNum}
 			blockNumCurrent={props.blockNumCurrent}
 			/>
 	})

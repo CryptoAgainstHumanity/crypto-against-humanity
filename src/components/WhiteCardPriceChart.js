@@ -3,31 +3,59 @@ import { COLORS_OBJ } from '../StyleGuide';
 import { LineChart, Line } from 'recharts';
 import React, { Component } from 'react';
 
-const MAX_DATA_POINTS = 28;
+const DATA_POINTS = 28;
+const DEFAULT_PRICE = 0.005;
 
 class WhiteCardPriceChart extends Component {
-constructor(props) {
-  super(props)
-}
+  constructor(props) {
+    super(props)
+  }
 
   render() {
-    const { blockNumCurrent, blockNumFirstRelevant, priceFirstRelevant, events } = this.props;
+    const { blockNum, blockNumCurrent, blockNumFirstRelevant, priceFirstRelevant, events } = this.props;
 
     const relevantEvents = events.filter(event => event.blockNum >= blockNumFirstRelevant);
-    const blocksPerInterval = (blockNumCurrent - blockNumFirstRelevant) / MAX_DATA_POINTS;
+    const blocksPerInterval = (blockNumCurrent - blockNumFirstRelevant) / DATA_POINTS;
 
-    const data = [{blockNum: blockNumFirstRelevant,  price: priceFirstRelevant}];
+    const data = [];
+    let intervalStart = blockNumFirstRelevant;
+    let intervalEnd = intervalStart + blocksPerInterval;
+    let priceLastInterval = priceFirstRelevant;
 
-    for (let i = 1; i < (MAX_DATA_POINTS); i++) {
-      const intervalStart = blockNumFirstRelevant + ((i-1) * blocksPerInterval);
-      const intervalEnd = blockNumFirstRelevant + (i * blocksPerInterval);
-      let intervalPrice = data[i-1].price;
-      relevantEvents.forEach(event => {
-        if ((event.blockNum >= intervalStart) && (event.blockNum < intervalEnd)) {
-          intervalPrice = event.price;
+    for (let i = 0; i < (DATA_POINTS); i++) {
+      if (blockNum > intervalEnd) {
+        data.push({blockNum: intervalStart});
+      } else {
+        let price = DEFAULT_PRICE;
+
+        const wasCreatedInInterval = ((intervalStart < blockNum) && (blockNum <= intervalEnd));
+        if (!wasCreatedInInterval) {
+          price = priceLastInterval;
+
+          const eventsInInterval = relevantEvents.filter(event => ((intervalStart < event.blockNum) && (event.blockNum <= intervalEnd)));
+          if (eventsInInterval.length > 0) {
+            const lastEvent = eventsInInterval[eventsInInterval.length - 1];
+            price = lastEvent.price;
+          }
         }
-      });
-      data.push({blockNum: intervalEnd, price: intervalPrice});
+
+        priceLastInterval = price
+        data.push({blockNum: intervalStart, price: price});
+      }
+
+      intervalStart += blocksPerInterval;
+      intervalEnd += blocksPerInterval;
+    }
+
+    // push last price, just incase event
+    if (relevantEvents.length > 0) {
+      const lastEvent = relevantEvents[(relevantEvents.length - 1)];
+      data.push({blockNum: blockNumCurrent, price: lastEvent.price})
+    }
+
+    // Fixing bug in recharts which doesn't dispplay if no price change
+    if (data[data.length - 1].price === DEFAULT_PRICE) {
+      data.push({blockNum: blockNumCurrent, price: 0.004999})
     }
 
     return (
@@ -45,8 +73,6 @@ constructor(props) {
     );
   }
 }
-
-
 
 export default WhiteCardPriceChart;
 
