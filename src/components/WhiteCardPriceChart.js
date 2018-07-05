@@ -33,12 +33,20 @@ constructor(props) {
     return (
       <PriceChart>
         <LineChart width={96} height={56} data={data}>
-          <Line type='monotone' dataKey='price' stroke={COLORS_OBJ.secondary.medium} strokeWidth={2} />
-        </LineChart>
+        <defs>
+          <linearGradient id="price" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={COLORS_OBJ.secondary.medium} stopOpacity={1}/>
+            <stop offset="95%" stopColor={COLORS_OBJ.secondary.low} stopOpacity={0.8}/>
+          </linearGradient>
+        </defs>
+        <Line type='monotone' dataKey='price' stroke='url(#price)' strokeWidth={2} dot={false} activeDot={false} />
+      </LineChart>
       </PriceChart>
     );
   }
 }
+
+
 
 export default WhiteCardPriceChart;
 
