@@ -6,20 +6,20 @@ import {
 // Default is secondary, for primary button use <Btn primary></Btn>
 
 const Btn = styled.button`
-  padding: 0.5em 1em;
+  padding: 0.25em 1em;
   background-color: transparent;
-  border: 2px solid ${COLORS_OBJ.primary.high};
   ${HAS_BORDER_RADIUS};
 
   font-size:16px;
   font-weight: bold;
 
-  background-color: ${props => props.primary? COLORS_OBJ.primary.high : 'none'};
-  color: ${props => props.primary? 'white' : COLORS_OBJ.primary.high}
+  border: 2px solid ${COLORS_OBJ.primary.red};
+  background-color: ${props => props.primary? COLORS_OBJ.primary.red : 'none'};
+  color: ${props => props.primary? 'white' : COLORS_OBJ.primary.red};
 
   :hover {
-    border-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.high) : COLORS_OBJ.primary.high};
-    background-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.high) : COLORS_OBJ.primary.high};
+    border-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.red) : COLORS_OBJ.primary.red};
+    background-color: ${props => props.primary? DARKEN(COLORS_OBJ.primary.red) : COLORS_OBJ.primary.red};
     color: white;
   }
 
@@ -28,7 +28,7 @@ const Btn = styled.button`
   }
 
   // Animation for hover, source: Bootstrap 4
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  // transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 `;
 
 export default Btn;

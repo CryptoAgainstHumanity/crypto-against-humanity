@@ -5,7 +5,7 @@ import {
 
 const HeaderNotification = styled.div`
   padding: 16px;
-  background-color: ${COLORS_OBJ.primary.high};
+  background-color: ${COLORS_OBJ.primary.red};
   color: white;
   font-size: 18px;
 

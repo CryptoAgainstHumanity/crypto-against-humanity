@@ -5,12 +5,12 @@ import {
 
 const DropdownMenu = styled.div`
   position: absolute;
-  top: 148px;
-  width: 156px;
+  top: 136px;
+  width: 96px;
   display: flex;
   flex-direction: column;
   background-color: white;
-  border: 2px solid ${COLORS_OBJ.secondary.high};
+  border: 2px solid ${COLORS_OBJ.secondary.medium};
   ${HAS_BORDER_RADIUS};
   ${HAS_SHADOW};
 
@@ -18,7 +18,7 @@ const DropdownMenu = styled.div`
     border: none;
     border-radius: 0;
     transition: none;
-    color: ${COLORS_OBJ.secondary.high};
+    color: ${COLORS_TEXT.bgLight.medium};
 
     :hover {
       background-color: ${DARKEN('#FFFFFF')};

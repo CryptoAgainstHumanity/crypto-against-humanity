@@ -92,7 +92,6 @@ class App extends Component {
                 <li><a href="#about-us"><NavLink to="/about-us">About Us</NavLink></a></li>
                 <li><a href="#rules"><NavLink to="/rules">Guide</NavLink></a></li>
                 <li><a href="#hall-of-shame"><NavLink to="/hall-of-shame">Hall of Shame</NavLink></a></li>
-                <li><a href="#create-card"><NavLink to="/create-card"><Btn primary>Create Card</Btn></NavLink></a></li>
           </NavBar>
           </ContainerNav>
 
@@ -102,8 +101,8 @@ class App extends Component {
               <Route path="/about-us" component={AboutUs}/>
               <Route path="/rules" component={Rules}/>
               <Route path="/hall-of-shame" component={HallOfShame}/>
-              <Route path="/create-card" component={CreateCard}/>
               <Route path="/update-cache" component={UpdateCache}/>
+              <Route path="/create-card" component={CreateCard}/>
               <Route path="/landing-page" component={LandingPage}/>
           </div>
         </ContainerApp>

@@ -4,7 +4,6 @@ import web3 from './web3'
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
 import BlackCards from './data/blackCards.json'
-import EventCache from './data/eventCache'
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
@@ -16,6 +15,7 @@ import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import ContainerRow from './components/ContainerRow';
 import HeaderNotification from './components/HeaderNotification';
+import { GetBuyPrice } from './Utilities'
 import { cdn } from '@widgetbot/crate'
 
 
@@ -126,12 +126,16 @@ class Home extends Component {
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
     const defaultTokenBuyAmount = 0.001 * 10 ** 18
 
+    // Remove Duplicate Events
+    const mintBurnEvents = uniqBy(cardEvents.MintBurnEvents, JSON.stringify)
+    const createEvents = uniqBy(cardEvents.CreateEvents, JSON.stringify)
+
     var whiteCards = []
-    for (var i = 0; i < cardEvents.CreateEvents.length; i++) {
+    for (var i = 0; i < createEvents.length; i++) {
       whiteCards.push({
-        text: cardEvents.CreateEvents[i].text,
-        bondingCurveAddress: cardEvents.CreateEvents[i].tokenAddress,
-        blockNum: cardEvents.CreateEvents[i].blockNumber
+        text: createEvents[i].text,
+        bondingCurveAddress: createEvents[i].tokenAddress,
+        blockNum: createEvents[i].blockNumber
       })
     }
 
@@ -148,46 +152,29 @@ class Home extends Component {
       var tokenBalance = 0;
       var poolBalance = 0;
       var totalSupply = 0;
-      for (var j = 0; j < cardEvents.MintBurnEvents.length; j++) {
-        if (cardEvents.MintBurnEvents[j].tokenAddress == whiteCards[i].bondingCurveAddress) {
-          if (cardEvents.MintBurnEvents[j].caller == accounts[0]) {
-            if (cardEvents.MintBurnEvents[j].type == "Minted") {
-              tokenBalance += precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
-              poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
+      var events = [];
+      for (var j = 0; j < mintBurnEvents.length; j++) {
+        if (mintBurnEvents[j].tokenAddress == whiteCards[i].bondingCurveAddress) {
+          if (mintBurnEvents[j].caller == accounts[0]) {
+            if (mintBurnEvents[j].type == "Minted") {
+              tokenBalance += precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             } else {
-              tokenBalance -= precisionRound((cardEvents.MintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
-              poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
-            }
-          } else {
-            if (cardEvents.MintBurnEvents[j].type == "Minted") {
-              poolBalance += Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply += Number(cardEvents.MintBurnEvents[j].amount)
-            } else {
-              poolBalance -= Number(cardEvents.MintBurnEvents[j].costReward)
-              totalSupply -= Number(cardEvents.MintBurnEvents[j].amount)
+              tokenBalance -= precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             }
           }
+          if (mintBurnEvents[j].type == "Minted") {
+            poolBalance += Number(mintBurnEvents[j].costReward)
+            totalSupply += Number(mintBurnEvents[j].amount)
+          } else {
+            poolBalance -= Number(mintBurnEvents[j].costReward)
+            totalSupply -= Number(mintBurnEvents[j].amount)
+          }
+          events.push({
+            price: GetBuyPrice(totalSupply, poolBalance),
+            blockNum: mintBurnEvents[j].blockNumber
+          })
         }
       }
-
-    // let tokenVal = 1 * tokenUnits //10 ** 8
-    // EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
-    // let bondingCurvePrice = await EthPolynomialCurveToken.methods
-    //   .getMintingPrice(tokenVal).call()
-    // this.setState({
-    //   price: bondingCurvePrice / 10 ** 18
-    // })
-
-
-      var a = Number(totalSupply) + Number(10 ** 8)
-      var b = Number(poolBalance)
-      var step1 = 10000000000 / 2
-      var step2 = step1 * (a**2)
-      var step3 = step2 / 10000000000
-      var cardMintingPrice = step3 - b
-      var cardPrice = (cardMintingPrice / 10 ** 18);
 
       var text = whiteCards[i].text;
       cardsWithInfo.push({
@@ -195,9 +182,10 @@ class Home extends Component {
         bondingCurveAddress: whiteCards[i].bondingCurveAddress,
         blockNum: whiteCards[i].blockNum,
         balance: tokenBalance,
-        price: cardPrice,
+        price: GetBuyPrice(totalSupply, poolBalance),
         totalSupply: totalSupply,
-        poolBalance: poolBalance
+        poolBalance: poolBalance,
+        events: events
       })
 
     }
@@ -360,6 +348,14 @@ function random(seed) {
 
 function getRandomInt(seed, min, max) {
   return Math.floor(random(seed) * (max - min + 1)) + min;
+}
+
+function uniqBy(a, key) {
+    var seen = {};
+    return a.filter(function(item) {
+        var k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
 }
 
 

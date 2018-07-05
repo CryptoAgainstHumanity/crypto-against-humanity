@@ -4,8 +4,8 @@ import {
 } from '../StyleGuide';
 
 const Card = styled.div`
-	width: ${props => props.bigCard ? 320 : 152}px;
-	height: ${props => props.bigCard ? (320*1.25) : (152*1.25)}px;
+	width: ${props => props.bigCard ? 280 : 160}px;
+	height: ${props => props.bigCard ? (280*1.2) : (160*1.2)}px;
 	padding: ${props => props.bigCard ? 16 : 16}px;
 	${HAS_BORDER_RADIUS}
 	${HAS_SHADOW};

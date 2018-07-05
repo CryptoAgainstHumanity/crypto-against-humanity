@@ -8,7 +8,7 @@ const ContainerNav = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 64px;
+  height: 48px;
   background-color: ${COLORS_OBJ.secondary.high};
 
   ${MEDIA.tablet} {
