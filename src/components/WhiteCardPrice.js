@@ -28,9 +28,13 @@ const WhiteCardPrice = (props) => {
   // console.log('percent change ' + percentChange);
   // console.log(' ');
 
+  const percentChangeFormatted = percentChange > 999?
+    String(percentChange/1000) + 'k':
+    String(percentChange);
+
   const priceChangeLbl = (percentChange < 0)?
-    <PriceChange isNegativeChange>{percentChange}%</PriceChange>:
-    <PriceChange>+{percentChange}% </PriceChange>;
+    <PriceChange isNegativeChange>{percentChangeFormatted}%</PriceChange>:
+    <PriceChange>+{percentChangeFormatted}% </PriceChange>;
 
   return (
       <Container>
