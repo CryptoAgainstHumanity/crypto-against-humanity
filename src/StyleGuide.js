@@ -113,6 +113,7 @@ export const H4 = styled.h4`
   font-family: ${FONT.heading};
   font-weight: bold;
   color: ${props => props.bgDark ? COLORS_TEXT.bgDark.high : COLORS_TEXT.bgLight.high};
+  margin: 0;
   `;
 
 export const LABEL = styled.p`

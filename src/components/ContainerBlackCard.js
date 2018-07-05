@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card from './Card';
 import styled from 'styled-components';
 import {
-  H1, LABEL,
+  COLORS_TEXT, COLORS_OBJ, H2, H4, LABEL,
 } from '../StyleGuide';
 
 class ContainerBlackCard extends Component {
@@ -14,11 +14,12 @@ class ContainerBlackCard extends Component {
 	render() {
 		return (
 			<BlackCardContainer>
-				<Card bigCard black>{this.props.blackCard.text}</Card>
+      	<Card bigCard black>{this.props.blackCard.text}</Card>
       	<TimeContainer>
-      		<LABEL>TIME REMAINING</LABEL>
-      		<H1>{this.props.timeRemaining}</H1>
-  		</TimeContainer>
+      		<TimeLabel>New black card in</TimeLabel>
+      		<Time>{this.props.timeRemaining}</Time>
+  			</TimeContainer>
+
 			</BlackCardContainer>
 		);
 	};
@@ -33,15 +34,18 @@ const BlackCardContainer = styled.div`
 
 const TimeContainer = styled.div`
 	margin-top: 24px;
-
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+`;
 
-	>:not(:first-child) {
-		margin-top: 0;
-	}
+const Time = H2.extend`
+	margin-top: 4px;
+	color: ${COLORS_TEXT.bgLight.low};
+`;
+
+const TimeLabel = H4.extend`
+	color: ${COLORS_TEXT.bgLight.low};
 `;
 
 export default ContainerBlackCard;
