@@ -42,7 +42,7 @@ const WhiteCardPrice = (props) => {
         </div>
 
         <div>
-        <Label>THIS MONTH</Label>
+        <Label>LAST 28 DAYS</Label>
         {priceChangeLbl}
 
         <WhiteCardPriceChart
