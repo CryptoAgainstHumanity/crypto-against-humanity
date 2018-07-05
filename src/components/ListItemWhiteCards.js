@@ -111,8 +111,6 @@ class WhiteCardListItem extends Component {
       balanceRounded = precisionRound(this.props.balance, 1)
     }
 
-    console.log(this.props.text);
-
 		return (
 			<ListItemWhiteCard>
 

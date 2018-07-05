@@ -49,6 +49,7 @@ const WhiteCardPrice = (props) => {
           events={props.events}
           blockNumCurrent={blockNumCurrent}
           blockNumFirstRelevant={blockNumFirstRelevant}
+          priceFirstRelevant= {priceFirstRelevant}
         />
         </div>
 
