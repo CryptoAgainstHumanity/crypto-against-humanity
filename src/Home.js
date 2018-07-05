@@ -20,7 +20,7 @@ import { GetBuyPrice } from './Utilities'
 
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
-const blackCardTimeInterval = 10000
+const blackCardTimeInterval = 86400
 const IPFS_KEY = process.env.REACT_APP_IPFS_KEY;
 
 
