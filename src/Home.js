@@ -16,12 +16,11 @@ import '../node_modules/font-awesome/css/font-awesome.min.css';
 import ContainerRow from './components/ContainerRow';
 import HeaderNotification from './components/HeaderNotification';
 import { GetBuyPrice } from './Utilities'
-import { cdn } from '@widgetbot/crate'
 
 
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
-const blackCardTimeInterval = 10000
+const blackCardTimeInterval = 86400
 const IPFS_KEY = process.env.REACT_APP_IPFS_KEY;
 
 
@@ -61,22 +60,10 @@ class Home extends Component {
     }
   }
 
-  async loadDiscordWidget () {
-    const Crate = await cdn()
-    const myCrate = new Crate({
-        server: '461374222137032735',
-        channel: '461684080527015936'
-    })
-  }
-
   componentWillMount() {
     this.setState({
         loadingWhiteCards: true
     })
-
-    this.loadDiscordWidget();
-
-
 
     if (BlackCardRegistry != "undefined") {
       BlackCardRegistry.getPastEvents('_Application', {

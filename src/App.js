@@ -18,6 +18,8 @@ import UpdateCache from "./UpdateCache";
 import NavBar from "./components/NavBar";
 import ContainerNav from "./components/ContainerNav";
 import Rules from "./Rules";
+import { cdn } from '@widgetbot/crate'
+
 
 class App extends Component {
 
@@ -33,6 +35,19 @@ class App extends Component {
     ReactGA.pageview(window.location.hash);
     this.checkWeb3(this.callback);
     //this.callback(hasMetamask, isLoggedIn, network);
+  }
+
+
+  componentWillMount() {
+    this.loadDiscordWidget();
+  }
+
+  async loadDiscordWidget () {
+    const Crate = await cdn()
+    const myCrate = new Crate({
+        server: '461374222137032735',
+        channel: '461684080527015936'
+    })
   }
 
   callback(metamask, isLoggedIn, network) {
