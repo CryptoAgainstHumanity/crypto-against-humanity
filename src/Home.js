@@ -4,6 +4,7 @@ import web3 from './web3'
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
 import BlackCards from './data/blackCards.json'
+import EventCache from './data/eventCache.json'
 import WhiteCardFactory from './web3Contracts/WhiteCardFactory'
 import WhiteCard from './web3Contracts/WhiteCard'
 import EthPolynomialCurveToken from './web3Contracts/EthPolynomialCurveToken'
@@ -20,7 +21,7 @@ import { GetBuyPrice } from './Utilities'
 
 
 const ipfs = ipfsAPI('ipfs.infura.io', '5001', {protocol: 'https'})
-const blackCardTimeInterval = 86400
+const blackCardTimeInterval = 86400 // seconds -> 24 hours
 const IPFS_KEY = process.env.REACT_APP_IPFS_KEY;
 
 
@@ -37,7 +38,8 @@ class Home extends Component {
       originBlock: 3418530,
       TCRoriginBlock: 3317454,
       web3Id: 9999999,
-      accounts: [1, 2, 3, 4, 5, 6, 7]
+      accounts: [1, 2, 3, 4, 5, 6, 7],
+      ipfsDown: false,
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
@@ -92,16 +94,25 @@ class Home extends Component {
             IPFSCardCache = JSON.parse(buf.toString('utf8'))
             this.getWhiteCardInfo(IPFSCardCache)
           } else {
-            this.loadWhiteCardsFromContract();
+            this.setState({
+              ipfsDown: true,
+            })
+            this.getWhiteCardInfo(EventCache)
             console.error("IPFS file is corrupted")
           }
         } else {
-          this.loadWhiteCardsFromContract();
+          this.setState({
+            ipfsDown: true,
+          })
+          this.getWhiteCardInfo(EventCache)
           console.error("Could not find IPFS file")
         }
       });
     } else {
-      this.loadWhiteCardsFromContract();
+      this.setState({
+        ipfsDown: true,
+      })
+      this.getWhiteCardInfo(EventCache)
       console.error("MISSING A VALID IPFS KEY")
     }
 
@@ -300,6 +311,9 @@ class Home extends Component {
     } else if (this.state.accounts.length == 0) {
       doDisplayMessage = true;
       displayMessage = "You need to log into metamask to interact with the site!"
+    } else if (this.state.ipfsDown) {
+      doDisplayMessage = true;
+      displayMessage = "Our IPFS cache is down! All content on the site is stale. This will be fixed shortly."
     }
     //var statusMessage =
     var headerNotification = doDisplayMessage ?
