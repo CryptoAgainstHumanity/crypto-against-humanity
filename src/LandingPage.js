@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import ReactGA from 'react-ga';
-import styled from 'styled-components';
-import web3 from './web3';
 import Btn from './components/Button';
 import ContainerApp from './components/ContainerApp';
 import ContainerColumn from './components/ContainerColumn';
@@ -17,14 +15,6 @@ class LandingPage extends Component {
   }
 
   render() {
-    const hasMetamask = this.props.hasMetamask;
-    const network = this.props.network;
-    var message = "Please Install MetaMask.";
-    if (hasMetamask && network == "Unknown") {
-      message = "Please Log Into MetaMask to play Crypto Against Humanity.";
-    } else if (hasMetamask) {
-      message = "Please Switch to the Ropsten Test Network, Your Current Network: " + network;
-    }
     return (
       <ContainerApp>
       <ContainerColumn>

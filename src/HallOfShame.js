@@ -34,7 +34,7 @@ class HallOfShame extends Component {
 
     return (
       <ContainerColumn>
-        <H1>Hall of Shame 💩</H1>
+        <H1>Hall of Shame <span role="img" aria-label="Poopie">💩</span></H1>
         <HallOfShameList>
           {pastWinners}
         </HallOfShameList>

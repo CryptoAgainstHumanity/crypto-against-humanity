@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import web3 from './web3';
-import sha256 from 'sha256';
 import ReactGA from 'react-ga';
-import bytes from 'bytes';
 import whiteCardFactory from './web3Contracts/WhiteCardFactory';
 import blackCardRegistry from './web3Contracts/BlackCardRegistry';
 import nsfcCoinToken from './web3Contracts/NsfcCoinToken';
@@ -74,7 +72,7 @@ class CreateCard extends Component {
     });
 
     const accounts = await web3.eth.getAccounts();
-    if (this.state.color == "black") {
+    if (this.state.color === "black") {
       this.setState({isVerified: true});
       await nsfcCoinToken.methods.approve(blackCardRegistry.options.address, 10).send({from: accounts[0]});
     } else {

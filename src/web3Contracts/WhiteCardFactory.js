@@ -33,7 +33,7 @@ const abi = [
 ]
 
 var contract = "undefined";
-if (web3 != "undefined") {
+if (web3 !== "undefined") {
 	contract = new web3.eth.Contract(abi, address);
 }
 export default contract;

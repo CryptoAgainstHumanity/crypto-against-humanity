@@ -1,17 +1,12 @@
-import Btn from './Button';
 import Card from './Card';
 import EthPolynomialCurveToken from '../web3Contracts/EthPolynomialCurveToken'
-import InputText from './InputText';
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import styled from 'styled-components';
 import web3 from '../web3';
 import WhiteCardPrice from './WhiteCardPrice';
 import WhiteCardBalance from './WhiteCardBalance';
-import { GetBuyPriceRounded, GetSellPriceRounded, GetBuyPrice} from '../Utilities'
-import {
-  H1, LABEL, MEDIA,
-} from '../StyleGuide';
+import { GetBuyPriceRounded, GetSellPriceRounded } from '../Utilities'
 
 const tokenUnits = 10 ** 8
 const defaultTradeAmount = 1
@@ -39,7 +34,7 @@ class WhiteCardListItem extends Component {
   filterNonNumeric = (input) => {
     // Remove characters that aren't digits or dots
     const inputCleaned = input
-      .replace(/[^\d\.]/g,'');
+      .replace(/[^\d.]/g,'');
     // Only allow a single decimal place for floats
     const inputSplit = inputCleaned.split('.');
     const inputFiltered = inputSplit.shift() + (inputSplit.length ? '.' + inputSplit.join('') : '');
@@ -88,14 +83,13 @@ class WhiteCardListItem extends Component {
 		const accounts = await web3.eth.getAccounts()
 		let tokenVal = this.state.tradeDisplayAmount * tokenUnits
 		EthPolynomialCurveToken.options.address = this.props.bondingCurveAddress
-		let bondingCurvePrice = await EthPolynomialCurveToken.methods
-			.burn(tokenVal).send({ from: accounts[0] })
+		await EthPolynomialCurveToken.methods.burn(tokenVal).send({ from: accounts[0] })
 	}
 
 	render() {
 
     // If cards have re-arranged
-    if (this.props.text != this.state.text) {
+    if (this.props.text !== this.state.text) {
       this.setState({
         text: this.props.text,
         tradeDisplayAmount: defaultTradeAmount,

@@ -2,15 +2,10 @@ import React, { Component } from 'react';
 import Card from './Card';
 import styled from 'styled-components';
 import {
-  COLORS_TEXT, COLORS_OBJ, H2, H4, LABEL,
+  COLORS_TEXT, H2, H4
 } from '../StyleGuide';
 
 class ContainerBlackCard extends Component {
-
-	constructor(props) {
-		super(props)
-	}
-
 	render() {
 		return (
 			<BlackCardContainer>

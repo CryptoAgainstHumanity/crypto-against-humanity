@@ -103,11 +103,4 @@ const PriceChange = styled.div`
   ${props => props.noChange? `color: ${COLORS_TEXT.bgLight.medium}` : ''};
 `;
 
-const PriceChart = styled.div`
-  height: 72px;
-  width: 96px;
-
-  border: 1px solid blue;
-`;
-
 export default WhiteCardPrice;

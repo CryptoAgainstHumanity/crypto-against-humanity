@@ -44,12 +44,6 @@ class WhiteCardBalance extends Component {
       'card':
       'cards';
 
-    if (balance > 0) {
-      const tagBalance = <Tag>{tagBalanceName}</Tag>;
-    } else {
-      const hasNoBalance = true;
-    };
-
     const sellBtn = (balance > 0)?
       <SellBtn
         onClick={handleSellClick}

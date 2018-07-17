@@ -1,14 +1,12 @@
 import web3 from './web3'
 import React, { Component } from 'react';
 import ReactGA from 'react-ga';
-import logo from './logo.svg';
 import {
   Route,
   NavLink,
   HashRouter
 } from "react-router-dom";
 import AboutUs from "./AboutUs";
-import Btn from './components/Button';
 import ContainerApp from "./components/ContainerApp";
 import CreateCard from "./CreateCard";
 import HallOfShame from "./HallOfShame";
@@ -34,7 +32,6 @@ class App extends Component {
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
     this.checkWeb3(this.callback);
-    //this.callback(hasMetamask, isLoggedIn, network);
   }
 
 
@@ -44,7 +41,7 @@ class App extends Component {
 
   async loadDiscordWidget () {
     const Crate = await cdn()
-    const myCrate = new Crate({
+    new Crate({
         server: '461374222137032735',
         channel: '461684080527015936'
     })
@@ -58,7 +55,7 @@ class App extends Component {
     var hasMetamask = false;
     var isLoggedIn = false;
     var network = "Unknown";
-    if(web3 != "undefined") {
+    if(web3 !== "undefined") {
       const address = await web3.eth.getAccounts();
       hasMetamask = true;
       if (address.length > 0) {

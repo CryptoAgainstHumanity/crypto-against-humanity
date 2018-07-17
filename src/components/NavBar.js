@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, COLORS_TEXT, MEDIA,
+  COLORS_TEXT, MEDIA,
 } from '../StyleGuide';
 
 const NavBar = styled.ul`

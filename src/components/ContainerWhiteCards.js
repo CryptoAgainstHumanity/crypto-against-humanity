@@ -1,13 +1,9 @@
 import _ from 'lodash';
-import Btn from './Button';
-import DropdownMenu from './DropdownMenu';
 import HeaderWhiteCards from './HeaderWhiteCards';
 import React, { Component } from 'react';
 import ListWhiteCards from './ListWhiteCards';
 import styled from 'styled-components';
-import SearchBar from './SearchBar';
-import web3 from '../web3'
-import { COLORS_TEXT, COLORS_OBJ, MEDIA } from '../StyleGuide';
+import { MEDIA } from '../StyleGuide';
 import '../../node_modules/font-awesome/css/font-awesome.min.css';
 
 const AVG_HOURS_PER_ETH_BLOCK = 0.0042; // 15 seconds / 60 secs p. min / 60 min . pour
@@ -131,32 +127,6 @@ const Container = styled.div`
   ${MEDIA.phone} {
     height: auto;
     width: auto;
-  }
-`;
-
-// const HeaderWhiteCards = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   justify-content: flex-start;
-//   margin-bottom: 16px;
-// `;
-
-const BtnDropDown = Btn.extend`
-  margin-right: 16px;
-  width: 160px;
-  border: none
-  border-bottom: 2px solid ${COLORS_TEXT.bgLight.low};
-  color: ${COLORS_TEXT.bgLight.low};
-  border-radius: 0;
-
-  :hover {
-    color: ${COLORS_TEXT.bgLight.high};
-    border-bottom: 2px solid ${COLORS_TEXT.bgLight.high};
-    background-color: transparent;
-  }
-
-  ${MEDIA.phone} {
-    display: none;
   }
 `;
 

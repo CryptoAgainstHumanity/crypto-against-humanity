@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import {
-  COLORS_OBJ, COLORS_TEXT,
+  COLORS_OBJ
 } from '../StyleGuide';
 
 const HeaderNotification = styled.div`

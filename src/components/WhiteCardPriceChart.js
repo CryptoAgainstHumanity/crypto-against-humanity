@@ -7,9 +7,6 @@ const DATA_POINTS = 28;
 const DEFAULT_PRICE = 0.005;
 
 class WhiteCardPriceChart extends Component {
-  constructor(props) {
-    super(props)
-  }
 
   render() {
     const { blockNum, blockNumCurrent, blockNumFirstRelevant, priceFirstRelevant, events } = this.props;

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactGA from 'react-ga';
 import web3 from './web3'
 import _ from 'lodash'
 import ipfsAPI from 'ipfs-api';

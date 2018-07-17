@@ -44,7 +44,7 @@ class Home extends Component {
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
 
-    if (web3 != 'undefined') {
+    if (web3 !== 'undefined') {
       web3.eth.net.getId((err, id) => {
           this.setState({
             web3Id: id
@@ -67,12 +67,12 @@ class Home extends Component {
         loadingWhiteCards: true
     })
 
-    if (BlackCardRegistry != "undefined") {
+    if (BlackCardRegistry !== "undefined") {
       BlackCardRegistry.getPastEvents('_Application', {
         fromBlock: this.state.TCRoriginBlock,
         toBlock: 'latest'
       }, async (err, events) => {
-        if (events.length == 0) {
+        if (events.length === 0) {
           this.blackCards = BlackCards
         } else {
           this.blackCards = events
@@ -90,7 +90,7 @@ class Home extends Component {
     if (IPFS_KEY) {
       ipfs.files.read('/' + IPFS_KEY + '/eventCache.json', (err, buf) => {
         if (buf) {
-          if (buf.toString('utf8') != '') {
+          if (buf.toString('utf8') !== '') {
             IPFSCardCache = JSON.parse(buf.toString('utf8'))
             this.getWhiteCardInfo(IPFSCardCache)
           } else {
@@ -122,27 +122,26 @@ class Home extends Component {
   async getWhiteCardInfo(cardEvents) {
 
     const whiteCardTokenUnits = 10 ** 12 * 10 ** 18
-    const defaultTokenBuyAmount = 0.001 * 10 ** 18
 
     // Remove Duplicate Events
     const mintBurnEvents = uniqBy(cardEvents.MintBurnEvents, JSON.stringify)
     const createEvents = uniqBy(cardEvents.CreateEvents, JSON.stringify)
 
     var whiteCards = []
-    for (var i = 0; i < createEvents.length; i++) {
+    for (var h = 0; h < createEvents.length; h++) {
       whiteCards.push({
-        text: createEvents[i].text,
-        bondingCurveAddress: createEvents[i].tokenAddress,
-        blockNum: createEvents[i].blockNumber
+        text: createEvents[h].text,
+        bondingCurveAddress: createEvents[h].tokenAddress,
+        blockNum: createEvents[h].blockNumber
       })
     }
 
     var cardsWithInfo = []
     var updatedCards = []
     var accounts = "";
-    if (web3 != 'undefined') {
+    if (web3 !== 'undefined') {
       var networkId = await web3.eth.net.getId();
-      if (networkId == 3) { //if ropsten
+      if (networkId === 3) { //if ropsten
         accounts = await web3.eth.getAccounts();
       }
     }
@@ -152,15 +151,15 @@ class Home extends Component {
       var totalSupply = 0;
       var events = [];
       for (var j = 0; j < mintBurnEvents.length; j++) {
-        if (mintBurnEvents[j].tokenAddress == whiteCards[i].bondingCurveAddress) {
-          if (mintBurnEvents[j].caller == accounts[0]) {
-            if (mintBurnEvents[j].type == "Minted") {
+        if (mintBurnEvents[j].tokenAddress === whiteCards[i].bondingCurveAddress) {
+          if (mintBurnEvents[j].caller === accounts[0]) {
+            if (mintBurnEvents[j].type === "Minted") {
               tokenBalance += precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             } else {
               tokenBalance -= precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             }
           }
-          if (mintBurnEvents[j].type == "Minted") {
+          if (mintBurnEvents[j].type === "Minted") {
             poolBalance += Number(mintBurnEvents[j].costReward)
             totalSupply += Number(mintBurnEvents[j].amount)
           } else {
@@ -191,8 +190,6 @@ class Home extends Component {
     // Order by price
     updatedCards = _.orderBy(cardsWithInfo, ['price'], ['desc']);
 
-    // Order by newest
-    //updatedCards = _.orderBy(cardsWithInfo, ['blockNum'], ['desc']);
     this.setState({
       whiteCards: updatedCards,
       loadingWhiteCards: false
@@ -201,7 +198,6 @@ class Home extends Component {
 
   loadWhiteCardsFromContract (){
     var whiteCardTokenUnits = 10 ** 12 * 10 ** 18
-    var defaultTokenBuyAmount = 0.001 * 10 ** 18
       WhiteCardFactory.getPastEvents('_WhiteCardCreated', {
       fromBlock: this.state.originBlock,
       toBlock: 'latest'
@@ -226,7 +222,7 @@ class Home extends Component {
           text,
           blockNum: events[i].blockNumber,
           bondingCurveAddress: bondingCurveAddress,
-          totalBalance: parseInt(bondingCurveTotalBalance),
+          totalBalance: parseInt(bondingCurveTotalBalance, 10),
           balance: playerBalance,
           price: bondingCurvePrice / 10 ** 18,
           color: "white-card"
@@ -302,13 +298,13 @@ class Home extends Component {
 
     var doDisplayMessage = false;
     var displayMessage = ''
-    if (web3 == 'undefined') {
+    if (web3 === 'undefined') {
       doDisplayMessage = true;
       displayMessage = "You don't have Metamask and will be unable to interact with the site!"
-    } else if (this.state.web3Id != 3 && this.state.web3Id != 9999999) {
+    } else if (this.state.web3Id !== 3 && this.state.web3Id !== 9999999) {
       doDisplayMessage = true;
       displayMessage = "You need to switch to the ropsten test network to interact with the site!"
-    } else if (this.state.accounts.length == 0) {
+    } else if (this.state.accounts.length === 0) {
       doDisplayMessage = true;
       displayMessage = "You need to log into metamask to interact with the site!"
     } else if (this.state.ipfsDown) {
