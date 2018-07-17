@@ -14,14 +14,14 @@ We are still building Crypto Against Humanity, but you can test it out at Crypto
 
 
 ### How Can I Deploy this Locally?
-If you want to deploy and test locall you can do it in one of two ways, the 'fast' way with caching, or the 'slow' way without.
+If you want to deploy and test locall you can do it in one of two ways, the normal way with caching, or the 'stale' way without.
 
-To deploy with a slow version of our site locally, all you need to do is:
+To deploy with a stale version of our site locally, all you need to do is:
 1. Clone this repo.
 2. Run 'npm i' to install necessary packages
 3. Run 'npm start'
 
-Simple as that. To deploy with Caching, for a 'fast' loading expirence, there are a few more steps.
+Simple as that. To deploy with Caching, for the true interactive expirence, there are a few more steps.
 1. Be sure to have a infura keys available, you can get them from [here](https://infura.io/)
 2. Clone this repo.
 3. Run 'npm i' to install necessary packages
