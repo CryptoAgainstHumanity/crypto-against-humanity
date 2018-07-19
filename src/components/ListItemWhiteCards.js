@@ -123,6 +123,7 @@ class WhiteCardListItem extends Component {
           sellPrice={this.state.sellPrice}
           handleBuyClick={this.handleBuyClick}
           handleSellClick={this.handleSellClick}
+          isInteractive={this.props.isInteractive}
         />
 
 			</ListItemWhiteCard>

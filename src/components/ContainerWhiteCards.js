@@ -26,11 +26,6 @@ class ContainerWhiteCards extends Component {
     this.setState({whiteCards: sortedCards});
 
     // get updated block number
-    // web3.eth.getBlockNumber((err, blockNumCurrent) => {
-    //   this.setState({blockNumCurrent: blockNumCurrent})
-    // });
-
-    // get updated block number
     var blockNum = 0;
     for (var i=0; i < sortedCards.length; i++) {
       if (sortedCards[i].blockNum > blockNum) {
@@ -107,10 +102,12 @@ class ContainerWhiteCards extends Component {
           showSortMenu={this.showSortMenu}
           handleSort ={this.handleSort}
           handleSearch ={this.handleSearch}
+          isInteractive={this.props.isInteractive}
         />
 
         <ListWhiteCards
           whiteCards={this.state.whiteCards}
+          isInteractive={this.props.isInteractive}
           blockNumCurrent={this.state.blockNumCurrent}
         />
 

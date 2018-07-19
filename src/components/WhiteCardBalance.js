@@ -44,7 +44,7 @@ class WhiteCardBalance extends Component {
       'card':
       'cards';
 
-    const sellBtn = (balance > 0)?
+    const sellBtn = (balance > 0 && this.props.isInteractive)?
       <SellBtn
         onClick={handleSellClick}
         onMouseEnter={this.onMouseEnterSellBtn}
@@ -55,11 +55,16 @@ class WhiteCardBalance extends Component {
         hasNoBalance
       >{this.state.sellBtnText}</SellBtn>;
 
-    const buyBtn = <BuyBtn
+    const buyBtn = (this.props.isInteractive)?
+      <BuyBtn
         onClick={handleBuyClick}
         onMouseEnter={this.onMouseEnterBuyBtn}
         onMouseLeave={this.onMouseLeaveBuyBtn}
       >{this.state.buyBtnText}</BuyBtn>
+      :
+      <BuyBtn
+        isNotInteractive
+      >{this.state.buyBtnText}</BuyBtn>;
 
     const tagBalance = (balance > 0)?
       <Tag>{tagBalanceName}</Tag>:
@@ -122,15 +127,30 @@ const BuyBtn = Btn.extend`
   width: 100%;
   margin-bottom: 8px;
 
-  border: 2px solid ${COLORS_OBJ.primary.green};
-  color: ${COLORS_OBJ.primary.green};
-
-  :hover {
-    background-color: ${COLORS_OBJ.primary.green};
+  ${props => props.isNotInteractive?
+    `
+    border: 2px solid ${COLORS_OBJ.secondary.low};
+    color: ${COLORS_TEXT.bgLight.low};
+    :hover {
+      background-color: transparent;
+      border: 2px solid ${COLORS_OBJ.secondary.low};
+      color: ${COLORS_TEXT.bgLight.low};
+      cursor: default;
+    }
+    `:
+    `    
     border: 2px solid ${COLORS_OBJ.primary.green};
-    color: white;
+    color: ${COLORS_OBJ.primary.green};
+
+    :hover {
+      background-color: ${COLORS_OBJ.primary.green};
+      border: 2px solid ${COLORS_OBJ.primary.green};
+      color: white;
+    }`
   }
 `;
+
+
 
 const SellBtn = Btn.extend`
   width: 100%;

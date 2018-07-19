@@ -18,6 +18,7 @@ const ListWhiteCards = ((props) => {
 			events={card.events}
 			blockNum={card.blockNum}
 			blockNumCurrent={props.blockNumCurrent}
+			isInteractive={props.isInteractive}
 			/>
 	})
 

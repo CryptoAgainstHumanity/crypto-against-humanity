@@ -40,24 +40,25 @@ class Home extends Component {
       web3Id: 9999999,
       accounts: [1, 2, 3, 4, 5, 6, 7],
       ipfsDown: false,
+      isInteractive: true,
     };
     ReactGA.initialize('UA-120470128-1');
     ReactGA.pageview(window.location.hash);
 
     if (web3 !== 'undefined') {
       web3.eth.net.getId((err, id) => {
-          this.setState({
-            web3Id: id
-          })
+          this.setState({web3Id: id})
+          if (id !== 3) {
+            this.setState({isInteractive: false})
+          }
       })
       web3.eth.getAccounts((err, accounts) => {
-          this.setState({
-            accounts: accounts
-          })
+          this.setState({accounts: accounts})
       })
     } else {
       this.setState({
-        web3Id: 'undefined'
+        web3Id: 'undefined',
+        isInteractive: false,
       })
     }
   }
@@ -96,6 +97,7 @@ class Home extends Component {
           } else {
             this.setState({
               ipfsDown: true,
+              isInteractive: false,
             })
             this.getWhiteCardInfo(EventCache)
             console.error("IPFS file is corrupted")
@@ -103,6 +105,7 @@ class Home extends Component {
         } else {
           this.setState({
             ipfsDown: true,
+            isInteractive: false,
           })
           this.getWhiteCardInfo(EventCache)
           console.error("Could not find IPFS file")
@@ -111,6 +114,7 @@ class Home extends Component {
     } else {
       this.setState({
         ipfsDown: true,
+        isInteractive: false,
       })
       this.getWhiteCardInfo(EventCache)
       console.error("MISSING A VALID IPFS KEY")
@@ -294,7 +298,7 @@ class Home extends Component {
 
     const whiteCardContainer = this.state.loadingWhiteCards ?
       <LOADING><i className="fa fa-circle-o-notch fa-spin"></i> Loading people's lousy submissions... </LOADING>:
-      <ContainerWhiteCards whiteCards={this.state.whiteCards}/>;
+      <ContainerWhiteCards whiteCards={this.state.whiteCards} isInteractive={this.state.isInteractive}/>;
 
     var doDisplayMessage = false;
     var displayMessage = ''
