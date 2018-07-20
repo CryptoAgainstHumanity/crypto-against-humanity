@@ -38,6 +38,13 @@ class HeaderWhiteCards extends Component {
           <Btn onClick={handleSort} value={type}>{type}</Btn>
         );
 
+    const createBtn = (this.props.isInteractive)?
+        <BtnCreateCard primary>
+          <Link to='/create-card'>Create Card</Link>
+        </BtnCreateCard>
+      :
+        <BtnCreateCard primary isNotInteractive>Create Card</BtnCreateCard>;
+
     return (
       <HeaderList>
         <BtnDropDown onClick={this.showSortMenu}>
@@ -50,9 +57,7 @@ class HeaderWhiteCards extends Component {
           ( null )
         }
         <SearchBar handleSearch={handleSearch}/>
-        <BtnCreateCard primary>
-          <Link to='/create-card'>Create Card</Link>
-        </BtnCreateCard>
+        {createBtn}
       </HeaderList>
     );
   }
@@ -93,6 +98,18 @@ const BtnCreateCard = Btn.extend`
       color: inherit;
     }
   }
+    ${props => props.isNotInteractive?
+    `
+    border: 2px solid ${COLORS_OBJ.secondary.low};
+    color: ${COLORS_TEXT.bgLight.low};
+    :hover {
+      background-color: transparent;
+      border: 2px solid ${COLORS_OBJ.secondary.low};
+      color: ${COLORS_TEXT.bgLight.low};
+      cursor: default;
+    }
+    `:
+    ''}
 
   ${MEDIA.phone} {
     display:none
