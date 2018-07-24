@@ -16,7 +16,7 @@ import { LOADING } from './StyleGuide';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import ContainerRow from './components/ContainerRow';
 import HeaderNotification from './components/HeaderNotification';
-import { GetBuyPrice } from './Utilities'
+import { GetBuyPrice, PrecisionRound, GetRandomInt } from './Utilities'
 
 
 
@@ -158,9 +158,9 @@ class Home extends Component {
         if (mintBurnEvents[j].tokenAddress === whiteCards[i].bondingCurveAddress) {
           if (mintBurnEvents[j].caller === accounts[0]) {
             if (mintBurnEvents[j].type === "Minted") {
-              tokenBalance += precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
+              tokenBalance += PrecisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             } else {
-              tokenBalance -= precisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
+              tokenBalance -= PrecisionRound((mintBurnEvents[j].amount / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3);
             }
           }
           if (mintBurnEvents[j].type === "Minted") {
@@ -221,7 +221,7 @@ class Home extends Component {
         let bondingCurveBalance = await EthPolynomialCurveToken.methods.balanceOf(accounts[0]).call()
         let bondingCurveTotalBalance = await web3.eth.getBalance(bondingCurveAddress)
         console.log("Loading a White Card...")
-        var playerBalance = precisionRound((bondingCurveBalance / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3)
+        var playerBalance = PrecisionRound((bondingCurveBalance / whiteCardTokenUnits) * 10 ** 4 * 10 ** 18, 3)
         whiteCards.push({
           text,
           blockNum: events[i].blockNumber,
@@ -242,7 +242,7 @@ class Home extends Component {
 
   async setBlackCard () {
     const roundedTime = getRoundedTime()
-    const i = getRandomInt(roundedTime, 0, this.blackCards.length - 1)
+    const i = GetRandomInt(roundedTime, 0, this.blackCards.length - 1)
     let blackCard = { text: 'My centralized point of failure connection to ______ is down!', color: "black-card" }
     let text
     if (this.blackCards.length > 0) {
@@ -315,7 +315,6 @@ class Home extends Component {
       doDisplayMessage = true;
       displayMessage = "Our IPFS cache is down! All content on the site is stale. This will be fixed shortly."
     }
-    //var statusMessage =
     var headerNotification = doDisplayMessage ?
     (<HeaderNotification role="alert" >
       <p>{displayMessage} For more information <a href="/#/landing-page">click here</a></p>
@@ -333,22 +332,8 @@ class Home extends Component {
   }
 }
 
-function precisionRound(number, precision) {
-  var factor = Math.pow(10, precision);
-  return Math.round(number * factor) / factor;
-}
-
 function getRoundedTime() {
   return Math.floor(moment().unix() / blackCardTimeInterval) * blackCardTimeInterval
-}
-
-function random(seed) {
-  var x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
-}
-
-function getRandomInt(seed, min, max) {
-  return Math.floor(random(seed) * (max - min + 1)) + min;
 }
 
 function uniqBy(a, key) {

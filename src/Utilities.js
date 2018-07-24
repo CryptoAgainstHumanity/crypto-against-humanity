@@ -46,6 +46,15 @@ export function GetSellPriceRounded(totalSupply, poolBalance) {
   return priceRounded;
 }
 
+export function Random(seed) {
+  var x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+export function GetRandomInt(seed, min, max) {
+  return Math.floor(Random(seed) * (max - min + 1)) + min;
+}
+
 export function PrecisionRound(number, precision) {
   var factor = Math.pow(10, precision);
   return Math.round(number * factor) / factor;
