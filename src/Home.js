@@ -307,17 +307,17 @@ class Home extends Component {
       displayMessage = "You don't have Metamask and will be unable to interact with the site!"
     } else if (this.state.web3Id !== 3 && this.state.web3Id !== 9999999) {
       doDisplayMessage = true;
-      displayMessage = "You need to switch to the ropsten test network to interact with the site!"
+      displayMessage = "You need to switch to the Ropsten test network to interact with the site!"
     } else if (this.state.accounts.length === 0) {
       doDisplayMessage = true;
-      displayMessage = "You need to log into metamask to interact with the site!"
+      displayMessage = "You need to log into Metamask to interact with the site!"
     } else if (this.state.ipfsDown) {
       doDisplayMessage = true;
       displayMessage = "Our IPFS cache is down! All content on the site is stale. This will be fixed shortly."
     }
     var headerNotification = doDisplayMessage ?
     (<HeaderNotification role="alert" >
-      <p>{displayMessage} For more information <a href="/#/landing-page">click here</a></p>
+      <p>{displayMessage} For more information, <a href="/#/landing-page">click here.</a></p>
     </HeaderNotification>) :
     <div></div>;
     return (
